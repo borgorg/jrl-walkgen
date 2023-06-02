@@ -27,6 +27,8 @@
 #ifndef _PROBLEM_VEL_REF_H_
 #define _PROBLEM_VEL_REF_H_
 
+#include <iostream>
+
 namespace PatternGeneratorJRL {
 
 /*! \brief Final optimization problem to handle velocity reference.
