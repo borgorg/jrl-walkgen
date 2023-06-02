@@ -32,8 +32,9 @@
 /* \doc This object is the interface to the walking gait
    generation architecture. */
 #include <fenv.h>
-#include <fstream>
 #include <time.h>
+
+#include <fstream>
 
 #include "portability/bzero.hh"
 #include "portability/gettimeofday.hh"
@@ -160,8 +161,7 @@ PatternGeneratorInterfacePrivate::PatternGeneratorInterfacePrivate(
   m_AbsMotionTheta = 0;
   m_InternalClock = 0.0;
 
-  for (unsigned int i = 0; i < 3; i++)
-    m_ZMPInitialPoint(i) = 0.0;
+  for (unsigned int i = 0; i < 3; i++) m_ZMPInitialPoint(i) = 0.0;
   m_ZMPInitialPointSet = false;
 
   RegisterPluginMethods();
@@ -341,61 +341,47 @@ void PatternGeneratorInterfacePrivate::InterObjectRelationInitialization() {
 }
 
 PatternGeneratorInterfacePrivate::~PatternGeneratorInterfacePrivate() {
-
   ODEBUG4("Destructor: Start", "DebugPGI.txt");
 
-  if (m_StOvPl != 0)
-    delete m_StOvPl;
+  if (m_StOvPl != 0) delete m_StOvPl;
   ODEBUG4("Destructor: did m_StOvPl", "DebugPGI.txt");
 
-  if (m_StepStackHandler != 0)
-    delete m_StepStackHandler;
+  if (m_StepStackHandler != 0) delete m_StepStackHandler;
   ODEBUG4("Destructor: did m_StepStackHandler", "DebugPGI.txt");
 
-  if (m_GMFKW != 0)
-    delete m_GMFKW;
+  if (m_GMFKW != 0) delete m_GMFKW;
   ODEBUG4("Destructor: did m_GMKFW", "DebugPGI.txt");
 
-  if (m_PC != 0)
-    delete m_PC;
+  if (m_PC != 0) delete m_PC;
   ODEBUG4("Destructor: did m_PC", "DebugPGI.txt");
 
-  if (m_ZMPD != 0)
-    delete m_ZMPD;
+  if (m_ZMPD != 0) delete m_ZMPD;
   ODEBUG4("Destructor: did m_ZMPD", "DebugPGI.txt");
 
-  if (m_ZMPQP != 0)
-    delete m_ZMPQP;
+  if (m_ZMPQP != 0) delete m_ZMPQP;
 
     // if (m_ZMPCQPFF!=0)
     //  delete m_ZMPCQPFF;
     // ODEBUG4("Destructor: did m_ZMPQP","DebugPGI.txt");
 
 #if USE_QUADPROG == 1
-  if (m_ZMPVRSQP != 0)
-    delete m_ZMPVRSQP;
+  if (m_ZMPVRSQP != 0) delete m_ZMPVRSQP;
   ODEBUG4("Destructor: did m_ZMPVRSQP", "DebugPGI.txt");
 #endif
 
-  if (m_ZMPVRQP != 0)
-    delete m_ZMPVRQP;
+  if (m_ZMPVRQP != 0) delete m_ZMPVRQP;
   ODEBUG4("Destructor: did m_ZMPVRQP", "DebugPGI.txt");
 
-  if (m_ZMPM != 0)
-    delete m_ZMPM;
+  if (m_ZMPM != 0) delete m_ZMPM;
   ODEBUG4("Destructor: did m_ZMPM", "DebugPGI.txt");
 
-  if (m_ComAndFootRealization[0] != 0)
-    delete (m_ComAndFootRealization[0]);
+  if (m_ComAndFootRealization[0] != 0) delete (m_ComAndFootRealization[0]);
 
-  if (m_FeetTrajectoryGenerator != 0)
-    delete m_FeetTrajectoryGenerator;
+  if (m_FeetTrajectoryGenerator != 0) delete m_FeetTrajectoryGenerator;
 
-  if (m_DoubleStagePCStrategy != 0)
-    delete m_DoubleStagePCStrategy;
+  if (m_DoubleStagePCStrategy != 0) delete m_DoubleStagePCStrategy;
 
-  if (m_CoMAndFootOnlyStrategy != 0)
-    delete m_CoMAndFootOnlyStrategy;
+  if (m_CoMAndFootOnlyStrategy != 0) delete m_CoMAndFootOnlyStrategy;
 }
 
 void PatternGeneratorInterfacePrivate::m_SetZMPShiftParameters(
@@ -440,38 +426,39 @@ void PatternGeneratorInterfacePrivate::ReadSequenceOfSteps(
     istringstream &strm) {
   // Read the data inside strm.
   switch (m_StepStackHandler->GetWalkMode()) {
-  case 0:
-  case 4:
-  case 5:
-  case 6: {
-    m_StepStackHandler->ReadStepSequenceAccordingToWalkMode(strm);
-    break;
-  }
-  case 3:
-  case 1: {
-    m_StepStackHandler->ReadStepSequenceAccordingToWalkMode(strm);
-    break;
-  }
-  case 2: {
-    ODEBUG("Walk Mode with Obstacle StepOver Selected \
+    case 0:
+    case 4:
+    case 5:
+    case 6: {
+      m_StepStackHandler->ReadStepSequenceAccordingToWalkMode(strm);
+      break;
+    }
+    case 3:
+    case 1: {
+      m_StepStackHandler->ReadStepSequenceAccordingToWalkMode(strm);
+      break;
+    }
+    case 2: {
+      ODEBUG(
+          "Walk Mode with Obstacle StepOver Selected \
               (obstacle parameters have to be set first, \
                if not standard dimensions are used)");
-    m_StOvPl->SetObstacleInformation(m_ObstaclePars);
-    m_StOvPl->SetDeltaStepOverCOMHeightMax(m_DeltaFeasibilityLimit);
+      m_StOvPl->SetObstacleInformation(m_ObstaclePars);
+      m_StOvPl->SetDeltaStepOverCOMHeightMax(m_DeltaFeasibilityLimit);
 
-    // Update stack of relative foot by using StpOvPl.
-    m_StepStackHandler->ReadStepSequenceAccordingToWalkMode(strm);
+      // Update stack of relative foot by using StpOvPl.
+      m_StepStackHandler->ReadStepSequenceAccordingToWalkMode(strm);
 
-    break;
-  }
-  default: {
-    std::cerr << "Please select proper walk mode. \
+      break;
+    }
+    default: {
+      std::cerr << "Please select proper walk mode. \
                (0 for normal walking ; \
                 1 for walking with waistheight variation ; \
                 2 for walking with obstacle stepover)"
-              << std::endl;
-    return;
-  }
+                << std::endl;
+      return;
+    }
   }
   ODEBUG("Just before starting to Finish and RealizeStepSequence()");
 }
@@ -480,8 +467,8 @@ void PatternGeneratorInterfacePrivate::setVelReference(istringstream &strm) {
 #ifdef DEBUG
   std::cout << __PRETTY_FUNCTION__ << " setVelReference" << strm.str()
             << std::endl;
-#endif // DEBUG
-       // Read the data inside strm.
+#endif  // DEBUG
+        // Read the data inside strm.
 #if USE_QUADPROG == 1
   m_ZMPVRQP->Reference(strm);
   istringstream strm2(strm.str());
@@ -500,7 +487,6 @@ void PatternGeneratorInterfacePrivate::setCoMPerturbationForce(
 }
 
 void PatternGeneratorInterfacePrivate::initOnlineHerdt() {
-
   // TODO : The common part has to be shared,
   // and the specific part send back to the algorithm implementation.
 
@@ -534,7 +520,6 @@ void PatternGeneratorInterfacePrivate::initOnlineHerdt() {
 }
 
 void PatternGeneratorInterfacePrivate::initOnlineNaveau() {
-
   // TODO : The common part has to be shared,
   // and the specific part send back to the algorithm implementation.
 
@@ -569,7 +554,6 @@ void PatternGeneratorInterfacePrivate::initOnlineNaveau() {
 }
 
 void PatternGeneratorInterfacePrivate::m_StepSequence(istringstream &strm) {
-
   ODEBUG("Step Sequence");
   ofstream DebugFile;
   ReadSequenceOfSteps(strm);
@@ -580,7 +564,6 @@ void PatternGeneratorInterfacePrivate::m_StepSequence(istringstream &strm) {
 
 void PatternGeneratorInterfacePrivate::m_StepStairSequence(
     istringstream &strm) {
-
   ODEBUG("Step Sequence");
   ofstream DebugFile;
   m_StepStackHandler->ReadStepStairSequenceAccordingToWalkMode(strm);
@@ -775,7 +758,6 @@ void PatternGeneratorInterfacePrivate::CommonInitializationOfWalking(
   //    m_HumanoidDynamicRobot->setProperty(aProperty,aValue);
   // TODO check if an iteration number is needed in the PinocchioRobot class
   if (0) {
-
     ofstream aof;
     aof.open("/tmp/output.txt", ofstream::out);
     if (aof.is_open()) {
@@ -992,24 +974,25 @@ void PatternGeneratorInterfacePrivate::FinishAndRealizeStepSequence() {
 
 void PatternGeneratorInterfacePrivate::m_ReadFileFromKineoWorks(
     istringstream &strm) {
-
   string aPartialModel = "PartialModel.dat";
   string aKWPath = "KWBarPath.pth";
 
   strm >> aPartialModel;
   strm >> aKWPath;
 
-  ODEBUG6("Went through m_ReadFileFromKineoWorks"
-          "istringstream &strm)",
-          "DebugGMFKW.dat");
+  ODEBUG6(
+      "Went through m_ReadFileFromKineoWorks"
+      "istringstream &strm)",
+      "DebugGMFKW.dat");
   if (m_GMFKW->ReadPartialModel(aPartialModel) < 0)
     cerr << "Error while reading partial model " << endl;
 
   if (m_GMFKW->ReadKineoWorksPath(aKWPath) < 0)
     cerr << "Error while reading the path " << endl;
-  ODEBUG6("Went before DisplayModel and PAth "
-          "m_ReadFileFromKineoWorks(istringstream &strm)",
-          "DebugGMFKW.dat");
+  ODEBUG6(
+      "Went before DisplayModel and PAth "
+      "m_ReadFileFromKineoWorks(istringstream &strm)",
+      "DebugGMFKW.dat");
 
   //    m_GMFKW->DisplayModelAndPath();
   ODEBUG6("Fini..", "DebugGMFKW.dat");
@@ -1043,7 +1026,6 @@ void PatternGeneratorInterfacePrivate::ChangeOnLineStep(istringstream &strm,
 
 void PatternGeneratorInterfacePrivate::CallMethod(string &aCmd,
                                                   istringstream &strm) {
-
   ODEBUG("PGI:ParseCmd: Commande: " << aCmd);
 
   if (aCmd == ":ChangeNextStep") {
@@ -1213,7 +1195,6 @@ bool PatternGeneratorInterfacePrivate::RunOneStepOfTheControlLoop(
 
 bool PatternGeneratorInterfacePrivate::RunOneStepOfTheControlLoop(
     ControlLoopOneStepArgs &aControlLoopOneStepArgs) {
-
   return RunOneStepOfTheControlLoop(
       aControlLoopOneStepArgs.CurrentConfiguration,
       aControlLoopOneStepArgs.CurrentVelocity,
@@ -1230,7 +1211,6 @@ bool PatternGeneratorInterfacePrivate::RunOneStepOfTheControlLoop(
     FootAbsolutePosition &RightFootPosition) {
   m_InternalClock += m_SamplingPeriod;
   if ((!m_ShouldBeRunning) || (m_GlobalStrategyManager->EndOfMotion() < 0)) {
-
     ODEBUG(" m_ShoulBeRunning " << m_ShouldBeRunning << endl
                                 << " m_ZMPPositions " << m_ZMPPositions.size()
                                 << endl
@@ -1240,7 +1220,7 @@ bool PatternGeneratorInterfacePrivate::RunOneStepOfTheControlLoop(
                                   << m_GlobalStrategyManager->EndOfMotion());
 
     m_Running = false;
-    return m_Running; // Andremize
+    return m_Running;  // Andremize
   }
 
   m_Running = true;
@@ -1380,7 +1360,6 @@ bool PatternGeneratorInterfacePrivate::RunOneStepOfTheControlLoop(
         // *** WARNING THIS IS THE TIME CONSUMING PART ***
         if (m_AlgorithmforZMPCOM == ZMPCOM_WIEBER_2006) {
         } else if (m_AlgorithmforZMPCOM == ZMPCOM_KAJITA_2003) {
-
           m_ZMPD->OnLineAddFoot(lRelativeFootPositions, m_ZMPPositions,
                                 m_COMBuffer, m_LeftFootPositions,
                                 m_RightFootPositions, EndSequence);
@@ -1500,13 +1479,11 @@ int PatternGeneratorInterfacePrivate::GetWalkMode() const {
 
 void PatternGeneratorInterfacePrivate::m_PartialStepSequence(
     istringstream &strm) {
-  if (m_StepStackHandler != 0)
-    m_StepStackHandler->m_PartialStepSequence(strm);
+  if (m_StepStackHandler != 0) m_StepStackHandler->m_PartialStepSequence(strm);
 }
 
 void PatternGeneratorInterfacePrivate::GetLegJointVelocity(
     Eigen::VectorXd &dqr, Eigen::VectorXd &dql) const {
-
   // TO DO: take the joint specific to the legs
   // and create the appropriate vector.
   for (int i = 0; i < 6; i++) {
@@ -1808,9 +1785,9 @@ void PatternGeneratorInterfacePrivate::getZMPInitialPoint(
   lZMPInitialPoint = m_ZMPInitialPoint;
 }
 
-PatternGeneratorInterface *
-patternGeneratorInterfaceFactory(PinocchioRobot *aRobot) {
+PatternGeneratorInterface *patternGeneratorInterfaceFactory(
+    PinocchioRobot *aRobot) {
   return new PatternGeneratorInterfacePrivate(aRobot);
 }
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL

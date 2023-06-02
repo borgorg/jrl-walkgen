@@ -48,7 +48,7 @@ namespace PatternGeneratorJRL {
 */
 class FootTrajectoryGenerationStandard
     : public FootTrajectoryGenerationAbstract {
-public:
+ public:
   /*!\name  Constants related to the direction for the generation of the
     polynomes.
     @{ */
@@ -251,7 +251,7 @@ public:
 
   void copyPolynomesFromFTGS(FootTrajectoryGenerationStandard *FTGS);
 
-protected:
+ protected:
   /*! \brief Polynomes for X and Y axis positions*/
   Polynome5 *m_PolynomeX, *m_PolynomeY;
 
@@ -281,5 +281,5 @@ protected:
   Eigen::Vector3d m_AnklePositionRight;
 };
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _FOOT_TRAJECTORY_GENERATION_ABSTRACT_H_ */

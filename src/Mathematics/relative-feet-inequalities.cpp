@@ -29,10 +29,9 @@
     and the previewed feet positions.
 */
 
+#include <Mathematics/relative-feet-inequalities.hh>
 #include <fstream>
 #include <iostream>
-
-#include <Mathematics/relative-feet-inequalities.hh>
 
 using namespace std;
 using namespace PatternGeneratorJRL;
@@ -42,7 +41,6 @@ using namespace PatternGeneratorJRL;
 RelativeFeetInequalities::RelativeFeetInequalities(SimplePluginManager *aSPM,
                                                    PinocchioRobot *aPR)
     : SimplePlugin(aSPM) {
-
   DSFeetDistance_ = 0.162;
   SecurityMarginX_ = 0.04;
   SecurityMarginY_ = 0.04;
@@ -76,7 +74,6 @@ RelativeFeetInequalities::RelativeFeetInequalities(SimplePluginManager *aSPM,
 RelativeFeetInequalities::~RelativeFeetInequalities() {}
 
 int RelativeFeetInequalities::init_convex_hulls() {
-
   const unsigned nbVertCoP = 4;
   const unsigned nbVertFeet = 5;
   const unsigned nbIneqCoM = 10;
@@ -148,7 +145,6 @@ int RelativeFeetInequalities::init_convex_hulls() {
 }
 
 int RelativeFeetInequalities::set_feet_dimensions(PinocchioRobot *aPR) {
-
   // Read feet specificities.
   double Height, Width;
   PRFoot *RightFoot = aPR->rightFoot();
@@ -181,18 +177,17 @@ int RelativeFeetInequalities::set_feet_dimensions(PinocchioRobot *aPR) {
 void RelativeFeetInequalities::set_vertices(convex_hull_t &ConvexHull,
                                             const support_state_t &Support,
                                             ineq_e type) {
-
   edges_s *ConvexHull_p = 0;
 
   switch (type) {
-  case INEQ_COP:
-    ConvexHull_p = &ZMPPosEdges_;
-    break;
-  case INEQ_FEET:
-    ConvexHull_p = &FootPosEdges_;
-    break;
-  case INEQ_COM:
-    break;
+    case INEQ_COP:
+      ConvexHull_p = &ZMPPosEdges_;
+      break;
+    case INEQ_FEET:
+      ConvexHull_p = &FootPosEdges_;
+      break;
+    case INEQ_COM:
+      break;
   }
   // Choose edges
   if (Support.Foot == LEFT) {
@@ -219,17 +214,16 @@ void RelativeFeetInequalities::set_vertices(convex_hull_t &ConvexHull,
 void RelativeFeetInequalities::set_inequalities(convex_hull_t &ConvexHull,
                                                 const support_state_t &,
                                                 ineq_e type) {
-
   convex_hull_t *ConvexHull_p = 0;
 
   switch (type) {
-  case INEQ_COP:
-    break;
-  case INEQ_FEET:
-    break;
-  case INEQ_COM:
-    ConvexHull_p = &CoMHull_;
-    break;
+    case INEQ_COP:
+      break;
+    case INEQ_FEET:
+      break;
+    case INEQ_COM:
+      ConvexHull_p = &CoMHull_;
+      break;
   }
 
   ConvexHull.A_vec = ConvexHull_p->A_vec;
@@ -248,7 +242,7 @@ void RelativeFeetInequalities::compute_linear_system(
     sign = 1.0;
   else
     sign = -1.0;
-  for (unsigned i = 0; i < nbRows - 1; i++) // first n-1 inequalities
+  for (unsigned i = 0; i < nbRows - 1; i++)  // first n-1 inequalities
   {
     y1 = ConvexHull.Y_vec[i];
     y2 = ConvexHull.Y_vec[i + 1];
@@ -295,7 +289,6 @@ void RelativeFeetInequalities::compute_linear_system(
 
 void RelativeFeetInequalities::CallMethod(std::string &Method,
                                           std::istringstream &Args) {
-
   if (Method == ":setfeetconstraint") {
     string lCmd;
     Args >> lCmd;

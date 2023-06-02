@@ -32,11 +32,10 @@
 #ifndef _ZMPREVIEWCONTROLWITHMULTIBODYZMP_H_
 #define _ZMPREVIEWCONTROLWITHMULTIBODYZMP_H_
 
-#include <deque>
-
 #include <MotionGeneration/ComAndFootRealization.hh>
 #include <PreviewControl/PreviewControl.hh>
 #include <SimplePlugin.hh>
+#include <deque>
 #include <jrl/walkgen/pgtypes.hh>
 
 using namespace ::std;
@@ -67,7 +66,7 @@ namespace PatternGeneratorJRL {
 
 */
 class ZMPPreviewControlWithMultiBodyZMP : public SimplePlugin {
-private:
+ private:
   /*! Vector from the Waist to the left and right hip. */
   //@{
   /*! Static part from the waist to the left hip.. */
@@ -175,7 +174,7 @@ private:
   /*! Set the preview control time and update NL. */
   void SetPreviewControlTime(double lPreviewControlTime);
 
-public:
+ public:
   /*! Constantes to define the strategy with the first and second stage.
     @{
   */
@@ -522,5 +521,5 @@ public:
   /*! \brief Overloading method of SimplePlugin */
   void CallMethod(std::string &Method, std::istringstream &astrm);
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _ZMPREVIEWCONTROLWITHMULTIBODYZMP_H_ */

@@ -26,12 +26,11 @@
   an optimized implementation for QP solving.
 */
 
+#include <math.h>
 #include <stdlib.h>
 
 #include <fstream>
 #include <iostream>
-
-#include <math.h>
 
 #include "Mathematics/OptCholesky.hh"
 
@@ -58,7 +57,7 @@ void DisplayMatrix(double *A, int rows, int columns, string name, int format) {
       cout << A[i * rows + j] << " ";
     }
     cout << "];";
-    if (format == 0) // Human readable.
+    if (format == 0)  // Human readable.
       cout << endl;
   }
   cout << "]" << endl;
@@ -104,8 +103,7 @@ int main() {
       A[i * lCardU + j] = (double)rand() / (double)RAND_MAX;
     }
   }
-  if (verbose > 1)
-    DisplayMatrix(A, lNbOfConstraints, lCardU, string("A"), 0);
+  if (verbose > 1) DisplayMatrix(A, lNbOfConstraints, lCardU, string("A"), 0);
 
   anOptCholesky->SetA(A, PatternGeneratorJRL::OptCholesky::MODE_NORMAL);
   anOptCholesky->SetL(L);

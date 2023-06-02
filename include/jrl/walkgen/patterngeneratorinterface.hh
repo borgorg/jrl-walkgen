@@ -53,7 +53,7 @@ namespace PatternGeneratorJRL {
 
 */
 class WALK_GEN_JRL_EXPORT PatternGeneratorInterface {
-public:
+ public:
   // overload the new[] eigen operator
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   /*! Constructor
@@ -188,11 +188,10 @@ public:
     @param[out] COMRefPos: COM position new reference.
     @return True is there is still some data to send, false otherwise.
   */
-  virtual bool
-  RunOneStepOfTheControlLoop(FootAbsolutePosition &LeftFootPosition,
-                             FootAbsolutePosition &RightFootPosition,
-                             ZMPPosition &ZMPRefPos,
-                             COMPosition &COMRefPos) = 0;
+  virtual bool RunOneStepOfTheControlLoop(
+      FootAbsolutePosition &LeftFootPosition,
+      FootAbsolutePosition &RightFootPosition, ZMPPosition &ZMPRefPos,
+      COMPosition &COMRefPos) = 0;
 
   /*! \brief Rune One Step of the global control loop
    */
@@ -302,12 +301,11 @@ public:
   /*! \brief Returns the ZMP, CoM, left foot absolute position, and
     right foot absolute position
     for the initiale pose.*/
-  virtual void
-  EvaluateStartingState(COMState &lStartingCOMState,
-                        Eigen::Vector3d &lStartingZMPPosition,
-                        Eigen::Matrix<double, 6, 1> &lStartingWaistPose,
-                        FootAbsolutePosition &InitLeftFootAbsPos,
-                        FootAbsolutePosition &InitRightFootAbsPos) = 0;
+  virtual void EvaluateStartingState(
+      COMState &lStartingCOMState, Eigen::Vector3d &lStartingZMPPosition,
+      Eigen::Matrix<double, 6, 1> &lStartingWaistPose,
+      FootAbsolutePosition &InitLeftFootAbsPos,
+      FootAbsolutePosition &InitRightFootAbsPos) = 0;
 
   /*! @} */
 
@@ -327,8 +325,8 @@ public:
 };
 
 /*! Factory of Pattern generator interface. */
-WALK_GEN_JRL_EXPORT PatternGeneratorInterface *
-patternGeneratorInterfaceFactory(PinocchioRobot *);
-} // namespace PatternGeneratorJRL
+WALK_GEN_JRL_EXPORT PatternGeneratorInterface *patternGeneratorInterfaceFactory(
+    PinocchioRobot *);
+}  // namespace PatternGeneratorJRL
 
 #endif /* _PATTERN_GENERATOR_INTERFACE_H_ */

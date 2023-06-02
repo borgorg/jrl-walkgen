@@ -1,9 +1,9 @@
 #include <assert.h>
-#include <iostream>
-#include <vector>
 
 #include <Debug.hh>
 #include <Mathematics/Bsplines.hh>
+#include <iostream>
+#include <vector>
 
 using namespace ::std;
 using namespace ::PatternGeneratorJRL;
@@ -280,10 +280,8 @@ BSplinesFoot::~BSplinesFoot() {}
 
 int BSplinesFoot::Compute(double t, double &x, double &dx, double &ddx) {
   double time = t / m_FT;
-  if (time <= 0.0)
-    time = 0.0;
-  if (time >= 1.0)
-    time = 1.0;
+  if (time <= 0.0) time = 0.0;
+  if (time >= 1.0) time = 1.0;
 
   ComputeBasisFunctions(time);
   x = 0.0;
@@ -325,58 +323,58 @@ void BSplinesFoot::SetParameters(double FT, double IP, double FP,
 
   // generation of the knot vector
   switch (ToMP.size()) {
-  case 0:
-    // set the first three knots to 0.0
-    // the next one to 50% of the final time
-    // and the last three to the final time
-    for (unsigned int i = 0; i <= m_degree; i++) {
-      knot[i] = 0.0;
-    }
+    case 0:
+      // set the first three knots to 0.0
+      // the next one to 50% of the final time
+      // and the last three to the final time
+      for (unsigned int i = 0; i <= m_degree; i++) {
+        knot[i] = 0.0;
+      }
 
-    for (long int i = knot.size() - (m_degree + 1); i <= (long int)knot.size();
-         i++) {
-      knot[i] = 1.0;
-    }
+      for (long int i = knot.size() - (m_degree + 1);
+           i <= (long int)knot.size(); i++) {
+        knot[i] = 1.0;
+      }
 
-    SetKnotVector(knot);
-    ComputeControlPointFrom2DataPoint();
-    break;
+      SetKnotVector(knot);
+      ComputeControlPointFrom2DataPoint();
+      break;
 
-  case 1:
-    for (unsigned int i = 0; i <= m_degree; i++) {
-      knot[i] = 0.0;
-    }
+    case 1:
+      for (unsigned int i = 0; i <= m_degree; i++) {
+        knot[i] = 0.0;
+      }
 
-    knot[m_degree + 1] = m_ToMP[0] / m_FT;
+      knot[m_degree + 1] = m_ToMP[0] / m_FT;
 
-    for (long int i = knot.size() - (m_degree + 1); i <= (long int)knot.size();
-         i++) {
-      knot[i] = 1.0;
-    }
+      for (long int i = knot.size() - (m_degree + 1);
+           i <= (long int)knot.size(); i++) {
+        knot[i] = 1.0;
+      }
 
-    SetKnotVector(knot);
-    ComputeControlPointFrom3DataPoint();
+      SetKnotVector(knot);
+      ComputeControlPointFrom3DataPoint();
 
-    break;
+      break;
 
-  case 2:
-    for (unsigned int i = 0; i <= m_degree; i++) {
-      knot[i] = 0.0;
-    }
+    case 2:
+      for (unsigned int i = 0; i <= m_degree; i++) {
+        knot[i] = 0.0;
+      }
 
-    knot[m_degree + 1] = m_ToMP[0] / m_FT;
-    knot[m_degree + 2] = m_ToMP[1] / m_FT;
+      knot[m_degree + 1] = m_ToMP[0] / m_FT;
+      knot[m_degree + 2] = m_ToMP[1] / m_FT;
 
-    for (long int i = knot.size() - (m_degree + 1); i <= (long int)knot.size();
-         i++) {
-      knot[i] = 1.0;
-    }
+      for (long int i = knot.size() - (m_degree + 1);
+           i <= (long int)knot.size(); i++) {
+        knot[i] = 1.0;
+      }
 
-    SetKnotVector(knot);
-    ComputeControlPointFrom4DataPoint();
+      SetKnotVector(knot);
+      ComputeControlPointFrom4DataPoint();
 
-    break;
-  } // end switch case
+      break;
+  }  // end switch case
 
   return;
 }
@@ -3487,92 +3485,92 @@ void BSplinesFoot::SetParametersWithInitFinalPose(double FT, double IP,
 
   // generation of the knot vector
   switch (ToMP.size()) {
-  case 0:
-    // set the first three knots to 0.0
-    // the next one to 50% of the final time
-    // and the last three to the final time
-    for (unsigned int i = 0; i <= m_degree; i++) {
-      knot.push_back(0.0);
-    }
+    case 0:
+      // set the first three knots to 0.0
+      // the next one to 50% of the final time
+      // and the last three to the final time
+      for (unsigned int i = 0; i <= m_degree; i++) {
+        knot.push_back(0.0);
+      }
 
-    for (unsigned int i = 0; i < (m_degree - 1); ++i) {
-      knot.push_back((double)(i + 1) / ((double)m_degree));
-    }
+      for (unsigned int i = 0; i < (m_degree - 1); ++i) {
+        knot.push_back((double)(i + 1) / ((double)m_degree));
+      }
 
-    for (unsigned int i = 0; i <= m_degree; i++) {
-      knot.push_back(1);
-    }
+      for (unsigned int i = 0; i <= m_degree; i++) {
+        knot.push_back(1);
+      }
 
-    // Set the first three control point
-    // to the initial pos and the last three
-    // to the final pos
-    for (unsigned int i = 0; i < m_degree; ++i)
-      control_points.push_back(m_IP);
+      // Set the first three control point
+      // to the initial pos and the last three
+      // to the final pos
+      for (unsigned int i = 0; i < m_degree; ++i)
+        control_points.push_back(m_IP);
 
-    for (unsigned int i = 0; i < m_degree; ++i)
-      control_points.push_back(m_FP);
-    break;
+      for (unsigned int i = 0; i < m_degree; ++i)
+        control_points.push_back(m_FP);
+      break;
 
-  case 1:
-    for (unsigned int i = 0; i <= m_degree; ++i) {
-      knot.push_back(0.0);
-    }
+    case 1:
+      for (unsigned int i = 0; i <= m_degree; ++i) {
+        knot.push_back(0.0);
+      }
 
-    for (unsigned int i = 1; i <= 3; ++i) {
-      knot.push_back((double)i / 3.0 * m_ToMP[0] / m_FT);
-    }
+      for (unsigned int i = 1; i <= 3; ++i) {
+        knot.push_back((double)i / 3.0 * m_ToMP[0] / m_FT);
+      }
 
-    for (unsigned int i = 0; i < 3; ++i) {
-      knot.push_back((m_ToMP[0] + (double)i / 3 * (m_FT - m_ToMP[0])) / m_FT);
-    }
+      for (unsigned int i = 0; i < 3; ++i) {
+        knot.push_back((m_ToMP[0] + (double)i / 3 * (m_FT - m_ToMP[0])) / m_FT);
+      }
 
-    for (unsigned int i = 0; i <= m_degree; ++i) {
-      knot.push_back(1);
-    }
+      for (unsigned int i = 0; i <= m_degree; ++i) {
+        knot.push_back(1);
+      }
 
-    for (unsigned int i = 0; i < m_degree; ++i)
-      control_points.push_back(m_IP);
+      for (unsigned int i = 0; i < m_degree; ++i)
+        control_points.push_back(m_IP);
 
-    control_points.push_back(m_MP[0]);
-    control_points.push_back(m_MP[0]);
+      control_points.push_back(m_MP[0]);
+      control_points.push_back(m_MP[0]);
 
-    for (unsigned int i = 0; i < m_degree; ++i)
-      control_points.push_back(m_FP);
+      for (unsigned int i = 0; i < m_degree; ++i)
+        control_points.push_back(m_FP);
 
-    break;
+      break;
 
-  case 2:
-    for (unsigned int i = 0; i <= m_degree; ++i) {
-      knot.push_back(0.0);
-    }
+    case 2:
+      for (unsigned int i = 0; i <= m_degree; ++i) {
+        knot.push_back(0.0);
+      }
 
-    for (unsigned int i = 1; i <= 2; ++i) {
-      knot.push_back((double)i / 2.0 * m_ToMP[0] / m_FT);
-    }
+      for (unsigned int i = 1; i <= 2; ++i) {
+        knot.push_back((double)i / 2.0 * m_ToMP[0] / m_FT);
+      }
 
-    for (unsigned int i = 0; i < 2; ++i) {
-      knot.push_back((m_ToMP[0] + m_ToMP[1]) * 0.5 / m_FT);
-    }
+      for (unsigned int i = 0; i < 2; ++i) {
+        knot.push_back((m_ToMP[0] + m_ToMP[1]) * 0.5 / m_FT);
+      }
 
-    for (unsigned int i = 0; i < 2; ++i) {
-      knot.push_back((m_ToMP[1] + (double)i / 2 * (m_FT - m_ToMP[1])) / m_FT);
-    }
+      for (unsigned int i = 0; i < 2; ++i) {
+        knot.push_back((m_ToMP[1] + (double)i / 2 * (m_FT - m_ToMP[1])) / m_FT);
+      }
 
-    for (unsigned int i = 0; i <= m_degree; ++i) {
-      knot.push_back(1);
-    }
+      for (unsigned int i = 0; i <= m_degree; ++i) {
+        knot.push_back(1);
+      }
 
-    for (unsigned int i = 0; i < m_degree; ++i)
-      control_points.push_back(m_IP);
+      for (unsigned int i = 0; i < m_degree; ++i)
+        control_points.push_back(m_IP);
 
-    control_points.push_back(m_MP[0]);
-    control_points.push_back(m_MP[1]);
+      control_points.push_back(m_MP[0]);
+      control_points.push_back(m_MP[1]);
 
-    for (unsigned int i = 0; i < m_degree; ++i)
-      control_points.push_back(m_FP);
+      for (unsigned int i = 0; i < m_degree; ++i)
+        control_points.push_back(m_FP);
 
-    break;
-  } // end switch case
+      break;
+  }  // end switch case
 
   SetKnotVector(knot);
   SetControlPoints(control_points);

@@ -29,11 +29,10 @@
 #ifndef _TRAJ_GEN_H_
 #define _TRAJ_GEN_H_
 
-#include <deque>
-#include <string>
-
 #include <SimplePlugin.hh>
+#include <deque>
 #include <jrl/walkgen/pgtypes.hh>
+#include <string>
 
 namespace PatternGeneratorJRL {
 
@@ -41,11 +40,10 @@ namespace PatternGeneratorJRL {
   low-dimensional walking trajectories (CoM/CdP/Feet).
  */
 class MPCTrajectoryGeneration : public SimplePlugin {
-
   //
   // Protected members
   //
-protected:
+ protected:
   /* ! \brief Time for single support. */
   double Tsingle_;
 
@@ -95,7 +93,7 @@ protected:
   //
   // Public methods
   //
-public:
+ public:
   /// \brief Default constructor
   MPCTrajectoryGeneration(SimplePluginManager *lSPM);
 
@@ -207,6 +205,6 @@ public:
   bool GetOnLineMode();
   /// @}  */
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 
 #endif /* _TRAJ_GEN_H_ */

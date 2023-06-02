@@ -28,26 +28,24 @@
 */
 #define _DEBUG_
 
-#include "Debug.hh"
 #include <MotionGeneration/WaistHeightVariation.hh>
 #include <fstream>
+
+#include "Debug.hh"
 
 using namespace ::PatternGeneratorJRL;
 
 WaistHeightVariation::WaistHeightVariation() {
-
   m_PolynomeHip = new WaistPolynome();
 }
 
 WaistHeightVariation::~WaistHeightVariation() {
-  if (m_PolynomeHip != 0)
-    delete m_PolynomeHip;
+  if (m_PolynomeHip != 0) delete m_PolynomeHip;
 }
 
 void WaistHeightVariation::PolyPlanner(deque<COMPosition> &aCOMBuffer,
                                        deque<RelativeFootPosition> &aFootHolds,
                                        deque<ZMPPosition> aZMPPosition) {
-
   unsigned int u_start = 0;
   int stepnumber = 0;
   Eigen::Matrix<double, 4, 1> aBoundCond;
@@ -71,7 +69,7 @@ void WaistHeightVariation::PolyPlanner(deque<COMPosition> &aCOMBuffer,
 
   m_PolynomeHip->SetParameters(aBoundCond, aTimeDistr);
   // m_PolynomeHip->print();
-  aCOMBuffer[u_start].z[0] = aCOMBuffer[0].z[0]; //+aCOMBuffer[u_start].z[0];
+  aCOMBuffer[u_start].z[0] = aCOMBuffer[0].z[0];  //+aCOMBuffer[u_start].z[0];
   aCOMBuffer[u_start].z[1] = 0.0;
   aCOMBuffer[u_start].z[2] = 0.0;
 
@@ -106,19 +104,18 @@ void WaistHeightVariation::PolyPlanner(deque<COMPosition> &aCOMBuffer,
             m_SamplingPeriod;
 
       } else {
-
         double LocalTime;
         LocalTime = (u - u_start) * m_SamplingPeriod;
 
         aCOMBuffer[u].z[0] =
-            m_PolynomeHip->Compute(LocalTime); //+aCOMBuffer[u_start].z[0];
+            m_PolynomeHip->Compute(LocalTime);  //+aCOMBuffer[u_start].z[0];
         aCOMBuffer[u].z[1] =
             (aCOMBuffer[u].z[0] - aCOMBuffer[u - 1].z[0]) / m_SamplingPeriod;
         aCOMBuffer[u].z[2] =
             (aCOMBuffer[u].z[1] - aCOMBuffer[u - 1].z[1]) / m_SamplingPeriod;
       }
     } else {
-      aCOMBuffer[u].z[0] = aCOMBuffer[u - 1].z[0]; //+aCOMBuffer[u_start].z[0];
+      aCOMBuffer[u].z[0] = aCOMBuffer[u - 1].z[0];  //+aCOMBuffer[u_start].z[0];
       aCOMBuffer[u].z[1] = 0.0;
       aCOMBuffer[u].z[2] = 0.0;
     }
@@ -135,8 +132,7 @@ void WaistHeightVariation::PolyPlanner(deque<COMPosition> &aCOMBuffer,
     aof_Buffers.open("WaistBuffers_1.txt", ofstream::app);
   }
 
-  if (FirstCall)
-    FirstCall = 0;
+  if (FirstCall) FirstCall = 0;
 
   for (unsigned int i = 0; i < aCOMBuffer.size(); i++) {
     if (aof_Buffers.is_open()) {
@@ -200,8 +196,7 @@ void WaistPolynome::SetParameters(Eigen::VectorXd boundCond,
 
   for (unsigned int i = 0; i < boundCond.size(); i++) {
     Temp = Base;
-    for (unsigned int j = 0; j < Temp.rows(); j++)
-      Temp(j, i) = boundCond(j);
+    for (unsigned int j = 0; j < Temp.rows(); j++) Temp(j, i) = boundCond(j);
     m_Coefficients[i] = Temp.determinant() / detBase;
   };
 }

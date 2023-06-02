@@ -39,8 +39,7 @@ namespace PatternGeneratorJRL {
     algorithm.
 */
 class DoubleStagePreviewControlStrategy : public GlobalStrategyManager {
-
-public:
+ public:
   /*! Default constructor. */
   DoubleStagePreviewControlStrategy(SimplePluginManager *aSimplePluginManager);
 
@@ -147,7 +146,7 @@ public:
   static const unsigned int ZMPFRAME_WAIST = 0;
   static const unsigned int ZMPFRAME_WORLD = 1;
 
-protected:
+ protected:
   /*! Set the sampling period and update NL.*/
   void SetSamplingPeriod(double lSamplingPeriod);
 
@@ -173,5 +172,5 @@ protected:
   /*! ZMP reference frame. */
   unsigned int m_ZMPFrame;
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _DOUBLE_STAGE_PREVIEW_CONTROL_STRATEGY_H_*/

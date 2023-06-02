@@ -72,14 +72,13 @@ void DumpReferencesObjects::fillFileWithSubsamplingAndClose(
                      aSetOfFillingFileArgs.dt +
                  subsampling * aSetOfFillingFileArgs.dt /
                      aSetOfFillingFileArgs.nb_subsampling)
-          << " "; // 1
+          << " ";  // 1
     }
     for (unsigned int i = 0; i < next.size(); i++) {
       double intermediate = prev[i] + (next[i] - prev[i]) * subsampling /
                                           aSetOfFillingFileArgs.nb_subsampling;
       aSetOfFillingFileArgs.aof << intermediate;
-      if (i < next.size() - 1)
-        aSetOfFillingFileArgs.aof << " ";
+      if (i < next.size() - 1) aSetOfFillingFileArgs.aof << " ";
     }
     aSetOfFillingFileArgs.aof << std::endl;
   }
@@ -101,16 +100,15 @@ void DumpReferencesObjects::fillInTestsFormat1(
     Eigen::VectorXd &aCurrentConfiguration)
 
 {
-
   ofstream aof;
   string prefix = aTestName + "CoM";
   std::vector<double> vec_db;
   double dt = 0.005;
   double nb_sampling = 5.0;
 
-  FillingFileArgs_t aSetOfFillingFileArgs(aof, // File on which to write
+  FillingFileArgs_t aSetOfFillingFileArgs(aof,  // File on which to write
                                           dt, nb_sampling,
-                                          anOneStep); // Compute speed ?
+                                          anOneStep);  // Compute speed ?
 
   double localZMPx = anOneStep.m_ZMPTarget(0) * cos(aCurrentConfiguration(5)) -
                      anOneStep.m_ZMPTarget(1) * sin(aCurrentConfiguration(5)) +
@@ -130,69 +128,69 @@ void DumpReferencesObjects::fillInTestsFormat1(
   /// CoM velocity
   prefix = aTestName + "dCoM";
   prepareFile(aof, prefix, anOneStep);
-  vec_db[0] = filterprecision(anOneStep.m_finalCOMPosition.x[1]); // 6
-  vec_db[1] = filterprecision(anOneStep.m_finalCOMPosition.y[1]); // 7
-  vec_db[2] = filterprecision(anOneStep.m_finalCOMPosition.z[1]); // 8
+  vec_db[0] = filterprecision(anOneStep.m_finalCOMPosition.x[1]);  // 6
+  vec_db[1] = filterprecision(anOneStep.m_finalCOMPosition.y[1]);  // 7
+  vec_db[2] = filterprecision(anOneStep.m_finalCOMPosition.z[1]);  // 8
   fillFileWithSubsamplingAndClose(aSetOfFillingFileArgs, vec_db, m_prevdCoMp);
 
   /// CoM acceleration
   prefix = aTestName + "ddCoM";
   prepareFile(aof, prefix, anOneStep);
-  vec_db[0] = filterprecision(anOneStep.m_finalCOMPosition.x[2]); // 10
-  vec_db[1] = filterprecision(anOneStep.m_finalCOMPosition.y[2]); // 11
-  vec_db[2] = filterprecision(anOneStep.m_finalCOMPosition.z[2]); // 12
+  vec_db[0] = filterprecision(anOneStep.m_finalCOMPosition.x[2]);  // 10
+  vec_db[1] = filterprecision(anOneStep.m_finalCOMPosition.y[2]);  // 11
+  vec_db[2] = filterprecision(anOneStep.m_finalCOMPosition.z[2]);  // 12
   fillFileWithSubsamplingAndClose(aSetOfFillingFileArgs, vec_db, m_prevddCoMp);
 
   /// Waist Orientation
   prefix = aTestName + "WaistOrientation";
   prepareFile(aof, prefix, anOneStep);
-  vec_db[0] = filterprecision(anOneStep.m_finalCOMPosition.yaw[0]); // 5
-  vec_db[1] = filterprecision(anOneStep.m_finalCOMPosition.yaw[1]); // 9
-  vec_db[2] = filterprecision(anOneStep.m_finalCOMPosition.yaw[2]); // 13
+  vec_db[0] = filterprecision(anOneStep.m_finalCOMPosition.yaw[0]);  // 5
+  vec_db[1] = filterprecision(anOneStep.m_finalCOMPosition.yaw[1]);  // 9
+  vec_db[2] = filterprecision(anOneStep.m_finalCOMPosition.yaw[2]);  // 13
   fillFileWithSubsamplingAndClose(aSetOfFillingFileArgs, vec_db,
                                   m_prevWaistOrien);
 
   /// ZMP Ref
   prefix = aTestName + "ZMPRef";
   prepareFile(aof, prefix, anOneStep);
-  vec_db[0] = filterprecision(anOneStep.m_ZMPTarget(0)); // 14
-  vec_db[1] = filterprecision(anOneStep.m_ZMPTarget(1)); // 15
-  vec_db[2] = filterprecision(anOneStep.m_ZMPTarget(2)); // 16
+  vec_db[0] = filterprecision(anOneStep.m_ZMPTarget(0));  // 14
+  vec_db[1] = filterprecision(anOneStep.m_ZMPTarget(1));  // 15
+  vec_db[2] = filterprecision(anOneStep.m_ZMPTarget(2));  // 16
   fillFileWithSubsamplingAndClose(aSetOfFillingFileArgs, vec_db,
                                   m_prevZMPlocal);
 
   prefix = aTestName + "LeftAnklePos";
   prepareFile(aof, prefix, anOneStep);
   vec_db[0] = filterprecision(anOneStep.m_LeftFootPosition.x +
-                              m_AnklePositionLeft[0]); // 17
+                              m_AnklePositionLeft[0]);  // 17
   vec_db[1] = filterprecision(anOneStep.m_LeftFootPosition.y +
-                              m_AnklePositionLeft[1]); // 18
+                              m_AnklePositionLeft[1]);  // 18
   vec_db[2] = filterprecision(anOneStep.m_LeftFootPosition.z +
-                              m_AnklePositionLeft[2]); // 19
+                              m_AnklePositionLeft[2]);  // 19
   fillFileWithSubsamplingAndClose(aSetOfFillingFileArgs, vec_db,
                                   m_prevLeftAnklePos);
 
   prefix = aTestName + "LeftAnkledPos";
   prepareFile(aof, prefix, anOneStep);
-  vec_db[0] = filterprecision(anOneStep.m_LeftFootPosition.dx); // 20
-  vec_db[1] = filterprecision(anOneStep.m_LeftFootPosition.dy); // 21
-  vec_db[2] = filterprecision(anOneStep.m_LeftFootPosition.dz); // 22
+  vec_db[0] = filterprecision(anOneStep.m_LeftFootPosition.dx);  // 20
+  vec_db[1] = filterprecision(anOneStep.m_LeftFootPosition.dy);  // 21
+  vec_db[2] = filterprecision(anOneStep.m_LeftFootPosition.dz);  // 22
   fillFileWithSubsamplingAndClose(aSetOfFillingFileArgs, vec_db,
                                   m_prevLeftAnkledPos);
 
   prefix = aTestName + "LeftAnkleddPos";
   prepareFile(aof, prefix, anOneStep);
-  vec_db[0] = filterprecision(anOneStep.m_LeftFootPosition.ddx); // 23
-  vec_db[1] = filterprecision(anOneStep.m_LeftFootPosition.ddy); // 24
-  vec_db[2] = filterprecision(anOneStep.m_LeftFootPosition.ddz); // 25
+  vec_db[0] = filterprecision(anOneStep.m_LeftFootPosition.ddx);  // 23
+  vec_db[1] = filterprecision(anOneStep.m_LeftFootPosition.ddy);  // 24
+  vec_db[2] = filterprecision(anOneStep.m_LeftFootPosition.ddz);  // 25
   fillFileWithSubsamplingAndClose(aSetOfFillingFileArgs, vec_db,
                                   m_prevLeftAnkleddPos);
 
   prefix = aTestName + "LeftAnkleOrientation";
   prepareFile(aof, prefix, anOneStep);
-  vec_db[0] = filterprecision(anOneStep.m_LeftFootPosition.theta);  // 26
-  vec_db[1] = filterprecision(anOneStep.m_LeftFootPosition.omega);  // 29
-  vec_db[2] = filterprecision(anOneStep.m_LeftFootPosition.omega2); // 30
+  vec_db[0] = filterprecision(anOneStep.m_LeftFootPosition.theta);   // 26
+  vec_db[1] = filterprecision(anOneStep.m_LeftFootPosition.omega);   // 29
+  vec_db[2] = filterprecision(anOneStep.m_LeftFootPosition.omega2);  // 30
   fillFileWithSubsamplingAndClose(aSetOfFillingFileArgs, vec_db,
                                   m_prevLeftAnkleOrientation);
 
@@ -235,7 +233,7 @@ void DumpReferencesObjects::fillInTestsFormat1(
   prepareFile(aof, prefix, anOneStep);
   vec_db[0] = filterprecision(anOneStep.m_LeftFootPosition.dtheta);
   vec_db[1] = 0.0;
-  vec_db[2] = 0.0; // 27
+  vec_db[2] = 0.0;  // 27
   fillFileWithSubsamplingAndClose(aSetOfFillingFileArgs, vec_db,
                                   m_prevLeftAnkledOrientation);
 
@@ -243,7 +241,7 @@ void DumpReferencesObjects::fillInTestsFormat1(
   prepareFile(aof, prefix, anOneStep);
   vec_db[0] = filterprecision(anOneStep.m_LeftFootPosition.ddtheta);
   vec_db[1] = 0.0;
-  vec_db[2] = 0.0; // 27
+  vec_db[2] = 0.0;  // 27
   fillFileWithSubsamplingAndClose(aSetOfFillingFileArgs, vec_db,
                                   m_prevLeftAnkleddOrientation);
 
@@ -328,8 +326,7 @@ void DumpReferencesObjects::fillInTestsFormat2(
   vec_db[0] = filterprecision(localZMPx);
   vec_db[1] = filterprecision(localZMPy);
   vec_db[2] = 0.0;
-  for (unsigned int j = 3; j < 9; j++)
-    vec_db[j] = 0.0;
+  for (unsigned int j = 3; j < 9; j++) vec_db[j] = 0.0;
 
   fillFileWithSubsamplingAndClose(aSetOfFillingFileArgs, vec_db,
                                   m_prevZMPlocalF2);
@@ -417,8 +414,7 @@ void DumpReferencesObjects::fillInTestsFormat2(
 
   vec_db[1] = 0;
   vec_db[2] = 0;
-  if (m_prevPhase.size() != 3)
-    m_prevPhase.resize(3);
+  if (m_prevPhase.size() != 3) m_prevPhase.resize(3);
   aof.unsetf(std::ios::floatfield);
   aof.precision(1);
   fillFileWithSubsamplingAndClose(aSetOfFillingFileArgs, vec_db, m_prevPhase);

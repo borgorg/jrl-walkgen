@@ -58,8 +58,7 @@ namespace PatternGeneratorJRL {
 
 */
 class LeftAndRightFootTrajectoryGenerationMultiple : public SimplePlugin {
-
-public:
+ public:
   /*! \brief The constructor initialize the plugin part,
     and the data related to the humanoid. */
   LeftAndRightFootTrajectoryGenerationMultiple(SimplePluginManager *lSPM,
@@ -114,9 +113,9 @@ public:
     The data structure to be filled with the information
     \f$ (x,y,z,\omega, \omega_2, \theta) \f$.
   */
-  bool
-  ComputeAnAbsoluteFootPosition(int LeftOrRight, double time,
-                                FootAbsolutePosition &aFootAbsolutePosition);
+  bool ComputeAnAbsoluteFootPosition(
+      int LeftOrRight, double time,
+      FootAbsolutePosition &aFootAbsolutePosition);
 
   /*! \brief Method to compute the absolute position of the foot.
     @param[in] LeftOrRight: -1 indicates the right foot,
@@ -130,10 +129,9 @@ public:
     @param[in] IndexInterval: On which interval to compute the foot position.
 
   */
-  bool
-  ComputeAnAbsoluteFootPosition(int LeftOrRight, double time,
-                                FootAbsolutePosition &aFootAbsolutePosition,
-                                unsigned int IndexInterval);
+  bool ComputeAnAbsoluteFootPosition(
+      int LeftOrRight, double time, FootAbsolutePosition &aFootAbsolutePosition,
+      unsigned int IndexInterval);
 
   /*
     bool ComputeAnAbsoluteFootPosition(int LeftOrRight,
@@ -196,7 +194,7 @@ public:
   /*! Returns foot */
   PRFoot *getFoot() const;
 
-protected:
+ protected:
   /*! Internal method to modify the value of an interval. */
   void SetAnInterval(unsigned int IntervalIndex,
                      FootTrajectoryGenerationMultiple *aFTGM,
@@ -240,7 +238,7 @@ protected:
   /*! Double support time. */
   double m_DoubleSupportTime;
 
-public:
+ public:
   /*! Set the intervals time */
   void SetDeltaTj(std::vector<double> &aDeltaTj);
 
@@ -280,8 +278,8 @@ public:
   FootTrajectoryGenerationMultiple *getLeftFootTrajectory() const;
   FootTrajectoryGenerationMultiple *getRightFootTrajectory() const;
 
-  LeftAndRightFootTrajectoryGenerationMultiple &
-  operator=(const LeftAndRightFootTrajectoryGenerationMultiple &aLRFTGM);
+  LeftAndRightFootTrajectoryGenerationMultiple &operator=(
+      const LeftAndRightFootTrajectoryGenerationMultiple &aLRFTGM);
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _LEFT_AND_RIGHT_FOOT_TRAJECTORY_GENERATION_MULTIPLE_H_ */

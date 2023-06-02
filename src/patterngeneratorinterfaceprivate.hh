@@ -33,33 +33,25 @@
 #ifndef _PATTERN_GENERATOR_INTERFACE_PRIVATE_H_
 #define _PATTERN_GENERATOR_INTERFACE_PRIVATE_H_
 
-#include <sstream>
-
-#include <jrl/walkgen/patterngeneratorinterface.hh>
-
+#include <FootTrajectoryGeneration/LeftAndRightFootTrajectoryGenerationMultiple.hh>
+#include <GlobalStrategyManagers/CoMAndFootOnlyStrategy.hh>
+#include <GlobalStrategyManagers/DoubleStagePreviewControlStrategy.hh>
+#include <MotionGeneration/ComAndFootRealizationByGeometry.hh>
+#include <MotionGeneration/GenerateMotionFromKineoWorks.hh>
+#include <MotionGeneration/StepOverPlanner.hh>
 #include <PreviewControl/PreviewControl.hh>
 #include <PreviewControl/ZMPPreviewControlWithMultiBodyZMP.hh>
-
+#include <SimplePlugin.hh>
+#include <SimplePluginManager.hh>
+#include <StepStackHandler.hh>
 #include <ZMPRefTrajectoryGeneration/AnalyticalMorisawaCompact.hh>
 #include <ZMPRefTrajectoryGeneration/ZMPConstrainedQPFastFormulation.hh>
 #include <ZMPRefTrajectoryGeneration/ZMPDiscretization.hh>
 #include <ZMPRefTrajectoryGeneration/ZMPQPWithConstraint.hh>
 #include <ZMPRefTrajectoryGeneration/ZMPVelocityReferencedQP.hh>
 #include <ZMPRefTrajectoryGeneration/ZMPVelocityReferencedSQP.hh>
-
-#include <MotionGeneration/ComAndFootRealizationByGeometry.hh>
-#include <MotionGeneration/GenerateMotionFromKineoWorks.hh>
-#include <MotionGeneration/StepOverPlanner.hh>
-
-#include <FootTrajectoryGeneration/LeftAndRightFootTrajectoryGenerationMultiple.hh>
-
-#include <StepStackHandler.hh>
-
-#include <SimplePlugin.hh>
-#include <SimplePluginManager.hh>
-
-#include <GlobalStrategyManagers/CoMAndFootOnlyStrategy.hh>
-#include <GlobalStrategyManagers/DoubleStagePreviewControlStrategy.hh>
+#include <jrl/walkgen/patterngeneratorinterface.hh>
+#include <sstream>
 
 namespace PatternGeneratorJRL {
 
@@ -81,7 +73,7 @@ class PatternGeneratorInterfacePrivate
       SimplePlugin
 
 {
-public:
+ public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   /*! Constructor
     @param strm: Should provide the file to initialize the preview control,
@@ -413,7 +405,7 @@ public:
   */
   void setCoMPerturbationForce(double x, double y);
 
-protected:
+ protected:
   /*! \name Methods for interpreter.
     @{
   */
@@ -449,7 +441,7 @@ protected:
 
   virtual void m_StepStairSequence(std::istringstream &strm);
 
-private:
+ private:
   /*! Object to handle the stack of relative steps. */
   StepStackHandler *m_StepStackHandler;
 
@@ -737,7 +729,7 @@ private:
   /*! \brief Start FPE trapping. */
   void AllowFPE();
 
-protected:
+ protected:
   /*! \name Internal methods which are not to be exposed.
     They are therefore subject to change.
     @{
@@ -764,14 +756,13 @@ protected:
 
   /*! \brief Create automatically a new step for a ZMP based stability
     criteria */
-  void
-  AutomaticallyAddFirstStep(deque<RelativeFootPosition> &lRelativeFootPositions,
-                            FootAbsolutePosition &InitLeftFootAbsPos,
-                            FootAbsolutePosition &InitRightFootAbsPos,
-                            COMState &lStartingCOMState);
+  void AutomaticallyAddFirstStep(
+      deque<RelativeFootPosition> &lRelativeFootPositions,
+      FootAbsolutePosition &InitLeftFootAbsPos,
+      FootAbsolutePosition &InitRightFootAbsPos, COMState &lStartingCOMState);
   /* @} */
 };
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 
 #endif

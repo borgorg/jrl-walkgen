@@ -25,20 +25,21 @@
 /* \file This file tests A. Herdt's walking algorithm for
  * automatic foot placement giving an instantaneous CoM velocity reference.
  */
+#include <hrp2-dynamics/hrp2OptHumanoidDynamicRobot.h>
+
+#include <ZMPRefTrajectoryGeneration/DynamicFilter.hh>
+#include <jrl/walkgen/pgtypes.hh>
+
 #include "CommonTools.hh"
 #include "Debug.hh"
 #include "TestObject.hh"
-#include <ZMPRefTrajectoryGeneration/DynamicFilter.hh>
-#include <hrp2-dynamics/hrp2OptHumanoidDynamicRobot.h>
-#include <jrl/walkgen/pgtypes.hh>
 
 using namespace ::PatternGeneratorJRL;
 using namespace ::PatternGeneratorJRL::TestSuite;
 using namespace std;
 
 class TestInverseKinematics : public TestObject {
-
-private:
+ private:
   DynamicFilter *dynamicfilter_;
   SimplePluginManager *SPM_;
   double dInitX, dInitY;
@@ -52,7 +53,7 @@ private:
 
   vector<ZMPPosition> zmp;
 
-public:
+ public:
   TestInverseKinematics(int argc, char *argv[], string &aString)
       : TestObject(argc, argv, aString) {
     SPM_ = NULL;
@@ -158,14 +159,12 @@ public:
       std::ifstream file(RobotFileName.c_str());
       fileExist = !file.fail();
     }
-    if (!fileExist)
-      throw std::string("failed to open robot model");
+    if (!fileExist) throw std::string("failed to open robot model");
 
     // Creating the humanoid robot.
     SpecializedRobotConstructor(m_HDR);
     if (m_HDR == 0) {
-      if (m_HDR != 0)
-        delete m_HDR;
+      if (m_HDR != 0) delete m_HDR;
       dynamicsJRLJapan::ObjectFactory aRobotDynamicsObjectConstructor;
       m_HDR = aRobotDynamicsObjectConstructor.createHumanoidDynamicRobot();
     }
@@ -180,8 +179,7 @@ public:
     ifstream aif;
     aif.open(m_InitConfig.c_str(), ifstream::in);
     if (aif.is_open()) {
-      for (unsigned int i = 0; i < lNbActuatedJoints; i++)
-        aif >> dInitPos[i];
+      for (unsigned int i = 0; i < lNbActuatedJoints; i++) aif >> dInitPos[i];
     }
     aif.close();
 
@@ -258,7 +256,7 @@ public:
         m_CurrentAcceleration, 0.005, 1, 0);
   }
 
-protected:
+ protected:
   int readData() {
     std::string dataPath =
         "/home/mnaveau/devel/ros_sot/src/jrl/jrl-walkgen/tests/";
@@ -477,8 +475,7 @@ protected:
   //  }
 
   double filterprecision(double adb) {
-    if (fabs(adb) < 1e-7)
-      return 0.0;
+    if (fabs(adb) < 1e-7) return 0.0;
 
     double ladb2 = adb * 1e7;
     double lintadb2 = trunc(ladb2);

@@ -39,7 +39,7 @@
 
 namespace PatternGeneratorJRL {
 class LinearizedInvertedPendulum2D {
-public:
+ public:
   /*! Constructor */
   LinearizedInvertedPendulum2D();
 
@@ -76,7 +76,7 @@ public:
   */
   com_t OneIteration(double CX, double CY);
 
-private:
+ private:
   /*! \name Internal parameters.
     @{
   */
@@ -114,7 +114,7 @@ private:
 
   /* ! @} */
 
-public:
+ public:
   /*! \name Getter and setter of variables
     @{
   */
@@ -153,5 +153,5 @@ public:
   void setState(COMState &aCoM);
   /*! @} */
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _LINEAR_INVERTED_PENDULUM_2D_H_ */

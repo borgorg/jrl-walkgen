@@ -26,11 +26,10 @@
   only foot, ZMP reference and CoM trajectories position every 5 ms.
 */
 
-#include <SimplePlugin.hh>
-#include <jrl/walkgen/pgtypes.hh>
-
 #include <GlobalStrategyManagers/GlobalStrategyManager.hh>
 #include <MotionGeneration/ComAndFootRealization.hh>
+#include <SimplePlugin.hh>
+#include <jrl/walkgen/pgtypes.hh>
 
 #ifndef _COM_AND_FOOT_ONLY_STRATEGY_H_
 #define _COM_AND_FOOT_ONLY_STRATEGY_H_
@@ -40,8 +39,7 @@ namespace PatternGeneratorJRL {
     Implementation of the buffers handling without preview control
 */
 class CoMAndFootOnlyStrategy : public GlobalStrategyManager {
-
-public:
+ public:
   /*! Default constructor. */
   CoMAndFootOnlyStrategy(SimplePluginManager *aSimplePluginManager);
 
@@ -133,7 +131,7 @@ public:
                        std::vector<ComAndFootRealization *> aCFR,
                        StepStackHandler *aSSH);
 
-protected:
+ protected:
   /*! Count the number of successives hits on the bottom of the buffers. */
   int m_NbOfHitBottom;
 
@@ -144,5 +142,5 @@ protected:
   /*! Set the position of the buffer size limit. */
   unsigned m_BufferSizeLimit;
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _COM_AND_FOOT_ONLY_STRATEGY_H_ */

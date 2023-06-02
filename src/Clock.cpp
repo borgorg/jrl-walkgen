@@ -95,8 +95,7 @@ double Clock::MaxTime() { return m_MaximumTime; }
 double Clock::TotalTime() { return m_TotalTime; }
 
 double Clock::AverageTime() {
-  if (m_NbOfIterations != 0)
-    return m_TotalTime / (double)m_NbOfIterations;
+  if (m_NbOfIterations != 0) return m_TotalTime / (double)m_NbOfIterations;
   return 0.0;
 }
 

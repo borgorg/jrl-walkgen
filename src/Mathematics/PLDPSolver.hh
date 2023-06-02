@@ -41,7 +41,7 @@ namespace Solver {
   following optimal problem:
  */
 class PLDPSolver {
-public:
+ public:
   /*! \brief Constructor */
   PLDPSolver(unsigned int CardU, double *iPu, double *Px, double *Pu,
              double *iLQ);
@@ -59,7 +59,7 @@ public:
                    unsigned int NumberOfRemovedConstraints,
                    bool StartingSequence);
 
-protected:
+ protected:
   /*! \name Initial solution methods related
     @{
   */
@@ -117,7 +117,7 @@ protected:
   /*! \name Methods related to a limited amount of computational time
     @{ */
 
-private:
+ private:
   /*! \brief Store Pu */
   double *m_Pu;
 
@@ -220,6 +220,6 @@ private:
 
   /*! @} */
 };
-} // namespace Solver
-} // namespace Optimization
+}  // namespace Solver
+}  // namespace Optimization
 #endif /* _PLDPSOLVER_H_*/

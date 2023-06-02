@@ -142,7 +142,7 @@ namespace PatternGeneratorJRL {
   Vol AC-24, No.6 December 1979
 */
 class OptimalControllerSolver {
-public:
+ public:
   static const unsigned int MODE_WITHOUT_INITIALPOS = 1;
   static const unsigned int MODE_WITH_INITIALPOS = 0;
 
@@ -169,7 +169,7 @@ public:
   /*! To take matrix K, aka the weight of the other part of the command */
   void GetK(Eigen::MatrixXd &LK);
 
-protected:
+ protected:
   typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>
       MatrixRXd;
   /*! The matrices needed for the dynamical system such as
@@ -333,5 +333,5 @@ protected:
   \until MODE_WITH_INITIALPOS
 
 */
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _OPTIMAL_CONTROLLER_SOLVER_H_ */

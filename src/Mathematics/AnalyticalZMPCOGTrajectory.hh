@@ -28,10 +28,9 @@
 #ifndef _ANALYTICAL_COG_H_
 #define _ANALYTICAL_COG_H_
 
+#include <Mathematics/Polynome.hh>
 #include <iostream>
 #include <vector>
-
-#include <Mathematics/Polynome.hh>
 
 namespace PatternGeneratorJRL {
 
@@ -40,8 +39,7 @@ namespace PatternGeneratorJRL {
 
 */
 class AnalyticalZMPCOGTrajectory {
-
-public:
+ public:
   /*! Constructor */
   AnalyticalZMPCOGTrajectory(int lNbOfIntervals = 0);
 
@@ -186,9 +184,8 @@ public:
     @param lCOMZ: Profile of the height CoM for each interval.
     @param lZMPZ: Profile of the height ZMP for each interval.
   */
-  void
-  TransfertCoefficientsFromCOGTrajectoryToZMPOne(std::vector<double> &lCOMZ,
-                                                 std::vector<double> &lZMPZ);
+  void TransfertCoefficientsFromCOGTrajectoryToZMPOne(
+      std::vector<double> &lCOMZ, std::vector<double> &lZMPZ);
 
   /*! \brief Transfert the coefficients from the COG trajectory to the ZMP.
     @param IntervalIndex: Number of the interval.
@@ -229,7 +226,7 @@ public:
   bool GetIntervalIndexFromTime(double t, unsigned int &j,
                                 unsigned int &prev_j);
 
-protected:
+ protected:
   /*! Number of intervals */
   int m_NbOfIntervals;
 
@@ -272,5 +269,5 @@ protected:
 
 std::ostream &operator<<(std::ostream &os,
                          const AnalyticalZMPCOGTrajectory &obj);
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _ANALYTICAL_COG_H_ */

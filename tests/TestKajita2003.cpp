@@ -24,36 +24,34 @@
 /* \file This file tests A. Herdt's walking algorithm for
  * automatic foot placement giving an instantaneous CoM velocity reference.
  */
+#include <Debug.hh>
+
 #include "CommonTools.hh"
 #include "TestObject.hh"
-
-#include <Debug.hh>
 
 using namespace ::PatternGeneratorJRL;
 using namespace ::PatternGeneratorJRL::TestSuite;
 using namespace std;
 
 enum Profiles_t {
-  PROFIL_STRAIGHT_WALKING, // 2
-  PROFIL_CIRCLE,           // 1
-  PROFIL_PB_FLORENT_SEQ1,  // 3
-  PROFIL_PB_FLORENT_SEQ2,  // 4
-  PROFIL_WALKING_ON_SPOT   // 5
+  PROFIL_STRAIGHT_WALKING,  // 2
+  PROFIL_CIRCLE,            // 1
+  PROFIL_PB_FLORENT_SEQ1,   // 3
+  PROFIL_PB_FLORENT_SEQ2,   // 4
+  PROFIL_WALKING_ON_SPOT    // 5
 };
 
 class TestKajita2003 : public TestObject {
-
-private:
-public:
+ private:
+ public:
   TestKajita2003(int argc, char *argv[], string &aString, int TestProfile)
       : TestObject(argc, argv, aString) {
     m_TestProfile = TestProfile;
   }
 
-protected:
+ protected:
   void fillInDebugFiles() {
-    if (m_DebugFGPI)
-      m_OneStep.fillInDebugFile();
+    if (m_DebugFGPI) m_OneStep.fillInDebugFile();
 
     TestObject::fillInDebugFilesFull();
 
@@ -81,9 +79,9 @@ protected:
     aof.open(aFileName.c_str(), ofstream::app);
     aof.precision(8);
     aof.setf(ios::scientific, ios::floatfield);
-    aof << filterprecision(iteration * 0.1) << " "; // 1
+    aof << filterprecision(iteration * 0.1) << " ";  // 1
     for (unsigned int i = 6; i < m_CurrentConfiguration.size(); i++) {
-      aof << filterprecision(m_CurrentConfiguration(i)) << " "; // 1
+      aof << filterprecision(m_CurrentConfiguration(i)) << " ";  // 1
     }
     for (unsigned int i = 0; i < 10; i++) {
       aof << 0.0 << " ";
@@ -103,10 +101,10 @@ protected:
     aof.precision(8);
     aof.setf(ios::scientific, ios::floatfield);
     for (unsigned int j = 0; j < 20; j++) {
-      aof << filterprecision(iteration * 0.5) << " ";                     // 1
-      aof << filterprecision(0.0) << " ";                                 // 1
-      aof << filterprecision(0.0) << " ";                                 // 1
-      aof << filterprecision(m_OneStep.m_finalCOMPosition.yaw[0]) << " "; // 1
+      aof << filterprecision(iteration * 0.5) << " ";                      // 1
+      aof << filterprecision(0.0) << " ";                                  // 1
+      aof << filterprecision(0.0) << " ";                                  // 1
+      aof << filterprecision(m_OneStep.m_finalCOMPosition.yaw[0]) << " ";  // 1
       aof << endl;
     }
     aof.close();
@@ -153,7 +151,8 @@ protected:
     }
 
     {
-      istringstream strm2(":stepseq 0.0 -0.09 0.0 0.0 \
+      istringstream strm2(
+          ":stepseq 0.0 -0.09 0.0 0.0 \
                      0.1 0.18 0.0 0.0 \
                      0.0 -0.18 0.0 0.0");
       aPGI.ParseCmd(strm2);
@@ -182,7 +181,8 @@ protected:
     }
 
     {
-      istringstream strm2(":stepseq 0.0 -0.09 0.0 0.0 \
+      istringstream strm2(
+          ":stepseq 0.0 -0.09 0.0 0.0 \
                      0.0 0.18 0.0 0.0 \
                      0.0 -0.18 0.0 0.0 \
                      0.0 0.18 0.0 0.0 \
@@ -215,7 +215,8 @@ protected:
     }
 
     {
-      istringstream strm2(":stepseq 0 0.1 0  0.0 \
+      istringstream strm2(
+          ":stepseq 0 0.1 0  0.0 \
 	-0.0398822	-0.232351	4.6646 0.0 \
 	-0.0261703	0.199677	4.6646 0.0 \
 	-0.0471999	-0.256672	4.6646 0.0 \
@@ -244,7 +245,8 @@ protected:
     }
 
     {
-      istringstream strm2(":stepseq \
+      istringstream strm2(
+          ":stepseq \
                                  0 -0.1 0 0.0 \
 				-0.0512076 0.207328 -1.15414 0.0 \
 				-0.0473172 -0.218623 -1.15414 0.0 \
@@ -305,27 +307,25 @@ protected:
   }
 
   void chooseTestProfile() {
-
     switch (m_TestProfile) {
-
-    case PROFIL_STRAIGHT_WALKING:
-      StraightWalking(*m_PGI);
-      break;
-    case PROFIL_CIRCLE:
-      TurningOnTheCircle(*m_PGI);
-      break;
-    case PROFIL_PB_FLORENT_SEQ1:
-      PbFlorentSeq1(*m_PGI);
-      break;
-    case PROFIL_PB_FLORENT_SEQ2:
-      PbFlorentSeq2(*m_PGI);
-      break;
-    case PROFIL_WALKING_ON_SPOT:
-      WalkingOnSpot(*m_PGI);
-      break;
-    default:
-      throw("No correct test profile");
-      break;
+      case PROFIL_STRAIGHT_WALKING:
+        StraightWalking(*m_PGI);
+        break;
+      case PROFIL_CIRCLE:
+        TurningOnTheCircle(*m_PGI);
+        break;
+      case PROFIL_PB_FLORENT_SEQ1:
+        PbFlorentSeq1(*m_PGI);
+        break;
+      case PROFIL_PB_FLORENT_SEQ2:
+        PbFlorentSeq2(*m_PGI);
+        break;
+      case PROFIL_WALKING_ON_SPOT:
+        WalkingOnSpot(*m_PGI);
+        break;
+      default:
+        throw("No correct test profile");
+        break;
     }
   }
 
@@ -333,7 +333,6 @@ protected:
 };
 
 int PerformTests(int argc, char *argv[]) {
-
   std::string CompleteName = string(argv[0]);
   std::size_t found = CompleteName.find_last_of("/\\");
   std::string TestName = CompleteName.substr(found + 1);
@@ -351,8 +350,7 @@ int PerformTests(int argc, char *argv[]) {
 
   if (TestName.compare(14, 15, "StraightWalking") == 0)
     indexProfile = PROFIL_STRAIGHT_WALKING;
-  if (TestName.compare(14, 6, "Circle") == 0)
-    indexProfile = PROFIL_CIRCLE;
+  if (TestName.compare(14, 6, "Circle") == 0) indexProfile = PROFIL_CIRCLE;
   if (TestName.compare(14, 13, "PbFlorentSeq1") == 0)
     indexProfile = PROFIL_PB_FLORENT_SEQ1;
   if (TestName.compare(14, 13, "PbFlorentSeq2") == 0)

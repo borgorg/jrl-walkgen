@@ -58,8 +58,7 @@ DoubleStagePreviewControlStrategy::DoubleStagePreviewControlStrategy(
 }
 
 DoubleStagePreviewControlStrategy::~DoubleStagePreviewControlStrategy() {
-  if (m_ZMPpcwmbz != 0)
-    delete m_ZMPpcwmbz;
+  if (m_ZMPpcwmbz != 0) delete m_ZMPpcwmbz;
 }
 
 int DoubleStagePreviewControlStrategy::InitInterObjects(

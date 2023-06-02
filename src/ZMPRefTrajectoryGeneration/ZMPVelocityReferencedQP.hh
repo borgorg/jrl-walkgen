@@ -48,11 +48,10 @@ namespace PatternGeneratorJRL {
 
 class ZMPDiscretization;
 class ZMPVelocityReferencedQP : public ZMPRefTrajectoryGeneration {
-
   //
   // Public methods:
   //
-public:
+ public:
   ZMPVelocityReferencedQP(SimplePluginManager *SPM, string DataFile,
                           PinocchioRobot *aPR = 0);
 
@@ -131,7 +130,7 @@ public:
   //
   // Private members:
   //
-private:
+ private:
   /// \brief (Updated) Reference
   reference_t VelRef_;
   /// \brief Temporary (updating) reference
@@ -271,7 +270,7 @@ private:
 
   DynamicFilter *dynamicFilter_;
 
-public:
+ public:
   void GetZMPDiscretization(
       std::deque<ZMPPosition> &ZMPPositions, std::deque<COMState> &COMStates,
       std::deque<RelativeFootPosition> &RelativeFootPositions,
@@ -295,35 +294,34 @@ public:
                        deque<FootAbsolutePosition> &FinalRightFootTraj_deq,
                        StepStackHandler *aStepStackHandler);
 
-  void
-  EndPhaseOfTheWalking(deque<ZMPPosition> &ZMPPositions,
-                       deque<COMState> &FinalCOMTraj_deq,
-                       deque<FootAbsolutePosition> &LeftFootAbsolutePositions,
-                       deque<FootAbsolutePosition> &RightFootAbsolutePositions);
+  void EndPhaseOfTheWalking(
+      deque<ZMPPosition> &ZMPPositions, deque<COMState> &FinalCOMTraj_deq,
+      deque<FootAbsolutePosition> &LeftFootAbsolutePositions,
+      deque<FootAbsolutePosition> &RightFootAbsolutePositions);
 
   int ReturnOptimalTimeToRegenerateAStep();
 
   /// \brief Interpolation form the com jerk the position of the com and the
   /// zmp corresponding to the kart table model
   void CoMZMPInterpolation(
-      std::deque<ZMPPosition> &ZMPPositions,                     // OUTPUT
-      std::deque<COMState> &COMTraj_deq,                         // OUTPUT
-      const std::deque<FootAbsolutePosition> &LeftFootTraj_deq,  // INPUT
-      const std::deque<FootAbsolutePosition> &RightFootTraj_deq, // INPUT
-      const solution_t *Solution,                                // INPUT
-      LinearizedInvertedPendulum2D *LIPM,                        // INPUT/OUTPUT
-      const unsigned numberOfSample,                             // INPUT
-      const int IterationNumber,                                 // INPUT
-      const unsigned int currentIndex);                          // INPUT
+      std::deque<ZMPPosition> &ZMPPositions,                      // OUTPUT
+      std::deque<COMState> &COMTraj_deq,                          // OUTPUT
+      const std::deque<FootAbsolutePosition> &LeftFootTraj_deq,   // INPUT
+      const std::deque<FootAbsolutePosition> &RightFootTraj_deq,  // INPUT
+      const solution_t *Solution,                                 // INPUT
+      LinearizedInvertedPendulum2D *LIPM,  // INPUT/OUTPUT
+      const unsigned numberOfSample,       // INPUT
+      const int IterationNumber,           // INPUT
+      const unsigned int currentIndex);    // INPUT
 
   /// \brief Interpolate just enough data to pilot the robot (period of
   ///    interpolation = QP_T_)
   void ControlInterpolation(
-      std::deque<COMState> &FinalCOMTraj_deq,                   // OUTPUT
-      std::deque<ZMPPosition> &FinalZMPTraj_deq,                // OUTPUT
-      std::deque<FootAbsolutePosition> &FinalLeftFootTraj_deq,  // OUTPUT
-      std::deque<FootAbsolutePosition> &FinalRightFootTraj_deq, // OUTPUT
-      double time);                                             // INPUT
+      std::deque<COMState> &FinalCOMTraj_deq,                    // OUTPUT
+      std::deque<ZMPPosition> &FinalZMPTraj_deq,                 // OUTPUT
+      std::deque<FootAbsolutePosition> &FinalLeftFootTraj_deq,   // OUTPUT
+      std::deque<FootAbsolutePosition> &FinalRightFootTraj_deq,  // OUTPUT
+      double time);                                              // INPUT
 
   /// \brief Interpolation everything on the whole preview
   void DynamicFilterInterpolation(double time);
@@ -338,7 +336,7 @@ public:
   /// \brief Project the found third foot step on the constraints
   void ProjectionOnConstraints(double &X, double &Y);
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 
 #include <ZMPRefTrajectoryGeneration/ZMPDiscretization.hh>
 #endif /* _ZMPQP_WITH_CONSTRAINT_H_ */

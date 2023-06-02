@@ -33,11 +33,10 @@ namespace PatternGeneratorJRL {
 
 /// \brief Finite state machine to determine the support parameters.
 class SupportFSM {
-
   //
   // Public methods:
   //
-public:
+ public:
   /// \brief Constructor
   SupportFSM();
 
@@ -84,7 +83,7 @@ public:
   //
   // Private members:
   //
-private:
+ private:
   /// \brief Number of steps to be done before DS
   unsigned NbStepsSSDS_;
 
@@ -121,6 +120,6 @@ private:
   bool PostRotationPhase_;
   /// \}
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 
 #endif /* _SUPPORT_FSM_ */

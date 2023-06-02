@@ -25,10 +25,10 @@
 /** \file ConvexHull.h
     \brief This object allow to build a convex hull on a list of 2D points. */
 #include <math.h>
-#include <set>
 
 #include <Debug.hh>
 #include <Mathematics/ConvexHull.hh>
+#include <set>
 
 using namespace std;
 
@@ -74,16 +74,13 @@ ComputeConvexHull::~ComputeConvexHull() {}
 
 void ComputeConvexHull::DoComputeConvexHull(vector<CH_Point> aVecOfPoints,
                                             vector<CH_Point> &TheConvexHull) {
-
-  if (aVecOfPoints.size() == 0)
-    return;
+  if (aVecOfPoints.size() == 0) return;
 
   CH_Point p0 = aVecOfPoints[0];
 
   // Detects the point with the smallest value for y.
   for (unsigned int i = 0; i < aVecOfPoints.size(); i++)
-    if (aVecOfPoints[i].row < p0.row)
-      p0 = aVecOfPoints[i];
+    if (aVecOfPoints[i].row < p0.row) p0 = aVecOfPoints[i];
 
   HRP2CIO_GlobalP0 = p0;
   // Create the list of pixels sortes according to their
@@ -113,8 +110,7 @@ void ComputeConvexHull::DoComputeConvexHull(vector<CH_Point> aVecOfPoints,
       set<CH_Point, ltCH_Point>::iterator it_ToBeDeleted = it_PtinPolarCoord;
 
       it_PtinPolarCoord++;
-      if (ToBeDeleted)
-        ListOfPointinPolarCoord.erase(it_ToBeDeleted);
+      if (ToBeDeleted) ListOfPointinPolarCoord.erase(it_ToBeDeleted);
     }
 
     if (bInsert) {
@@ -163,12 +159,11 @@ void ComputeConvexHull::DoComputeConvexHull(vector<CH_Point> aVecOfPoints,
         ok = 1;
       }
 
-      if (!ok)
-        TheConvexHull.pop_back();
+      if (!ok) TheConvexHull.pop_back();
     } while (!ok);
 
     TheConvexHull.push_back(*it_LPPC);
     it_LPPC++;
   }
 }
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL

@@ -63,7 +63,7 @@ class OnLineState {
   static const unsigned int SINGLE_SUPPORT_PHASE = 1;
   static const unsigned int DOUBLE_SUPPORT_PHASE = 2;
 
-public:
+ public:
   /*! \brief Default Constructor */
   OnLineState();
   /*! \brief Default destructor */
@@ -75,7 +75,7 @@ public:
   /*! \brief Assigning a state to the object. */
   OnLineState &operator=(unsigned int NewState);
 
-private:
+ private:
   unsigned int m_CurrentState;
 };
 
@@ -86,7 +86,7 @@ private:
   on the line linking the two centers of each foot.
 */
 class ZMPDiscretization : public ZMPRefTrajectoryGeneration {
-public:
+ public:
   /*!  Constructor */
   ZMPDiscretization(SimplePluginManager *lSPM, string DataFile = "",
                     PinocchioRobot *aHDR = 0);
@@ -153,9 +153,8 @@ public:
                      deque<ZMPPosition> &ZMPPositions,
                      deque<FootAbsolutePosition> &FootAbsolutePositions);
 
-  void
-  DumpFootAbsolutePosition(string aFileName,
-                           deque<FootAbsolutePosition> &aFootAbsolutePositions);
+  void DumpFootAbsolutePosition(
+      string aFileName, deque<FootAbsolutePosition> &aFootAbsolutePositions);
 
   /** Update the value of the foot configuration according to the
       current situation. */
@@ -184,15 +183,14 @@ public:
     Returns the number of steps which has been completely put inside
     the queue of ZMP, and foot positions.
   */
-  std::size_t
-  InitOnLine(deque<ZMPPosition> &FinalZMPPositions, deque<COMState> &CoMStates,
-             deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
-             deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions,
-             FootAbsolutePosition &InitLeftFootAbsolutePosition,
-             FootAbsolutePosition &InitRightFootAbsolutePosition,
-             deque<RelativeFootPosition> &RelativeFootPositions,
-             COMState &lStartingCOMState,
-             Eigen::Vector3d &lStartingZMPPosition);
+  std::size_t InitOnLine(
+      deque<ZMPPosition> &FinalZMPPositions, deque<COMState> &CoMStates,
+      deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
+      deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions,
+      FootAbsolutePosition &InitLeftFootAbsolutePosition,
+      FootAbsolutePosition &InitRightFootAbsolutePosition,
+      deque<RelativeFootPosition> &RelativeFootPositions,
+      COMState &lStartingCOMState, Eigen::Vector3d &lStartingZMPPosition);
 
   /*! \brief  Methods to update the stacks on-line. */
   void OnLine(double time, deque<ZMPPosition> &FinalZMPPositions,
@@ -202,13 +200,12 @@ public:
 
   /*! \brief  Methods to update the stack on-line by inserting a
     new foot position. */
-  void
-  OnLineAddFoot(RelativeFootPosition &NewRelativeFootPosition,
-                deque<ZMPPosition> &FinalZMPPositions,
-                deque<COMState> &CoMStates,
-                deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
-                deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions,
-                bool EndSequence);
+  void OnLineAddFoot(
+      RelativeFootPosition &NewRelativeFootPosition,
+      deque<ZMPPosition> &FinalZMPPositions, deque<COMState> &CoMStates,
+      deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
+      deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions,
+      bool EndSequence);
 
   /* ! \brief Method to change on line the landing position of a foot.
      @return If the method failed it returns -1, 0 otherwise.
@@ -230,11 +227,10 @@ public:
   void UpdateCurrentSupportFootPosition(RelativeFootPosition aRFP);
 
   /// End phase of the walking.
-  void
-  EndPhaseOfTheWalking(deque<ZMPPosition> &ZMPPositions,
-                       deque<COMState> &FinalCOMStates,
-                       deque<FootAbsolutePosition> &LeftFootAbsolutePositions,
-                       deque<FootAbsolutePosition> &RightFootAbsolutePositions);
+  void EndPhaseOfTheWalking(
+      deque<ZMPPosition> &ZMPPositions, deque<COMState> &FinalCOMStates,
+      deque<FootAbsolutePosition> &LeftFootAbsolutePositions,
+      deque<FootAbsolutePosition> &RightFootAbsolutePositions);
 
   /*! Filter out the ZMP values and put them at the back FinalZMPPositions. */
   void FilterOutValues(deque<ZMPPosition> &ZMPPositions,
@@ -246,7 +242,7 @@ public:
     m_ZMPNeutralPosition[1] = aZMPNeutralPosition[1];
   }
 
-private:
+ private:
   /*! \brief Register Methods for scripting.
     This method register prevzmpinitprofil, zeroinitprofil,
     and previewcontroltime as accessible through scripting.
@@ -326,13 +322,13 @@ private:
   /*! Initialization Profile */
   int m_InitializationProfile;
 
-public:
+ public:
   const static int PREV_ZMP_INIT_PROFIL = 1;
   const static int ZERO_INIT_PROFIL = 2;
 
   /*! \brief Provide the plugin functionnality. */
   void CallMethod(std::string &Method, std::istringstream &strm);
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #include <PreviewControl/PreviewControl.hh>
 #endif /* _FOOT_PRINT_H_*/

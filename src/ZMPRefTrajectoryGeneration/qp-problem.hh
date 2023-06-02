@@ -39,11 +39,10 @@ namespace PatternGeneratorJRL {
 /// Store and solve a quadratic problem with linear constraints.
 ///
 class QPProblem {
-
   //
   // Public methods
   //
-public:
+ public:
   QPProblem();
 
   ~QPProblem();
@@ -135,7 +134,7 @@ public:
   //
   // Private methods
   //
-private:
+ private:
   /// \brief Release memory.
   void release_memory();
 
@@ -156,9 +155,10 @@ private:
   //
   // Private types
   //
-private:
+ private:
   /// \brief Handle matrices/vectors in array form
-  template <typename type> struct array_s {
+  template <typename type>
+  struct array_s {
     type *Array_;
 
     int Id_;
@@ -180,7 +180,6 @@ private:
 
     int stick_together(struct array_s<type> &FinalArray, unsigned int NbRows,
                        unsigned int NbCols) {
-
       try {
         type *NewArray = 0;
         if ((FinalArray.SizeMem_ < NbRows * NbCols) ||
@@ -211,7 +210,6 @@ private:
     /// \param[in] preserve Preserve old values
     /// \return 0
     int resize(unsigned int NbRows, unsigned int NbCols, bool Preserve) {
-
       try {
         bool Reallocate = false;
         type *NewArray = 0;
@@ -245,16 +243,14 @@ private:
 
     array_s() : Array_(0), Id_(0), NbRows_(0), NbCols_(0), SizeMem_(0){};
     ~array_s() {
-
-      if (Array_ != 0)
-        delete[] Array_;
+      if (Array_ != 0) delete[] Array_;
     };
   };
 
   //
   // Private members
   //
-private:
+ private:
   /// \name lssol parameters
   /// \{
   int *istate_;
@@ -294,6 +290,6 @@ private:
   unsigned nbInvariantRows_, nbInvariantCols_;
 };
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #include <ZMPRefTrajectoryGeneration/qp-problem.hxx>
 #endif /* _QP_PROBLEM_H_ */

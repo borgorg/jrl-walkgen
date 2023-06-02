@@ -22,6 +22,7 @@
  *  Joint Japanese-French Robotics Laboratory (JRL)
  */
 #include "ClockCPUTime.hh"
+
 #include <fstream>
 #include <string>
 
@@ -74,8 +75,7 @@ void ClockCPUTime::stopOneIteration() {
   gettimeofday(&end, 0);
   m_currenttime = (double)(end.tv_sec - m_begin.tv_sec) +
                   0.000001 * (double)(end.tv_usec - m_begin.tv_usec);
-  if (m_maxtime < m_currenttime)
-    m_maxtime = m_currenttime;
+  if (m_maxtime < m_currenttime) m_maxtime = m_currenttime;
 
   if (m_currenttime > 0.000300) {
     m_totaltime += m_currenttime;
@@ -92,8 +92,7 @@ void ClockCPUTime::stopModification() {
   m_modificationtime = (double)(end.tv_sec - m_begin.tv_sec) +
                        0.000001 * (double)(end.tv_usec - m_begin.tv_usec);
 
-  if (m_modificationtime > 0.0005)
-    m_nbofmodifs++;
+  if (m_modificationtime > 0.0005) m_nbofmodifs++;
 
   m_totalmodificationtime += m_modificationtime;
 }
@@ -104,8 +103,7 @@ void ClockCPUTime::fillInStatistics() {
       (double)(m_begin.tv_sec) + 0.000001 * (double)m_begin.tv_usec;
 
   m_TimeProfileIndex++;
-  if (m_TimeProfileIndex > m_TimeProfileUpperLimit)
-    m_TimeProfileIndex = 0;
+  if (m_TimeProfileIndex > m_TimeProfileUpperLimit) m_TimeProfileIndex = 0;
 }
 
 void ClockCPUTime::writeBuffer(string &aFileName) {
@@ -121,7 +119,6 @@ void ClockCPUTime::writeBuffer(string &aFileName) {
 }
 
 void ClockCPUTime::displayStatistics(ostream &os, struct OneStep &OneStep) {
-
   os << " === " << endl;
   os << "Number of iterations " << OneStep.m_NbOfIt << endl
      << "Number of iterations above 300 us:" << m_NbOfItToCompute << endl;
@@ -147,5 +144,5 @@ void ClockCPUTime::displayStatistics(ostream &os, struct OneStep &OneStep) {
      << endl;
 }
 
-} // namespace TestSuite
-} // namespace PatternGeneratorJRL
+}  // namespace TestSuite
+}  // namespace PatternGeneratorJRL

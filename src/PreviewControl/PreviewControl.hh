@@ -46,7 +46,7 @@ namespace PatternGeneratorJRL {
     \brief Class to implement the preview control
 */
 class PreviewControl : public SimplePlugin {
-public:
+ public:
   /*! Constructor */
   PreviewControl(
       SimplePluginManager *lSPM,
@@ -128,7 +128,7 @@ public:
   /*! \brief Overloading method of SimplePlugin */
   virtual void CallMethod(std::string &Method, std::istringstream &astrm);
 
-private:
+ private:
   /*! \brief Matrices for preview control. */
   Eigen::MatrixXd m_A;
   Eigen::MatrixXd m_B;
@@ -169,6 +169,6 @@ private:
   /*! \brief Default Mode. */
   unsigned int m_DefaultWeightComputationMode;
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #include <ZMPRefTrajectoryGeneration/ZMPDiscretization.hh>
 #endif /* _PREVIEW_CONTROL_H_ */

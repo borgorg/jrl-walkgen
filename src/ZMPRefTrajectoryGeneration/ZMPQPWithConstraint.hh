@@ -35,8 +35,7 @@
 namespace PatternGeneratorJRL {
 class ZMPDiscretization;
 class ZMPQPWithConstraint : public ZMPRefTrajectoryGeneration {
-
-public:
+ public:
   /* Default constructor. */
   ZMPQPWithConstraint(SimplePluginManager *lSPM, string DataFile,
                       PinocchioRobot *aPR = 0);
@@ -145,25 +144,23 @@ public:
     Returns the number of steps which has been completely put inside
     the queue of ZMP, and foot positions.
   */
-  std::size_t
-  InitOnLine(deque<ZMPPosition> &FinalZMPPositions, deque<COMState> &CoMStates,
-             deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
-             deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions,
-             FootAbsolutePosition &InitLeftFootAbsolutePosition,
-             FootAbsolutePosition &InitRightFootAbsolutePosition,
-             deque<RelativeFootPosition> &RelativeFootPositions,
-             COMState &lStartingCOMState,
-             Eigen::Vector3d &lStartingZMPPosition);
+  std::size_t InitOnLine(
+      deque<ZMPPosition> &FinalZMPPositions, deque<COMState> &CoMStates,
+      deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
+      deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions,
+      FootAbsolutePosition &InitLeftFootAbsolutePosition,
+      FootAbsolutePosition &InitRightFootAbsolutePosition,
+      deque<RelativeFootPosition> &RelativeFootPositions,
+      COMState &lStartingCOMState, Eigen::Vector3d &lStartingZMPPosition);
 
   /* ! Methods to update the stack on-line by inserting
      a new foot position. */
-  void
-  OnLineAddFoot(RelativeFootPosition &NewRelativeFootPosition,
-                deque<ZMPPosition> &FinalZMPPositions,
-                deque<COMState> &CoMStates,
-                deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
-                deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions,
-                bool EndSequence);
+  void OnLineAddFoot(
+      RelativeFootPosition &NewRelativeFootPosition,
+      deque<ZMPPosition> &FinalZMPPositions, deque<COMState> &CoMStates,
+      deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
+      deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions,
+      bool EndSequence);
 
   /* ! \brief Method to update the stacks on-line */
   void OnLine(double time, deque<ZMPPosition> &FinalZMPPositions,
@@ -189,11 +186,10 @@ public:
     @param[out] RightFootAbsolutePositions:
     The queue of right foot absolute positions.
   */
-  void
-  EndPhaseOfTheWalking(deque<ZMPPosition> &ZMPPositions,
-                       deque<COMState> &FinalCOMStates,
-                       deque<FootAbsolutePosition> &LeftFootAbsolutePositions,
-                       deque<FootAbsolutePosition> &RightFootAbsolutePositions);
+  void EndPhaseOfTheWalking(
+      deque<ZMPPosition> &ZMPPositions, deque<COMState> &FinalCOMStates,
+      deque<FootAbsolutePosition> &LeftFootAbsolutePositions,
+      deque<FootAbsolutePosition> &RightFootAbsolutePositions);
 
   /*! \brief Return the time at which it is optimal to regenerate a step in
     online mode.
@@ -202,7 +198,7 @@ public:
 
   /* @} */
 
-protected:
+ protected:
   /* ! Reference on the Humanoid Specificities. */
   PinocchioRobot *m_PR;
 
@@ -229,7 +225,7 @@ protected:
   /*! Preview window */
   unsigned int m_QP_N;
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 
 #include <ZMPRefTrajectoryGeneration/ZMPDiscretization.hh>
 #endif /* _ZMPQP_WITH_CONSTRAINT_H_ */

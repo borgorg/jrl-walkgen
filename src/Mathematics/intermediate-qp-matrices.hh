@@ -26,12 +26,10 @@
 #ifndef INTERMEDQPMAT_HH_
 #define INTERMEDQPMAT_HH_
 
-#include <privatepgtypes.hh>
-
+#include <PreviewControl/rigid-body-system.hh>
 #include <fstream>
 #include <iostream>
-
-#include <PreviewControl/rigid-body-system.hh>
+#include <privatepgtypes.hh>
 
 namespace PatternGeneratorJRL {
 /// \brief Custom (value based) container providing intermediate elements
@@ -40,7 +38,7 @@ class IntermedQPMat {
   //
   // Public types
   //
-public:
+ public:
   /// \name QP elements that are objective independent
   /// \{
   struct state_variant_s {
@@ -94,7 +92,7 @@ public:
   //
   // Public methods
   //
-public:
+ public:
   /// \name Constructors and destructors.
   /// \{
   IntermedQPMat();
@@ -145,7 +143,7 @@ public:
   //
   // Private members
   //
-private:
+ private:
   objective_variant_t MeanVelocity_, InstantVelocity_, COPCentering_, JerkMin_;
 
   state_variant_t StateMatrices_;
@@ -155,6 +153,6 @@ private:
 
 std::ostream &operator<<(std::ostream &o,
                          const IntermedQPMat::objective_variant_s &r);
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 
 #endif /* INTERMEDQPMAT_HH_ */

@@ -23,12 +23,13 @@
  *  Joint Japanese-French Robotics Laboratory (JRL)
  */
 /* This object generate all the values for the foot trajectories, */
+#include "FootTrajectoryGenerationStandard.hh"
+
+#include <math.h>
+
 #include <Debug.hh>
 #include <fstream>
 #include <iostream>
-#include <math.h>
-
-#include "FootTrajectoryGenerationStandard.hh"
 
 using namespace PatternGeneratorJRL;
 
@@ -92,32 +93,23 @@ FootTrajectoryGenerationStandard::FootTrajectoryGenerationStandard(
 }
 
 FootTrajectoryGenerationStandard::~FootTrajectoryGenerationStandard() {
-  if (m_PolynomeX != 0)
-    delete m_PolynomeX;
+  if (m_PolynomeX != 0) delete m_PolynomeX;
 
-  if (m_PolynomeY != 0)
-    delete m_PolynomeY;
+  if (m_PolynomeY != 0) delete m_PolynomeY;
 
-  if (m_PolynomeZ != 0)
-    delete m_PolynomeZ;
+  if (m_PolynomeZ != 0) delete m_PolynomeZ;
 
-  if (m_BsplinesX != 0)
-    delete m_BsplinesX;
+  if (m_BsplinesX != 0) delete m_BsplinesX;
 
-  if (m_BsplinesY != 0)
-    delete m_BsplinesY;
+  if (m_BsplinesY != 0) delete m_BsplinesY;
 
-  if (m_BsplinesZ != 0)
-    delete m_BsplinesZ;
+  if (m_BsplinesZ != 0) delete m_BsplinesZ;
 
-  if (m_PolynomeOmega != 0)
-    delete m_PolynomeOmega;
+  if (m_PolynomeOmega != 0) delete m_PolynomeOmega;
 
-  if (m_PolynomeOmega2 != 0)
-    delete m_PolynomeOmega2;
+  if (m_PolynomeOmega2 != 0) delete m_PolynomeOmega2;
 
-  if (m_PolynomeTheta != 0)
-    delete m_PolynomeTheta;
+  if (m_PolynomeTheta != 0) delete m_PolynomeTheta;
 }
 
 void FootTrajectoryGenerationStandard::InitializeInternalDataStructures() {
@@ -137,32 +129,23 @@ void FootTrajectoryGenerationStandard::InitializeInternalDataStructures() {
 }
 
 void FootTrajectoryGenerationStandard::FreeInternalDataStructures() {
-  if (m_PolynomeX != 0)
-    delete m_PolynomeX;
+  if (m_PolynomeX != 0) delete m_PolynomeX;
 
-  if (m_PolynomeY != 0)
-    delete m_PolynomeY;
+  if (m_PolynomeY != 0) delete m_PolynomeY;
 
-  if (m_PolynomeZ != 0)
-    delete m_PolynomeZ;
+  if (m_PolynomeZ != 0) delete m_PolynomeZ;
 
-  if (m_BsplinesX != 0)
-    delete m_BsplinesX;
+  if (m_BsplinesX != 0) delete m_BsplinesX;
 
-  if (m_BsplinesY != 0)
-    delete m_BsplinesY;
+  if (m_BsplinesY != 0) delete m_BsplinesY;
 
-  if (m_BsplinesZ != 0)
-    delete m_BsplinesZ;
+  if (m_BsplinesZ != 0) delete m_BsplinesZ;
 
-  if (m_PolynomeOmega != 0)
-    delete m_PolynomeOmega;
+  if (m_PolynomeOmega != 0) delete m_PolynomeOmega;
 
-  if (m_PolynomeOmega2 != 0)
-    delete m_PolynomeOmega2;
+  if (m_PolynomeOmega2 != 0) delete m_PolynomeOmega2;
 
-  if (m_PolynomeTheta != 0)
-    delete m_PolynomeTheta;
+  if (m_PolynomeTheta != 0) delete m_PolynomeTheta;
 }
 
 // Initizialize the parameter to use Polynoms
@@ -172,39 +155,40 @@ int FootTrajectoryGenerationStandard::SetParameters(int PolynomeIndex,
   vector<double> MP(1, Position + m_StepHeight);
   vector<double> ToMP(1, TimeInterval / 3.0);
   switch (PolynomeIndex) {
-  case X_AXIS:
-    m_PolynomeX->SetParameters(TimeInterval, Position);
-    // m_BsplinesX->SetParameters(TimeInterval,Position,
-    // TimeInterval/3.0,Position + m_StepHeight);
-    break;
+    case X_AXIS:
+      m_PolynomeX->SetParameters(TimeInterval, Position);
+      // m_BsplinesX->SetParameters(TimeInterval,Position,
+      // TimeInterval/3.0,Position + m_StepHeight);
+      break;
 
-  case Y_AXIS:
-    m_PolynomeY->SetParameters(TimeInterval, Position);
-    //-m_BsplinesY->SetParameters(TimeInterval,Position,
-    // TimeInterval/3.0,Position + m_StepHeight);
-    break;
+    case Y_AXIS:
+      m_PolynomeY->SetParameters(TimeInterval, Position);
+      //-m_BsplinesY->SetParameters(TimeInterval,Position,
+      // TimeInterval/3.0,Position + m_StepHeight);
+      break;
 
-  case Z_AXIS:
-    ODEBUG("Position: " << Position << " m_StepHeight: " << m_StepHeight);
-    m_PolynomeZ->SetParameters(TimeInterval, Position + m_StepHeight, Position);
-    m_BsplinesZ->SetParameters(TimeInterval, 0.0, Position, ToMP, MP);
-    break;
+    case Z_AXIS:
+      ODEBUG("Position: " << Position << " m_StepHeight: " << m_StepHeight);
+      m_PolynomeZ->SetParameters(TimeInterval, Position + m_StepHeight,
+                                 Position);
+      m_BsplinesZ->SetParameters(TimeInterval, 0.0, Position, ToMP, MP);
+      break;
 
-  case THETA_AXIS:
-    m_PolynomeTheta->SetParameters(TimeInterval, Position);
-    break;
+    case THETA_AXIS:
+      m_PolynomeTheta->SetParameters(TimeInterval, Position);
+      break;
 
-  case OMEGA_AXIS:
-    m_PolynomeOmega->SetParameters(TimeInterval, Position);
-    break;
+    case OMEGA_AXIS:
+      m_PolynomeOmega->SetParameters(TimeInterval, Position);
+      break;
 
-  case OMEGA2_AXIS:
-    m_PolynomeOmega2->SetParameters(TimeInterval, Position);
-    break;
+    case OMEGA2_AXIS:
+      m_PolynomeOmega2->SetParameters(TimeInterval, Position);
+      break;
 
-  default:
-    return -1;
-    break;
+    default:
+      return -1;
+      break;
   }
   return 0;
 }
@@ -228,83 +212,83 @@ int FootTrajectoryGenerationStandard::SetParametersWithInitPosInitSpeed(
                       abs(m_BsplinesX->FP() - m_BsplinesX->IP()) > epsilon;
 
   switch (PolynomeIndex) {
-  case X_AXIS:
-    ODEBUG2("Initspeed: " << InitSpeed << " ");
-    // Init polynom
-    m_PolynomeX->SetParameters(TimeInterval, FinalPosition, InitPosition,
-                               InitSpeed, 0.0);
-    // Init BSpline
-    if (isWayPointSet) {
-      ToMP.push_back(0.20 * TimeInterval);
-      ToMP.push_back(0.75 * TimeInterval);
-      MP.push_back(InitPosition);
-      MP.push_back(FinalPosition);
-    } else {
-      ToMP.clear();
-      MP.clear();
-    }
-    m_BsplinesX->SetParameters(TimeInterval, InitPosition, FinalPosition, ToMP,
-                               MP, InitSpeed);
-    break;
+    case X_AXIS:
+      ODEBUG2("Initspeed: " << InitSpeed << " ");
+      // Init polynom
+      m_PolynomeX->SetParameters(TimeInterval, FinalPosition, InitPosition,
+                                 InitSpeed, 0.0);
+      // Init BSpline
+      if (isWayPointSet) {
+        ToMP.push_back(0.20 * TimeInterval);
+        ToMP.push_back(0.75 * TimeInterval);
+        MP.push_back(InitPosition);
+        MP.push_back(FinalPosition);
+      } else {
+        ToMP.clear();
+        MP.clear();
+      }
+      m_BsplinesX->SetParameters(TimeInterval, InitPosition, FinalPosition,
+                                 ToMP, MP, InitSpeed);
+      break;
 
-  case Y_AXIS:
-    m_PolynomeY->SetParameters(TimeInterval, FinalPosition, InitPosition,
-                               InitSpeed, 0.0);
-    if (isWayPointSet) {
-      ToMP.push_back(0.20 * TimeInterval);
-      ToMP.push_back(0.75 * TimeInterval);
-      MP.push_back(WayPoint_y);
-      MP.push_back(WayPoint_y);
-    } else {
-      ToMP.clear();
-      MP.clear();
-    }
-    m_BsplinesY->SetParameters(TimeInterval, InitPosition, FinalPosition, ToMP,
-                               MP, InitSpeed);
-    break;
+    case Y_AXIS:
+      m_PolynomeY->SetParameters(TimeInterval, FinalPosition, InitPosition,
+                                 InitSpeed, 0.0);
+      if (isWayPointSet) {
+        ToMP.push_back(0.20 * TimeInterval);
+        ToMP.push_back(0.75 * TimeInterval);
+        MP.push_back(WayPoint_y);
+        MP.push_back(WayPoint_y);
+      } else {
+        ToMP.clear();
+        MP.clear();
+      }
+      m_BsplinesY->SetParameters(TimeInterval, InitPosition, FinalPosition,
+                                 ToMP, MP, InitSpeed);
+      break;
 
-  case Z_AXIS:
-    if (!isFootMoving) {
-      WayPoint_z = 0.0;
-    }
-    m_PolynomeZ->SetParametersWithMiddlePos(
-        TimeInterval, FinalPosition + m_StepHeight, InitPosition, InitSpeed,
-        0.0, FinalPosition);
+    case Z_AXIS:
+      if (!isFootMoving) {
+        WayPoint_z = 0.0;
+      }
+      m_PolynomeZ->SetParametersWithMiddlePos(
+          TimeInterval, FinalPosition + m_StepHeight, InitPosition, InitSpeed,
+          0.0, FinalPosition);
 
-    // Check the final and the initial position to decide what to do
-    if (FinalPosition - InitPosition > epsilon) {
-      ToMP.push_back(0.4 * TimeInterval);
-      MP.push_back(FinalPosition + WayPoint_z);
-    } else if (FinalPosition - InitPosition <= epsilon &&
-               FinalPosition - InitPosition >= -epsilon) {
-      ToMP.push_back(0.5 * TimeInterval);
-      MP.push_back(FinalPosition + WayPoint_z);
-    } else if (FinalPosition - InitPosition < -epsilon) {
-      ToMP.push_back(0.6 * TimeInterval);
-      MP.push_back(InitPosition + WayPoint_z);
-    }
-    m_BsplinesZ->SetParameters(TimeInterval, InitPosition, FinalPosition, ToMP,
-                               MP, InitSpeed);
-    break;
+      // Check the final and the initial position to decide what to do
+      if (FinalPosition - InitPosition > epsilon) {
+        ToMP.push_back(0.4 * TimeInterval);
+        MP.push_back(FinalPosition + WayPoint_z);
+      } else if (FinalPosition - InitPosition <= epsilon &&
+                 FinalPosition - InitPosition >= -epsilon) {
+        ToMP.push_back(0.5 * TimeInterval);
+        MP.push_back(FinalPosition + WayPoint_z);
+      } else if (FinalPosition - InitPosition < -epsilon) {
+        ToMP.push_back(0.6 * TimeInterval);
+        MP.push_back(InitPosition + WayPoint_z);
+      }
+      m_BsplinesZ->SetParameters(TimeInterval, InitPosition, FinalPosition,
+                                 ToMP, MP, InitSpeed);
+      break;
 
-  case THETA_AXIS:
-    m_PolynomeTheta->SetParametersWithInitPosInitSpeed(
-        TimeInterval, FinalPosition, InitPosition, InitSpeed);
-    break;
+    case THETA_AXIS:
+      m_PolynomeTheta->SetParametersWithInitPosInitSpeed(
+          TimeInterval, FinalPosition, InitPosition, InitSpeed);
+      break;
 
-  case OMEGA_AXIS:
-    m_PolynomeOmega->SetParametersWithInitPosInitSpeed(
-        TimeInterval, FinalPosition, InitPosition, InitSpeed);
-    break;
+    case OMEGA_AXIS:
+      m_PolynomeOmega->SetParametersWithInitPosInitSpeed(
+          TimeInterval, FinalPosition, InitPosition, InitSpeed);
+      break;
 
-  case OMEGA2_AXIS:
-    m_PolynomeOmega2->SetParametersWithInitPosInitSpeed(
-        TimeInterval, FinalPosition, InitPosition, InitSpeed);
-    break;
+    case OMEGA2_AXIS:
+      m_PolynomeOmega2->SetParametersWithInitPosInitSpeed(
+          TimeInterval, FinalPosition, InitPosition, InitSpeed);
+      break;
 
-  default:
-    return -1;
-    break;
+    default:
+      return -1;
+      break;
   }
   return 0;
 }
@@ -330,107 +314,107 @@ int FootTrajectoryGenerationStandard::SetParameters(
                       abs(m_BsplinesX->FP() - m_BsplinesX->IP()) > epsilon;
 
   switch (PolynomeIndex) {
-  case X_AXIS:
-    ODEBUG2("Initspeed: " << InitSpeed << " ");
-    // Init polynom
-    m_PolynomeX->SetParameters(TimeInterval, FinalPosition, InitPosition,
-                               InitSpeed, InitAcc);
-    // Init BSpline
-    if (isWayPointSet) {
-      ToMP.push_back(0.20 * TimeInterval);
-      ToMP.push_back(0.75 * TimeInterval);
-      MP.push_back(InitPosition);
-      MP.push_back(FinalPosition);
-    } else {
-      ToMP.clear();
-      MP.clear();
-    }
-    m_BsplinesX->SetParametersWithInitFinalPose(TimeInterval, InitPosition,
-                                                FinalPosition, ToMP, MP);
-    break;
-
-  case Y_AXIS:
-    m_PolynomeY->SetParameters(TimeInterval, FinalPosition, InitPosition,
-                               InitSpeed, InitAcc);
-    if (isWayPointSet) {
-      ToMP.push_back(0.20 * TimeInterval);
-      ToMP.push_back(0.75 * TimeInterval);
-      MP.push_back(WayPoint_y);
-      MP.push_back(WayPoint_y);
-    } else {
-      ToMP.clear();
-      MP.clear();
-    }
-    m_BsplinesY->SetParametersWithInitFinalPose(TimeInterval, InitPosition,
-                                                FinalPosition, ToMP, MP);
-    break;
-
-  case Z_AXIS:
-    if (!isFootMoving) {
-      WayPoint_z = 0.0;
-    }
-    m_PolynomeZ->SetParametersWithMiddlePos(
-        TimeInterval, FinalPosition + m_StepHeight, InitPosition, InitSpeed,
-        InitAcc, FinalPosition);
-
-    // Check the final and the initial position to decide what to do
-    if (InitSpeed * InitSpeed > 0.00001) {
-      ToMP.clear();
-      MP.clear();
-    } else if (FinalPosition - InitPosition > epsilon) {
-      ToMP.push_back(0.4 * TimeInterval);
-      MP.push_back(FinalPosition + WayPoint_z);
-      m_BsplinesZ->SetParametersWithInitFinalPose(TimeInterval, InitPosition,
-                                                  FinalPosition, ToMP, MP);
-
-      m_BsplinesZ->GenerateDegree();
-
-      if (0) {
-        m_BsplinesZ->PrintControlPoints();
-        m_BsplinesZ->PrintDegree();
-        m_BsplinesZ->PrintKnotVector();
+    case X_AXIS:
+      ODEBUG2("Initspeed: " << InitSpeed << " ");
+      // Init polynom
+      m_PolynomeX->SetParameters(TimeInterval, FinalPosition, InitPosition,
+                                 InitSpeed, InitAcc);
+      // Init BSpline
+      if (isWayPointSet) {
+        ToMP.push_back(0.20 * TimeInterval);
+        ToMP.push_back(0.75 * TimeInterval);
+        MP.push_back(InitPosition);
+        MP.push_back(FinalPosition);
+      } else {
+        ToMP.clear();
+        MP.clear();
       }
-    } else if (sqrt((FinalPosition - InitPosition) *
-                    (FinalPosition - InitPosition)) <= epsilon) {
-      ToMP.push_back(0.5 * TimeInterval);
-      MP.push_back(FinalPosition + WayPoint_z);
-      m_BsplinesZ->SetParameters(TimeInterval, InitPosition, FinalPosition,
-                                 ToMP, MP, InitSpeed, InitAcc);
-    } else if (FinalPosition - InitPosition < -epsilon) {
-      ToMP.push_back(0.65 * TimeInterval);
-      MP.push_back(InitPosition + WayPoint_z * 0.45);
-      m_BsplinesZ->SetParametersWithInitFinalPose(TimeInterval, InitPosition,
+      m_BsplinesX->SetParametersWithInitFinalPose(TimeInterval, InitPosition,
                                                   FinalPosition, ToMP, MP);
+      break;
 
-      m_BsplinesZ->GenerateDegree();
-      if (0) {
-        m_BsplinesZ->PrintControlPoints();
-        m_BsplinesZ->PrintDegree();
-        m_BsplinesZ->PrintKnotVector();
+    case Y_AXIS:
+      m_PolynomeY->SetParameters(TimeInterval, FinalPosition, InitPosition,
+                                 InitSpeed, InitAcc);
+      if (isWayPointSet) {
+        ToMP.push_back(0.20 * TimeInterval);
+        ToMP.push_back(0.75 * TimeInterval);
+        MP.push_back(WayPoint_y);
+        MP.push_back(WayPoint_y);
+      } else {
+        ToMP.clear();
+        MP.clear();
       }
-    }
-    // m_BsplinesZ->SetParameters(TimeInterval,
-    // InitPosition,FinalPosition,ToMP,MP,InitSpeed,InitAcc);
-    break;
+      m_BsplinesY->SetParametersWithInitFinalPose(TimeInterval, InitPosition,
+                                                  FinalPosition, ToMP, MP);
+      break;
 
-  case THETA_AXIS:
-    m_PolynomeTheta->SetParameters(TimeInterval, FinalPosition, InitPosition,
-                                   InitSpeed, InitAcc);
-    break;
+    case Z_AXIS:
+      if (!isFootMoving) {
+        WayPoint_z = 0.0;
+      }
+      m_PolynomeZ->SetParametersWithMiddlePos(
+          TimeInterval, FinalPosition + m_StepHeight, InitPosition, InitSpeed,
+          InitAcc, FinalPosition);
 
-  case OMEGA_AXIS:
-    m_PolynomeOmega->SetParametersWithInitPosInitSpeed(
-        TimeInterval, FinalPosition, InitPosition, InitSpeed);
-    break;
+      // Check the final and the initial position to decide what to do
+      if (InitSpeed * InitSpeed > 0.00001) {
+        ToMP.clear();
+        MP.clear();
+      } else if (FinalPosition - InitPosition > epsilon) {
+        ToMP.push_back(0.4 * TimeInterval);
+        MP.push_back(FinalPosition + WayPoint_z);
+        m_BsplinesZ->SetParametersWithInitFinalPose(TimeInterval, InitPosition,
+                                                    FinalPosition, ToMP, MP);
 
-  case OMEGA2_AXIS:
-    m_PolynomeOmega2->SetParametersWithInitPosInitSpeed(
-        TimeInterval, FinalPosition, InitPosition, InitSpeed);
-    break;
+        m_BsplinesZ->GenerateDegree();
 
-  default:
-    return -1;
-    break;
+        if (0) {
+          m_BsplinesZ->PrintControlPoints();
+          m_BsplinesZ->PrintDegree();
+          m_BsplinesZ->PrintKnotVector();
+        }
+      } else if (sqrt((FinalPosition - InitPosition) *
+                      (FinalPosition - InitPosition)) <= epsilon) {
+        ToMP.push_back(0.5 * TimeInterval);
+        MP.push_back(FinalPosition + WayPoint_z);
+        m_BsplinesZ->SetParameters(TimeInterval, InitPosition, FinalPosition,
+                                   ToMP, MP, InitSpeed, InitAcc);
+      } else if (FinalPosition - InitPosition < -epsilon) {
+        ToMP.push_back(0.65 * TimeInterval);
+        MP.push_back(InitPosition + WayPoint_z * 0.45);
+        m_BsplinesZ->SetParametersWithInitFinalPose(TimeInterval, InitPosition,
+                                                    FinalPosition, ToMP, MP);
+
+        m_BsplinesZ->GenerateDegree();
+        if (0) {
+          m_BsplinesZ->PrintControlPoints();
+          m_BsplinesZ->PrintDegree();
+          m_BsplinesZ->PrintKnotVector();
+        }
+      }
+      // m_BsplinesZ->SetParameters(TimeInterval,
+      // InitPosition,FinalPosition,ToMP,MP,InitSpeed,InitAcc);
+      break;
+
+    case THETA_AXIS:
+      m_PolynomeTheta->SetParameters(TimeInterval, FinalPosition, InitPosition,
+                                     InitSpeed, InitAcc);
+      break;
+
+    case OMEGA_AXIS:
+      m_PolynomeOmega->SetParametersWithInitPosInitSpeed(
+          TimeInterval, FinalPosition, InitPosition, InitSpeed);
+      break;
+
+    case OMEGA2_AXIS:
+      m_PolynomeOmega2->SetParametersWithInitPosInitSpeed(
+          TimeInterval, FinalPosition, InitPosition, InitSpeed);
+      break;
+
+    default:
+      return -1;
+      break;
   }
   return 0;
 }
@@ -439,43 +423,41 @@ int FootTrajectoryGenerationStandard::SetParameters(
 int FootTrajectoryGenerationStandard::SetParameters(
     int PolynomeIndex, double TimeInterval, double FinalPosition,
     double InitPosition, double InitSpeed, double InitAcc, double InitJerk) {
-
   switch (PolynomeIndex) {
+    case X_AXIS:
+      m_PolynomeX->SetParameters(TimeInterval, FinalPosition, InitPosition,
+                                 InitSpeed, InitAcc, InitJerk);
+      break;
 
-  case X_AXIS:
-    m_PolynomeX->SetParameters(TimeInterval, FinalPosition, InitPosition,
-                               InitSpeed, InitAcc, InitJerk);
-    break;
+    case Y_AXIS:
+      m_PolynomeY->SetParameters(TimeInterval, FinalPosition, InitPosition,
+                                 InitSpeed, InitAcc, InitJerk);
+      break;
 
-  case Y_AXIS:
-    m_PolynomeY->SetParameters(TimeInterval, FinalPosition, InitPosition,
-                               InitSpeed, InitAcc, InitJerk);
-    break;
+    case Z_AXIS:
+      m_PolynomeZ->SetParametersWithMiddlePos(
+          TimeInterval, FinalPosition + m_StepHeight, InitPosition, InitSpeed,
+          InitAcc, FinalPosition);
+      break;
 
-  case Z_AXIS:
-    m_PolynomeZ->SetParametersWithMiddlePos(
-        TimeInterval, FinalPosition + m_StepHeight, InitPosition, InitSpeed,
-        InitAcc, FinalPosition);
-    break;
+    case THETA_AXIS:
+      m_PolynomeTheta->SetParameters(TimeInterval, FinalPosition, InitPosition,
+                                     InitSpeed, InitAcc);
+      break;
 
-  case THETA_AXIS:
-    m_PolynomeTheta->SetParameters(TimeInterval, FinalPosition, InitPosition,
-                                   InitSpeed, InitAcc);
-    break;
+    case OMEGA_AXIS:
+      m_PolynomeOmega->SetParametersWithInitPosInitSpeed(
+          TimeInterval, FinalPosition, InitPosition, InitSpeed);
+      break;
 
-  case OMEGA_AXIS:
-    m_PolynomeOmega->SetParametersWithInitPosInitSpeed(
-        TimeInterval, FinalPosition, InitPosition, InitSpeed);
-    break;
+    case OMEGA2_AXIS:
+      m_PolynomeOmega2->SetParametersWithInitPosInitSpeed(
+          TimeInterval, FinalPosition, InitPosition, InitSpeed);
+      break;
 
-  case OMEGA2_AXIS:
-    m_PolynomeOmega2->SetParametersWithInitPosInitSpeed(
-        TimeInterval, FinalPosition, InitPosition, InitSpeed);
-    break;
-
-  default:
-    return -1;
-    break;
+    default:
+      return -1;
+      break;
   }
   return 0;
 }
@@ -483,44 +465,43 @@ int FootTrajectoryGenerationStandard::SetParameters(
 int FootTrajectoryGenerationStandard::GetParametersWithInitPosInitSpeed(
     int PolynomeIndex, double &TimeInterval, double &FinalPosition,
     double &InitPosition, double &InitSpeed) {
-  double MiddlePosition = 0.0; // for polynome4
+  double MiddlePosition = 0.0;  // for polynome4
   switch (PolynomeIndex) {
+    case X_AXIS:
+      ODEBUG2("Initspeed: " << InitSpeed << " ");
+      m_PolynomeX->GetParametersWithInitPosInitSpeed(
+          TimeInterval, FinalPosition, InitPosition, InitSpeed);
+      break;
 
-  case X_AXIS:
-    ODEBUG2("Initspeed: " << InitSpeed << " ");
-    m_PolynomeX->GetParametersWithInitPosInitSpeed(TimeInterval, FinalPosition,
-                                                   InitPosition, InitSpeed);
-    break;
+    case Y_AXIS:
+      m_PolynomeY->GetParametersWithInitPosInitSpeed(
+          TimeInterval, FinalPosition, InitPosition, InitSpeed);
+      break;
 
-  case Y_AXIS:
-    m_PolynomeY->GetParametersWithInitPosInitSpeed(TimeInterval, FinalPosition,
-                                                   InitPosition, InitSpeed);
-    break;
+    case Z_AXIS:
+      m_PolynomeZ->GetParametersWithInitPosInitSpeed(
+          TimeInterval, MiddlePosition, FinalPosition, InitPosition, InitSpeed);
 
-  case Z_AXIS:
-    m_PolynomeZ->GetParametersWithInitPosInitSpeed(
-        TimeInterval, MiddlePosition, FinalPosition, InitPosition, InitSpeed);
+      break;
 
-    break;
+    case THETA_AXIS:
+      m_PolynomeTheta->GetParametersWithInitPosInitSpeed(
+          TimeInterval, FinalPosition, InitPosition, InitSpeed);
+      break;
 
-  case THETA_AXIS:
-    m_PolynomeTheta->GetParametersWithInitPosInitSpeed(
-        TimeInterval, FinalPosition, InitPosition, InitSpeed);
-    break;
+    case OMEGA_AXIS:
+      m_PolynomeOmega->GetParametersWithInitPosInitSpeed(
+          TimeInterval, FinalPosition, InitPosition, InitSpeed);
+      break;
 
-  case OMEGA_AXIS:
-    m_PolynomeOmega->GetParametersWithInitPosInitSpeed(
-        TimeInterval, FinalPosition, InitPosition, InitSpeed);
-    break;
+    case OMEGA2_AXIS:
+      m_PolynomeOmega2->GetParametersWithInitPosInitSpeed(
+          TimeInterval, FinalPosition, InitPosition, InitSpeed);
+      break;
 
-  case OMEGA2_AXIS:
-    m_PolynomeOmega2->GetParametersWithInitPosInitSpeed(
-        TimeInterval, FinalPosition, InitPosition, InitSpeed);
-    break;
-
-  default:
-    return -1;
-    break;
+    default:
+      return -1;
+      break;
   }
   return 0;
 }
@@ -528,7 +509,6 @@ int FootTrajectoryGenerationStandard::GetParametersWithInitPosInitSpeed(
 // Compute the trajectory from init point to end point using polynom
 double FootTrajectoryGenerationStandard::ComputeAllWithPolynom(
     FootAbsolutePosition &aFootAbsolutePosition, double Time) {
-
   aFootAbsolutePosition.x = m_PolynomeX->Compute(Time);
   aFootAbsolutePosition.dx = m_PolynomeX->ComputeDerivative(Time);
   aFootAbsolutePosition.ddx = m_PolynomeX->ComputeSecDerivative(Time);
@@ -629,34 +609,33 @@ double FootTrajectoryGenerationStandard::Compute(unsigned int PolynomeIndex,
   double r = 0.0;
 
   switch (PolynomeIndex) {
+    case X_AXIS:
+      r = m_PolynomeX->Compute(Time);
+      break;
 
-  case X_AXIS:
-    r = m_PolynomeX->Compute(Time);
-    break;
+    case Y_AXIS:
+      r = m_PolynomeY->Compute(Time);
+      break;
 
-  case Y_AXIS:
-    r = m_PolynomeY->Compute(Time);
-    break;
+    case Z_AXIS:
+      r = m_PolynomeZ->Compute(Time);
+      break;
 
-  case Z_AXIS:
-    r = m_PolynomeZ->Compute(Time);
-    break;
+    case THETA_AXIS:
+      r = m_PolynomeTheta->Compute(Time);
+      break;
 
-  case THETA_AXIS:
-    r = m_PolynomeTheta->Compute(Time);
-    break;
+    case OMEGA_AXIS:
+      r = m_PolynomeOmega->Compute(Time);
+      break;
 
-  case OMEGA_AXIS:
-    r = m_PolynomeOmega->Compute(Time);
-    break;
+    case OMEGA2_AXIS:
+      r = m_PolynomeOmega2->Compute(Time);
+      break;
 
-  case OMEGA2_AXIS:
-    r = m_PolynomeOmega2->Compute(Time);
-    break;
-
-  default:
-    return -1.0;
-    break;
+    default:
+      return -1.0;
+      break;
   }
   return r;
 }
@@ -666,34 +645,33 @@ double FootTrajectoryGenerationStandard::ComputeSecDerivative(
   double r = 0.0;
 
   switch (PolynomeIndex) {
+    case X_AXIS:
+      r = m_PolynomeX->ComputeSecDerivative(Time);
+      break;
 
-  case X_AXIS:
-    r = m_PolynomeX->ComputeSecDerivative(Time);
-    break;
+    case Y_AXIS:
+      r = m_PolynomeY->ComputeSecDerivative(Time);
+      break;
 
-  case Y_AXIS:
-    r = m_PolynomeY->ComputeSecDerivative(Time);
-    break;
+    case Z_AXIS:
+      r = m_PolynomeZ->ComputeSecDerivative(Time);
+      break;
 
-  case Z_AXIS:
-    r = m_PolynomeZ->ComputeSecDerivative(Time);
-    break;
+    case THETA_AXIS:
+      r = m_PolynomeTheta->ComputeSecDerivative(Time);
+      break;
 
-  case THETA_AXIS:
-    r = m_PolynomeTheta->ComputeSecDerivative(Time);
-    break;
+    case OMEGA_AXIS:
+      r = m_PolynomeOmega->ComputeSecDerivative(Time);
+      break;
 
-  case OMEGA_AXIS:
-    r = m_PolynomeOmega->ComputeSecDerivative(Time);
-    break;
+    case OMEGA2_AXIS:
+      r = m_PolynomeOmega2->ComputeSecDerivative(Time);
+      break;
 
-  case OMEGA2_AXIS:
-    r = m_PolynomeOmega2->ComputeSecDerivative(Time);
-    break;
-
-  default:
-    return -1.0;
-    break;
+    default:
+      return -1.0;
+      break;
   }
   return r;
 }
@@ -897,25 +875,25 @@ void FootTrajectoryGenerationStandard::UpdateFootPosition(
     // x, dx
     NoneSupportFootAbsolutePositions[CurrentAbsoluteIndex].x =
         m_PolynomeX->Compute(LocalInterpolationStartTime + InterpolationTime -
-                             EndOfLiftOff); // +
+                             EndOfLiftOff);  // +
     // NoneSupportFootAbsolutePositions[StartIndex-1].x;
     NoneSupportFootAbsolutePositions[CurrentAbsoluteIndex].dx =
         m_PolynomeX->ComputeDerivative(LocalInterpolationStartTime +
-                                       InterpolationTime - EndOfLiftOff); // +
+                                       InterpolationTime - EndOfLiftOff);  // +
     // NoneSupportFootAbsolutePositions[StartIndex-1].dx;
     // y, dy
     NoneSupportFootAbsolutePositions[CurrentAbsoluteIndex].y =
         m_PolynomeY->Compute(LocalInterpolationStartTime + InterpolationTime -
-                             EndOfLiftOff); //  +
+                             EndOfLiftOff);  //  +
     // NoneSupportFootAbsolutePositions[StartIndex-1].y;
     NoneSupportFootAbsolutePositions[CurrentAbsoluteIndex].dy =
         m_PolynomeY->ComputeDerivative(LocalInterpolationStartTime +
-                                       InterpolationTime - EndOfLiftOff); // +
+                                       InterpolationTime - EndOfLiftOff);  // +
     // NoneSupportFootAbsolutePositions[StartIndex-1].dy;
     // theta, dtheta
     NoneSupportFootAbsolutePositions[CurrentAbsoluteIndex].theta =
         m_PolynomeTheta->Compute(LocalInterpolationStartTime +
-                                 InterpolationTime - EndOfLiftOff); // +
+                                 InterpolationTime - EndOfLiftOff);  // +
     // NoneSupportFootAbsolutePositions[StartIndex].theta;
     NoneSupportFootAbsolutePositions[CurrentAbsoluteIndex].dtheta =
         m_PolynomeTheta->ComputeDerivative(LocalInterpolationStartTime +
@@ -948,10 +926,12 @@ void FootTrajectoryGenerationStandard::UpdateFootPosition(
   }
 
   NoneSupportFootAbsolutePositions[CurrentAbsoluteIndex].z =
-      m_PolynomeZ->Compute(LocalInterpolationStartTime + InterpolationTime); //+
+      m_PolynomeZ->Compute(LocalInterpolationStartTime +
+                           InterpolationTime);  //+
   // m_AnklePositionRight[2];
   NoneSupportFootAbsolutePositions[CurrentAbsoluteIndex].dz =
-      m_PolynomeZ->Compute(LocalInterpolationStartTime + InterpolationTime); //+
+      m_PolynomeZ->Compute(LocalInterpolationStartTime +
+                           InterpolationTime);  //+
   // m_AnklePositionRight[2];
 
   // bool ProtectionNeeded=false;
@@ -960,11 +940,11 @@ void FootTrajectoryGenerationStandard::UpdateFootPosition(
   // First treat the lift-off.
   if (LocalInterpolationStartTime + InterpolationTime < EndOfLiftOff) {
     NoneSupportFootAbsolutePositions[CurrentAbsoluteIndex].omega =
-        m_PolynomeOmega->Compute(InterpolationTime); // +
+        m_PolynomeOmega->Compute(InterpolationTime);  // +
     // NoneSupportFootAbsolutePositions[StartIndex-1].omega;
 
     NoneSupportFootAbsolutePositions[CurrentAbsoluteIndex].domega =
-        m_PolynomeOmega->Compute(InterpolationTime); //  +
+        m_PolynomeOmega->Compute(InterpolationTime);  //  +
     // NoneSupportFootAbsolutePositions[StartIndex-1].domega;
 
     // ProtectionNeeded=true;
@@ -1083,7 +1063,6 @@ void FootTrajectoryGenerationStandard::UpdateFootPosition(
 void FootTrajectoryGenerationStandard::ComputingAbsFootPosFromQueueOfRelPos(
     deque<RelativeFootPosition> &RelativeFootPositions,
     deque<FootAbsolutePosition> &AbsoluteFootPositions) {
-
   if (AbsoluteFootPositions.size() == 0)
     AbsoluteFootPositions.resize(RelativeFootPositions.size());
 
@@ -1133,8 +1112,7 @@ void FootTrajectoryGenerationStandard::ComputingAbsFootPosFromQueueOfRelPos(
       for (int l = 0; l < 2; l++)
         CurrentSupportFootPosition(k, l) = Orientation(k, l);
 
-    for (int k = 0; k < 2; k++)
-      CurrentSupportFootPosition(k, 2) += v2(k, 0);
+    for (int k = 0; k < 2; k++) CurrentSupportFootPosition(k, 2) += v2(k, 0);
 
     AbsoluteFootPositions[i].x = v2(0, 0);
     AbsoluteFootPositions[i].y = v2(1, 0);

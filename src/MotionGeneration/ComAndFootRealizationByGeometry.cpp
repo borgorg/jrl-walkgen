@@ -21,10 +21,11 @@
  *  Research carried out within the scope of the
  *  Joint Japanese-French Robotics Laboratory (JRL)
  */
-#include "portability/gettimeofday.hh"
 #include <fstream>
 #include <iostream>
 #include <typeinfo>
+
+#include "portability/gettimeofday.hh"
 
 #ifdef WIN32
 #include <Windows.h>
@@ -40,7 +41,6 @@ using namespace PatternGeneratorJRL;
 ComAndFootRealizationByGeometry::ComAndFootRealizationByGeometry(
     PatternGeneratorInterfacePrivate *aPGI)
     : ComAndFootRealization(aPGI) {
-
   m_WaistPlanner = 0;
   m_UpBody = 0;
   m_ZARM = -1.0;
@@ -49,8 +49,7 @@ ComAndFootRealizationByGeometry::ComAndFootRealizationByGeometry(
   ShiftFoot_ = true;
   RegisterMethods();
 
-  for (unsigned int i = 0; i < 3; i++)
-    m_DiffBetweenComAndWaist[i] = 0.0;
+  for (unsigned int i = 0; i < 3; i++) m_DiffBetweenComAndWaist[i] = 0.0;
 
   // By assumption on this implementation
   // the humanoid is assume to have 6 DOFs per leg.
@@ -150,17 +149,14 @@ void ComAndFootRealizationByGeometry::InitializeMapsForAHand(
     pinocchio::JointIndex aWrist, pinocchio::JointModelVector &ActuatedJoints,
     vector<int> &IndexesInConfiguration, vector<int> &IndexesInVelocity,
     pinocchio::JointIndex &associateShoulder) {
-  if (aWrist == 0)
-    return;
+  if (aWrist == 0) return;
 
   // Find back the path from the shoulder to the left hand.
   pinocchio::JointIndex Chest = getPinocchioRobot()->chest();
-  if (Chest == 0)
-    return;
+  if (Chest == 0) return;
 
   const pinocchio::JointIndex associatedWrist = aWrist;
-  if (associatedWrist == 0)
-    return;
+  if (associatedWrist == 0) return;
 
   std::vector<pinocchio::JointIndex> FromRootToJoint =
       getPinocchioRobot()->jointsBetween(Chest, associatedWrist);
@@ -173,10 +169,8 @@ void ComAndFootRealizationByGeometry::InitializeMapsForAHand(
 
 void ComAndFootRealizationByGeometry::InitializeMapForChest(
     pinocchio::JointModelVector &ActuatedJoints) {
-
   pinocchio::JointIndex Chest = getPinocchioRobot()->chest();
-  if (Chest == 0)
-    return;
+  if (Chest == 0) return;
 
   std::vector<pinocchio::JointIndex> /*FromRootToJoint2,*/ FromRootToJoint;
   FromRootToJoint = getPinocchioRobot()->fromRootToIt(Chest);
@@ -187,23 +181,18 @@ void ComAndFootRealizationByGeometry::InitializeMapForChest(
 }
 
 void ComAndFootRealizationByGeometry::Initialization() {
-
   // Planners for stepping over.
-  if (m_WaistPlanner == 0)
-    m_WaistPlanner = new WaistHeightVariation();
-  if (m_UpBody == 0)
-    m_UpBody = new UpperBodyMotion();
+  if (m_WaistPlanner == 0) m_WaistPlanner = new WaistHeightVariation();
+  if (m_UpBody == 0) m_UpBody = new UpperBodyMotion();
 
   // Take the right ankle position (should be equivalent)
   Eigen::Vector3d lAnklePositionRight, lAnklePositionLeft;
   PRFoot *LeftFoot, *RightFoot;
   LeftFoot = getPinocchioRobot()->leftFoot();
-  if (LeftFoot == 0)
-    LTHROW("No left foot");
+  if (LeftFoot == 0) LTHROW("No left foot");
 
   RightFoot = getPinocchioRobot()->rightFoot();
-  if (RightFoot == 0)
-    LTHROW("No right foot");
+  if (RightFoot == 0) LTHROW("No right foot");
 
   lAnklePositionRight = RightFoot->anklePosition;
   lAnklePositionLeft = LeftFoot->anklePosition;
@@ -221,8 +210,7 @@ void ComAndFootRealizationByGeometry::Initialization() {
   // Extract the indexes of the Right leg.
   pinocchio::JointIndex waist = getPinocchioRobot()->waist();
 
-  if (RightFoot->associatedAnkle == 0)
-    LTHROW("No right ankle");
+  if (RightFoot->associatedAnkle == 0) LTHROW("No right ankle");
 
   // Build global map.
   pinocchio::JointModelVector &ActuatedJoints =
@@ -298,11 +286,9 @@ void ComAndFootRealizationByGeometry::Initialization() {
 }
 
 ComAndFootRealizationByGeometry::~ComAndFootRealizationByGeometry() {
-  if (m_WaistPlanner != 0)
-    delete m_WaistPlanner;
+  if (m_WaistPlanner != 0) delete m_WaistPlanner;
 
-  if (m_UpBody != 0)
-    delete m_UpBody;
+  if (m_UpBody != 0) delete m_UpBody;
 }
 
 bool ComAndFootRealizationByGeometry::InitializationHumanoid(
@@ -340,12 +326,12 @@ bool ComAndFootRealizationByGeometry::InitializationHumanoid(
   CurrentConfig = aPR->currentRPYConfiguration();
 
   // Set the waist position.
-  lStartingWaistPose(0) = CurrentConfig(0); // 0.0
-  lStartingWaistPose(1) = CurrentConfig(1); // 0.0
+  lStartingWaistPose(0) = CurrentConfig(0);  // 0.0
+  lStartingWaistPose(1) = CurrentConfig(1);  // 0.0
   lStartingWaistPose(2) = CurrentConfig(2);
-  lStartingWaistPose(3) = CurrentConfig(3); // 0.0;
-  lStartingWaistPose(4) = CurrentConfig(4); // 0.0;
-  lStartingWaistPose(5) = CurrentConfig(5); // 0.0;
+  lStartingWaistPose(3) = CurrentConfig(3);  // 0.0;
+  lStartingWaistPose(4) = CurrentConfig(4);  // 0.0;
+  lStartingWaistPose(5) = CurrentConfig(5);  // 0.0;
 
   return true;
 }
@@ -490,7 +476,6 @@ bool ComAndFootRealizationByGeometry::InitializationCoM(
 bool ComAndFootRealizationByGeometry::InitializationUpperBody(
     deque<ZMPPosition> &inZMPPositions, deque<COMPosition> &inCOMBuffer,
     deque<RelativeFootPosition> lRelativeFootPositions) {
-
   // Check pre-condition.
   if (getPinocchioRobot() == 0) {
     cerr << "ComAndFootRealizationByGeometry::InitializationUpperBody " << endl
@@ -499,7 +484,7 @@ bool ComAndFootRealizationByGeometry::InitializationUpperBody(
   }
 
   //  FootAbsolutePosition InitLeftFootAbsPos, InitRightFootAbsPos;
-  struct timeval begin, time2, time3; // end, time1, time4, time5, time6;
+  struct timeval begin, time2, time3;  // end, time1, time4, time5, time6;
 
   gettimeofday(&begin, 0);
 
@@ -573,7 +558,6 @@ bool ComAndFootRealizationByGeometry::KinematicsForOneLeg(
     Eigen::Vector3d &lDt, Eigen::VectorXd &aCoMPosition,
     Eigen::Vector3d &ToTheHip, int LeftOrRight, Eigen::VectorXd &lq,
     int Stage) {
-
   // Foot Orientation
   Eigen::Matrix3d Foot_R;
   // Foot position
@@ -670,7 +654,6 @@ bool ComAndFootRealizationByGeometry::KinematicsForTheLegs(
     Eigen::VectorXd &aCoMPosition, Eigen::VectorXd &aLeftFoot,
     Eigen::VectorXd &aRightFoot, int Stage, Eigen::VectorXd &ql,
     Eigen::VectorXd &qr, Eigen::Vector3d &AbsoluteWaistPosition) {
-
   // Body attitude
   Eigen::Matrix3d Body_R;
   // Body position
@@ -767,7 +750,7 @@ bool ComAndFootRealizationByGeometry::KinematicsForTheLegs(
 
   AbsoluteWaistPosition[0] = aCoMPosition(0) + m_ComAndWaistInRefFrame[0];
   AbsoluteWaistPosition[1] = aCoMPosition(1) + m_ComAndWaistInRefFrame[1];
-  AbsoluteWaistPosition[2] = aCoMPosition(2) + ToTheHip(2); // - 0.705;
+  AbsoluteWaistPosition[2] = aCoMPosition(2) + ToTheHip(2);  // - 0.705;
 
   return true;
 }
@@ -810,7 +793,6 @@ bool ComAndFootRealizationByGeometry::ComputePostureForGivenCoMAndFeetPosture(
   // For stepping over modify the waist position and
   // according to parameters the arms motion.
   if (GetStepStackHandler()->GetWalkMode() == 2) {
-
     /// this angle is introduced to rotate the upperbody
     ///  when the waist is rotated during stepover
     double qWaistYaw =
@@ -833,7 +815,6 @@ bool ComAndFootRealizationByGeometry::ComputePostureForGivenCoMAndFeetPosture(
     }
 
     if (m_UpperBodyMotion[2] != 0) {
-
       aCoMPosition(4) = m_UpperBodyMotion[2] * fabs(aCoMPosition(5));
     }
   }
@@ -965,8 +946,7 @@ bool ComAndFootRealizationByGeometry::ComputePostureForGivenCoMAndFeetPosture(
       aCoMSpeed(2) + (waistCom(0) * aCoMSpeed(4) - waistCom(1) * aCoMSpeed(3));
 
   // omega_waist = omega_com
-  for (int i = 3; i < 6; i++)
-    CurrentVelocity[i] = aCoMSpeed(i);
+  for (int i = 3; i < 6; i++) CurrentVelocity[i] = aCoMSpeed(i);
 
   // (omega x waist-com) x omega = waist-com ( omega . omega )
   // - omega ( omega . waist-com )
@@ -1001,7 +981,7 @@ bool ComAndFootRealizationByGeometry::ComputePostureForGivenCoMAndFeetPosture(
   for (int i = 3; i < 6; i++) {
     // cout << aCoMAcc(i) << " "  ;
     CurrentAcceleration[i] = aCoMAcc(i);
-  } // cout << endl ;
+  }  // cout << endl ;
 
   ODEBUG("CurrentVelocity :" << endl << CurrentVelocity);
   ODEBUG4("SamplingPeriod " << getSamplingPeriod(), "LegsSpeed.dat");
@@ -1026,7 +1006,6 @@ int ComAndFootRealizationByGeometry::EvaluateStartingCoM(
     Eigen::VectorXd &BodyAngles, Eigen::Vector3d &aStartingCOMPosition,
     FootAbsolutePosition &InitLeftFootPosition,
     FootAbsolutePosition &InitRightFootPosition) {
-
   EvaluateCOMForStartingPosition(BodyAngles, 0.0, 0.0, m_StartingCOMPosition,
                                  InitLeftFootPosition, InitRightFootPosition);
 
@@ -1054,8 +1033,8 @@ int ComAndFootRealizationByGeometry::EvaluateStartingCoM(
 
 int ComAndFootRealizationByGeometry::EvaluateCOMForStartingPosition(
     Eigen::VectorXd &BodyAngles,
-    double, // omega,
-    double, // theta,
+    double,  // omega,
+    double,  // theta,
     Eigen::Vector3d &lCOMPosition, FootAbsolutePosition &InitLeftFootPosition,
     FootAbsolutePosition &InitRightFootPosition) {
   Eigen::Matrix<double, 6, 1> lWaistPose;
@@ -1073,7 +1052,6 @@ void ComAndFootRealizationByGeometry::GetCurrentPositionofWaistInCOMFrame(
 void ComAndFootRealizationByGeometry::ComputeUpperBodyHeuristicForNormalWalking(
     Eigen::VectorXd &qArmr, Eigen::VectorXd &qArml,
     Eigen::VectorXd &aCOMPosition, Eigen::VectorXd &RFP, Eigen::VectorXd &LFP) {
-
   ODEBUG4("aCOMPosition:" << aCOMPosition << endl
                           << "Right Foot Position:" << RFP << endl
                           << "Left Foot Position:" << LFP << endl,
@@ -1166,7 +1144,6 @@ bool ComAndFootRealizationByGeometry::setPinocchioRobot(
 
 void ComAndFootRealizationByGeometry::CallMethod(string &Method,
                                                  istringstream &istrm) {
-
   if (Method == ":armparameters") {
     istrm >> m_GainFactor;
   } else if (Method == ":UpperBodyMotionParameters") {
@@ -1197,13 +1174,11 @@ ComAndFootRealizationByGeometry::GetCurrentPositionofWaistInCOMFrame() {
 }
 
 Eigen::Vector3d ComAndFootRealizationByGeometry::GetCOGInitialAnkles() {
-
   return m_COGInitialAnkles;
 }
 
 ostream &PatternGeneratorJRL::operator<<(ostream &os,
                                          const ComAndFootRealization &obj) {
-
   SimplePluginManager *SPM = obj.getSimplePluginManager();
   os << "The Simple Plugin Manager is :\n";
   os << SPM << endl;

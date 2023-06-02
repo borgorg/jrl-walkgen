@@ -1,12 +1,16 @@
 #include "DynamicFilter.hh"
-#include "Debug.hh"
+
 #include <iomanip>
+
+#include "Debug.hh"
 using namespace std;
 using namespace PatternGeneratorJRL;
 // using namespace metapod;
 
 DynamicFilter::DynamicFilter(SimplePluginManager *SPM, PinocchioRobot *aPR)
-    : SimplePlugin(SPM), stage0_(0), stage1_(1),
+    : SimplePlugin(SPM),
+      stage0_(0),
+      stage1_(1),
       MODE_PC_(OptimalControllerSolver::MODE_WITH_INITIALPOS) {
   controlPeriod_ = 0.0;
   interpolationPeriod_ = 0.0;
@@ -336,13 +340,12 @@ int DynamicFilter::zmpmb(Eigen::VectorXd &configuration,
   return 0;
 }
 
-//##################################
+// ##################################
 void DynamicFilter::InverseKinematics(
     const COMState &inputCoMState, const FootAbsolutePosition &inputLeftFoot,
     const FootAbsolutePosition &inputRightFoot, Eigen::VectorXd &configuration,
     Eigen::VectorXd &velocity, Eigen::VectorXd &acceleration,
     double samplingPeriod, int stage, int iteration) {
-
   // lower body !!!!! the angular quantities are set in degree !!!!!!
   aCoMState_(0) = inputCoMState.x[0];
   aCoMSpeed_(0) = inputCoMState.x[1];
@@ -736,75 +739,75 @@ void DynamicFilter::Debug(
   aof.setf(ios::scientific, ios::floatfield);
   int NbI = (int)round(controlWindowSize_ / interpolationPeriod_);
   for (int i = 0; i < NbI; ++i) {
-    aof << (iteration_zmp + i) * interpolationPeriod_ << " "; // 1
+    aof << (iteration_zmp + i) * interpolationPeriod_ << " ";  // 1
 
-    aof << inputZMPTraj_deq_[i * inc].px << " "; // 1
-    aof << inputZMPTraj_deq_[i * inc].py << " "; // 2
+    aof << inputZMPTraj_deq_[i * inc].px << " ";  // 1
+    aof << inputZMPTraj_deq_[i * inc].py << " ";  // 2
 
-    aof << ZMPMB_vec_[i][0] << " "; // 3
-    aof << ZMPMB_vec_[i][1] << " "; // 4
+    aof << ZMPMB_vec_[i][0] << " ";  // 3
+    aof << ZMPMB_vec_[i][1] << " ";  // 4
 
-    aof << inputCOMTraj_deq_[i].x[0] << " "; // 5
-    aof << inputCOMTraj_deq_[i].x[1] << " "; // 6
-    aof << inputCOMTraj_deq_[i].x[2] << " "; // 7
+    aof << inputCOMTraj_deq_[i].x[0] << " ";  // 5
+    aof << inputCOMTraj_deq_[i].x[1] << " ";  // 6
+    aof << inputCOMTraj_deq_[i].x[2] << " ";  // 7
 
-    aof << inputLeftFootTraj_deq_[i].x << " ";   // 8
-    aof << inputLeftFootTraj_deq_[i].dx << " ";  // 9
-    aof << inputLeftFootTraj_deq_[i].ddx << " "; // 10
+    aof << inputLeftFootTraj_deq_[i].x << " ";    // 8
+    aof << inputLeftFootTraj_deq_[i].dx << " ";   // 9
+    aof << inputLeftFootTraj_deq_[i].ddx << " ";  // 10
 
-    aof << inputRightFootTraj_deq_[i].x << " ";   // 11
-    aof << inputRightFootTraj_deq_[i].dx << " ";  // 12
-    aof << inputRightFootTraj_deq_[i].ddx << " "; // 13
+    aof << inputRightFootTraj_deq_[i].x << " ";    // 11
+    aof << inputRightFootTraj_deq_[i].dx << " ";   // 12
+    aof << inputRightFootTraj_deq_[i].ddx << " ";  // 13
 
-    aof << inputCOMTraj_deq_[i].y[0] << " "; // 14
-    aof << inputCOMTraj_deq_[i].y[1] << " "; // 15
-    aof << inputCOMTraj_deq_[i].y[2] << " "; // 16
+    aof << inputCOMTraj_deq_[i].y[0] << " ";  // 14
+    aof << inputCOMTraj_deq_[i].y[1] << " ";  // 15
+    aof << inputCOMTraj_deq_[i].y[2] << " ";  // 16
 
-    aof << inputLeftFootTraj_deq_[i].y << " ";   // 17
-    aof << inputLeftFootTraj_deq_[i].dy << " ";  // 18
-    aof << inputLeftFootTraj_deq_[i].ddy << " "; // 19
+    aof << inputLeftFootTraj_deq_[i].y << " ";    // 17
+    aof << inputLeftFootTraj_deq_[i].dy << " ";   // 18
+    aof << inputLeftFootTraj_deq_[i].ddy << " ";  // 19
 
-    aof << inputRightFootTraj_deq_[i].y << " ";   // 20
-    aof << inputRightFootTraj_deq_[i].dy << " ";  // 21
-    aof << inputRightFootTraj_deq_[i].ddy << " "; // 22
+    aof << inputRightFootTraj_deq_[i].y << " ";    // 20
+    aof << inputRightFootTraj_deq_[i].dy << " ";   // 21
+    aof << inputRightFootTraj_deq_[i].ddy << " ";  // 22
 
-    aof << inputCOMTraj_deq_[i].yaw[0] << " "; // 23
-    aof << inputCOMTraj_deq_[i].yaw[1] << " "; // 24
-    aof << inputCOMTraj_deq_[i].yaw[2] << " "; // 25
+    aof << inputCOMTraj_deq_[i].yaw[0] << " ";  // 23
+    aof << inputCOMTraj_deq_[i].yaw[1] << " ";  // 24
+    aof << inputCOMTraj_deq_[i].yaw[2] << " ";  // 25
 
-    aof << inputLeftFootTraj_deq_[i].theta << " ";   // 26
-    aof << inputLeftFootTraj_deq_[i].dtheta << " ";  // 27
-    aof << inputLeftFootTraj_deq_[i].ddtheta << " "; // 28
+    aof << inputLeftFootTraj_deq_[i].theta << " ";    // 26
+    aof << inputLeftFootTraj_deq_[i].dtheta << " ";   // 27
+    aof << inputLeftFootTraj_deq_[i].ddtheta << " ";  // 28
 
-    aof << inputRightFootTraj_deq_[i].theta << " ";   // 29
-    aof << inputRightFootTraj_deq_[i].dtheta << " ";  // 30
-    aof << inputRightFootTraj_deq_[i].ddtheta << " "; // 31
+    aof << inputRightFootTraj_deq_[i].theta << " ";    // 29
+    aof << inputRightFootTraj_deq_[i].dtheta << " ";   // 30
+    aof << inputRightFootTraj_deq_[i].ddtheta << " ";  // 31
 
-    aof << inputCOMTraj_deq_[i].z[0] << " "; // 32
-    aof << inputCOMTraj_deq_[i].z[1] << " "; // 33
-    aof << inputCOMTraj_deq_[i].z[2] << " "; // 34
+    aof << inputCOMTraj_deq_[i].z[0] << " ";  // 32
+    aof << inputCOMTraj_deq_[i].z[1] << " ";  // 33
+    aof << inputCOMTraj_deq_[i].z[2] << " ";  // 34
 
-    aof << inputLeftFootTraj_deq_[i].z << " ";   // 35
-    aof << inputLeftFootTraj_deq_[i].dz << " ";  // 36
-    aof << inputLeftFootTraj_deq_[i].ddz << " "; // 37
+    aof << inputLeftFootTraj_deq_[i].z << " ";    // 35
+    aof << inputLeftFootTraj_deq_[i].dz << " ";   // 36
+    aof << inputLeftFootTraj_deq_[i].ddz << " ";  // 37
 
-    aof << inputRightFootTraj_deq_[i].z << " ";   // 38
-    aof << inputRightFootTraj_deq_[i].dz << " ";  // 39
-    aof << inputRightFootTraj_deq_[i].ddz << " "; // 40
+    aof << inputRightFootTraj_deq_[i].z << " ";    // 38
+    aof << inputRightFootTraj_deq_[i].dz << " ";   // 39
+    aof << inputRightFootTraj_deq_[i].ddz << " ";  // 40
 
     aof << CoM_tmp[i * (int)round(interpolationPeriod_ / controlPeriod_)].x[0]
-        << " "; // 41
+        << " ";  // 41
     aof << CoM_tmp[i * (int)round(interpolationPeriod_ / controlPeriod_)].x[1]
-        << " "; // 42
+        << " ";  // 42
     aof << CoM_tmp[i * (int)round(interpolationPeriod_ / controlPeriod_)].x[2]
-        << " "; // 43
+        << " ";  // 43
 
     aof << CoM_tmp[i * (int)round(interpolationPeriod_ / controlPeriod_)].y[0]
-        << " "; // 44
+        << " ";  // 44
     aof << CoM_tmp[i * (int)round(interpolationPeriod_ / controlPeriod_)].y[1]
-        << " "; // 45
+        << " ";  // 45
     aof << CoM_tmp[i * (int)round(interpolationPeriod_ / controlPeriod_)].y[2]
-        << " "; // 46
+        << " ";  // 46
 
     // 47
     int it_subsample = i * (int)round(interpolationPeriod_ / controlPeriod_);
@@ -832,26 +835,26 @@ void DynamicFilter::Debug(
   aof.precision(8);
   aof.setf(ios::scientific, ios::floatfield);
   for (int i = 0; i < Nctrl; ++i) {
-    aof << zmpmb_corr[i][0] << " ";                // 1
-    aof << zmpmb_corr[i][1] << " ";                // 2
-    aof << outputDeltaCOMTraj_deq_[i].x[0] << " "; // 3
-    aof << outputDeltaCOMTraj_deq_[i].y[0] << " "; // 4
-    aof << outputDeltaCOMTraj_deq_[i].x[1] << " "; // 5
-    aof << outputDeltaCOMTraj_deq_[i].y[1] << " "; // 6
-    aof << outputDeltaCOMTraj_deq_[i].x[2] << " "; // 7
-    aof << outputDeltaCOMTraj_deq_[i].y[2] << " "; // 8
-    aof << deltaZMPx_[i] << " ";                   // 9
-    aof << deltaZMPy_[i] << " ";                   // 10
-    aof << sxzmp_[i] << " ";                       // 11
-    aof << syzmp_[i] << " ";                       // 12
-    aof << deltaZMP_deq_[i].px << " ";             // 13
-    aof << deltaZMP_deq_[i].py << " ";             // 14
-    for (unsigned j = 0; j < acc[i].size(); ++j)   // 15+nq
+    aof << zmpmb_corr[i][0] << " ";                 // 1
+    aof << zmpmb_corr[i][1] << " ";                 // 2
+    aof << outputDeltaCOMTraj_deq_[i].x[0] << " ";  // 3
+    aof << outputDeltaCOMTraj_deq_[i].y[0] << " ";  // 4
+    aof << outputDeltaCOMTraj_deq_[i].x[1] << " ";  // 5
+    aof << outputDeltaCOMTraj_deq_[i].y[1] << " ";  // 6
+    aof << outputDeltaCOMTraj_deq_[i].x[2] << " ";  // 7
+    aof << outputDeltaCOMTraj_deq_[i].y[2] << " ";  // 8
+    aof << deltaZMPx_[i] << " ";                    // 9
+    aof << deltaZMPy_[i] << " ";                    // 10
+    aof << sxzmp_[i] << " ";                        // 11
+    aof << syzmp_[i] << " ";                        // 12
+    aof << deltaZMP_deq_[i].px << " ";              // 13
+    aof << deltaZMP_deq_[i].py << " ";              // 14
+    for (unsigned j = 0; j < acc[i].size(); ++j)    // 15+nq
       aof << conf[i][j] << " ";
-    for (unsigned j = 0; j < acc[i].size(); ++j) // 15+nq
+    for (unsigned j = 0; j < acc[i].size(); ++j)  // 15+nq
       aof << vel[i][j] << " ";
-    for (unsigned j = 0; j < acc[i].size(); ++j) // 15+nq
-      aof << acc[i][j] << " ";                   //
+    for (unsigned j = 0; j < acc[i].size(); ++j)  // 15+nq
+      aof << acc[i][j] << " ";                    //
     aof << endl;
   }
   aof.close();
@@ -867,63 +870,63 @@ void DynamicFilter::Debug(
   aof.setf(ios::scientific, ios::floatfield);
   // for (int i = 0 ; i < zmpmb_i_.size() ; ++i)
   for (int i = 0; i < (int)zmpmb_i_.size(); ++i) {
-    aof << i << " ";                       // 0
-    aof << inputZMPTraj_deq_[i].px << " "; // 1
-    aof << inputZMPTraj_deq_[i].py << " "; // 2
+    aof << i << " ";                        // 0
+    aof << inputZMPTraj_deq_[i].px << " ";  // 1
+    aof << inputZMPTraj_deq_[i].py << " ";  // 2
 
-    aof << zmpmb_i_[i][0] << " "; // 3
-    aof << zmpmb_i_[i][1] << " "; // 4
+    aof << zmpmb_i_[i][0] << " ";  // 3
+    aof << zmpmb_i_[i][1] << " ";  // 4
 
-    aof << ctrlCoMState[i].x[0] << " "; // 5
-    aof << ctrlCoMState[i].x[1] << " "; // 6
-    aof << ctrlCoMState[i].x[2] << " "; // 7
+    aof << ctrlCoMState[i].x[0] << " ";  // 5
+    aof << ctrlCoMState[i].x[1] << " ";  // 6
+    aof << ctrlCoMState[i].x[2] << " ";  // 7
 
-    aof << ctrlLeftFoot[i].x << " ";   // 8
-    aof << ctrlLeftFoot[i].dx << " ";  // 9
-    aof << ctrlLeftFoot[i].ddx << " "; // 10
+    aof << ctrlLeftFoot[i].x << " ";    // 8
+    aof << ctrlLeftFoot[i].dx << " ";   // 9
+    aof << ctrlLeftFoot[i].ddx << " ";  // 10
 
-    aof << ctrlRightFoot[i].x << " ";   // 11
-    aof << ctrlRightFoot[i].dx << " ";  // 12
-    aof << ctrlRightFoot[i].ddx << " "; // 13
+    aof << ctrlRightFoot[i].x << " ";    // 11
+    aof << ctrlRightFoot[i].dx << " ";   // 12
+    aof << ctrlRightFoot[i].ddx << " ";  // 13
 
-    aof << ctrlCoMState[i].y[0] << " "; // 14
-    aof << ctrlCoMState[i].y[1] << " "; // 15
-    aof << ctrlCoMState[i].y[2] << " "; // 16
+    aof << ctrlCoMState[i].y[0] << " ";  // 14
+    aof << ctrlCoMState[i].y[1] << " ";  // 15
+    aof << ctrlCoMState[i].y[2] << " ";  // 16
 
-    aof << ctrlLeftFoot[i].y << " ";   // 17
-    aof << ctrlLeftFoot[i].dy << " ";  // 18
-    aof << ctrlLeftFoot[i].ddy << " "; // 19
+    aof << ctrlLeftFoot[i].y << " ";    // 17
+    aof << ctrlLeftFoot[i].dy << " ";   // 18
+    aof << ctrlLeftFoot[i].ddy << " ";  // 19
 
-    aof << ctrlRightFoot[i].y << " ";   // 20
-    aof << ctrlRightFoot[i].dy << " ";  // 21
-    aof << ctrlRightFoot[i].ddy << " "; // 22
+    aof << ctrlRightFoot[i].y << " ";    // 20
+    aof << ctrlRightFoot[i].dy << " ";   // 21
+    aof << ctrlRightFoot[i].ddy << " ";  // 22
 
-    aof << ctrlCoMState[i].yaw[0] << " "; // 23
-    aof << ctrlCoMState[i].yaw[1] << " "; // 24
-    aof << ctrlCoMState[i].yaw[2] << " "; // 25
+    aof << ctrlCoMState[i].yaw[0] << " ";  // 23
+    aof << ctrlCoMState[i].yaw[1] << " ";  // 24
+    aof << ctrlCoMState[i].yaw[2] << " ";  // 25
 
-    aof << ctrlLeftFoot[i].theta << " ";   // 26
-    aof << ctrlLeftFoot[i].dtheta << " ";  // 27
-    aof << ctrlLeftFoot[i].ddtheta << " "; // 28
+    aof << ctrlLeftFoot[i].theta << " ";    // 26
+    aof << ctrlLeftFoot[i].dtheta << " ";   // 27
+    aof << ctrlLeftFoot[i].ddtheta << " ";  // 28
 
-    aof << ctrlRightFoot[i].theta << " ";   // 29
-    aof << ctrlRightFoot[i].dtheta << " ";  // 30
-    aof << ctrlRightFoot[i].ddtheta << " "; // 31
+    aof << ctrlRightFoot[i].theta << " ";    // 29
+    aof << ctrlRightFoot[i].dtheta << " ";   // 30
+    aof << ctrlRightFoot[i].ddtheta << " ";  // 31
 
-    aof << ctrlCoMState[i].z[0] << " "; // 32
-    aof << ctrlCoMState[i].z[1] << " "; // 33
-    aof << ctrlCoMState[i].z[2] << " "; // 34
+    aof << ctrlCoMState[i].z[0] << " ";  // 32
+    aof << ctrlCoMState[i].z[1] << " ";  // 33
+    aof << ctrlCoMState[i].z[2] << " ";  // 34
 
-    aof << ctrlLeftFoot[i].z << " ";   // 35
-    aof << ctrlLeftFoot[i].dz << " ";  // 36
-    aof << ctrlLeftFoot[i].ddz << " "; // 37
+    aof << ctrlLeftFoot[i].z << " ";    // 35
+    aof << ctrlLeftFoot[i].dz << " ";   // 36
+    aof << ctrlLeftFoot[i].ddz << " ";  // 37
 
-    aof << ctrlRightFoot[i].z << " ";   // 38
-    aof << ctrlRightFoot[i].dz << " ";  // 39
-    aof << ctrlRightFoot[i].ddz << " "; // 40
+    aof << ctrlRightFoot[i].z << " ";    // 38
+    aof << ctrlRightFoot[i].dz << " ";   // 39
+    aof << ctrlRightFoot[i].ddz << " ";  // 40
 
-    aof << deltaZMP_deq_[i].px << " "; // 41
-    aof << deltaZMP_deq_[i].py << " "; // 42
+    aof << deltaZMP_deq_[i].px << " ";  // 41
+    aof << deltaZMP_deq_[i].py << " ";  // 42
     aof << endl;
   }
   aof.close();

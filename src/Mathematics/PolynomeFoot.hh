@@ -36,17 +36,16 @@
 #undef min
 #endif
 
-#include <vector>
-
 #include <Mathematics/Polynome.hh>
+#include <vector>
 
 namespace PatternGeneratorJRL {
 class PolynomeFoot : public Polynome {
-protected:
+ protected:
   /*! Store final time */
   double FT_;
 
-public:
+ public:
   PolynomeFoot(int degree = 0.0, double FT = 0.0) : Polynome(degree), FT_(FT){};
 
   /*! Compute the value. */
@@ -64,7 +63,7 @@ public:
 
 /// Polynome used for X,Y and Theta trajectories.
 class Polynome3 : public PolynomeFoot {
-public:
+ public:
   /** Constructor:
       FT: Final time
       FP: Final position */
@@ -97,14 +96,14 @@ public:
   /// Destructor.
   ~Polynome3();
 
-private:
+ private:
   /*! Store final time and final position. */
   double FP_;
 };
 
 /// Polynome used for Z trajectory.
 class Polynome4 : public PolynomeFoot {
-public:
+ public:
   /** Constructor:
       FT: Final time
       MP: Middle position */
@@ -140,7 +139,7 @@ public:
   /// Destructor.
   ~Polynome4();
 
-private:
+ private:
   /*! Store final time and middle position. */
   double MP_;
   double FP_;
@@ -148,10 +147,10 @@ private:
 
 /// Polynome used for X,Y and Theta trajectories.
 class Polynome5 : public PolynomeFoot {
-private:
+ private:
   double InitPos_, InitSpeed_, InitAcc_, FinalPos_, FinalSpeed_, FinalAcc_;
 
-public:
+ public:
   /** Constructor:
       FT: Final time
       FP: Final position */
@@ -191,10 +190,10 @@ public:
 
 /// Polynome used for Z trajectory.
 class Polynome6 : public PolynomeFoot {
-private:
+ private:
   double MP_, FP_, InitPos_, InitSpeed_, InitAcc_;
 
-public:
+ public:
   /// Constructor:
   /// FT: Final time
   /// MP: Middle position
@@ -219,10 +218,10 @@ public:
 
 /// Polynome used for X,Y and Theta trajectories.
 class Polynome7 : public PolynomeFoot {
-private:
+ private:
   double FP_, InitPos_, InitSpeed_, InitAcc_, InitJerk_;
 
-public:
+ public:
   /** Constructor:
       FT: Final time
       FP: Final position */
@@ -254,5 +253,5 @@ public:
   ~Polynome7();
 };
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _POLYNOME_FOOT_H_ */

@@ -25,12 +25,10 @@
  */
 /* Polynomes object for generating foot and hip trajectories
 while stepping over. */
+#include <Debug.hh>
+#include <Mathematics/StepOverPolynome.hh>
 #include <iostream>
 #include <vector>
-
-#include <Mathematics/StepOverPolynome.hh>
-
-#include <Debug.hh>
 
 using namespace ::std;
 using namespace ::PatternGeneratorJRL;
@@ -149,8 +147,7 @@ void StepOverPolynomeFoot::SetParameters(Eigen::VectorXd boundCond,
 
   for (unsigned int i = 0; i < boundCond.size(); i++) {
     Temp = Base;
-    for (unsigned int j = 0; j < Temp.rows(); j++)
-      Temp(j, i) = boundCond(j);
+    for (unsigned int j = 0; j < Temp.rows(); j++) Temp(j, i) = boundCond(j);
     m_Coefficients[i] = Temp.determinant() / detBase;
   };
 }
@@ -206,8 +203,7 @@ void StepOverPolynomeFootZtoX::SetParameters(Eigen::VectorXd Zpos,
 
   for (unsigned int i = 0; i < Zpos.size(); i++) {
     Temp = Base;
-    for (unsigned int j = 0; j < Zpos.size(); j++)
-      Temp(j, i) = Zpos(j);
+    for (unsigned int j = 0; j < Zpos.size(); j++) Temp(j, i) = Zpos(j);
     m_Coefficients[i] = Temp.determinant() / detBase;
   };
 }
@@ -281,8 +277,7 @@ void StepOverPolynomeFootXtoTime::SetParameters(Eigen::VectorXd Xbound,
 
   for (unsigned int i = 0; i < Xbound.size(); i++) {
     Temp = Base;
-    for (unsigned int j = 0; j < Xbound.size(); j++)
-      Temp(j, i) = Xbound(j);
+    for (unsigned int j = 0; j < Xbound.size(); j++) Temp(j, i) = Xbound(j);
     m_Coefficients[i] = Temp.determinant() / detBase;
   };
 }
@@ -341,8 +336,7 @@ void StepOverPolynomeHip4::SetParameters(Eigen::VectorXd boundCond,
 
   for (unsigned int i = 0; i < boundCond.size(); i++) {
     Temp = Base;
-    for (unsigned int j = 0; j < Temp.rows(); j++)
-      Temp(j, i) = boundCond(j);
+    for (unsigned int j = 0; j < Temp.rows(); j++) Temp(j, i) = boundCond(j);
     m_Coefficients[i] = Temp.determinant() / detBase;
   };
 }
@@ -371,8 +365,7 @@ void StepOverSpline::SetParameters(Eigen::VectorXd Points) {
   m_Coefficients.resize(4, m_number);
 
   for (unsigned int i = 0; i < m_number; i++) {
-    for (unsigned int j = 0; j < m_number; j++)
-      LhSide(i, j) = 0.0;
+    for (unsigned int j = 0; j < m_number; j++) LhSide(i, j) = 0.0;
   }
 
   for (unsigned int i = 1; i < m_number - 1; i++) {
@@ -430,9 +423,9 @@ double StepOverSpline::GetValueSpline(Eigen::VectorXd TimePoints,
                     m_Coefficients(2, i) * Time0to1_2 +
                     m_Coefficients(3, i) * Time0to1_3;
       break;
-    } // if
+    }  // if
 
-  } // for
+  }  // for
 
   // if the CurrentLocalTime is out of range
   // it will return the end position if t>tmax
@@ -457,11 +450,9 @@ double StepOverSpline::GetValueSpline(Eigen::VectorXd TimePoints,
 }
 
 void StepOverSpline::print() {
-
   cout << " Spline Coefficients : " << endl;
 
   for (unsigned int i = 0; i < m_number - 1; i++) {
-
     cout << "             Spline m_number " << i + 1 << ":" << endl
          << "            ";
     for (unsigned int j = 0; j < 4; j++)
@@ -500,8 +491,7 @@ void StepOverClampedCubicSpline::SetParameters(
   }
 
   for (unsigned int i = 0; i < m_number + 1; i++) {
-    for (unsigned int j = 0; j < m_number + 1; j++)
-      LhSide(i, j) = 0.0;
+    for (unsigned int j = 0; j < m_number + 1; j++) LhSide(i, j) = 0.0;
   }
 
   for (unsigned int i = 1; i < m_number; i++) {
@@ -565,9 +555,9 @@ double StepOverClampedCubicSpline::GetValueSpline(Eigen::VectorXd TimePoints,
                     m_Coefficients(2, i) * Time0to1_2 +
                     m_Coefficients(3, i) * Time0to1_3;
       break;
-    } // if
+    }  // if
 
-  } // for
+  }  // for
 
   if (CurrentLocalTime >= TimePoints(m_number))
   // if the CurrentLocalTime is out of range it will return
@@ -601,14 +591,11 @@ double StepOverClampedCubicSpline::GetValueSpline(Eigen::VectorXd TimePoints,
 }
 
 void StepOverClampedCubicSpline::print() {
-
   cout << "Clamped Cubic Spline m_Coefficients : " << endl;
 
   for (unsigned int i = 0; i < m_number; i++) {
-
     cout << "  Spline m_number " << i + 1 << ":" << endl << "  ";
-    for (unsigned int j = 0; j < 4; j++)
-      cout << m_Coefficients(j, i) << "  ";
+    for (unsigned int j = 0; j < 4; j++) cout << m_Coefficients(j, i) << "  ";
     cout << endl;
   }
 }

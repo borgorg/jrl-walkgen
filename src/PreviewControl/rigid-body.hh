@@ -81,11 +81,10 @@ typedef linear_dynamics_s linear_dynamics_t;
 /// \}
 
 class RigidBody {
-
   //
   // Public methods
   //
-public:
+ public:
   RigidBody();
 
   ~RigidBody();
@@ -139,11 +138,11 @@ public:
   //
   // Private member functions
   //
-private:
+ private:
   //
   // Private members
   //
-private:
+ private:
   /// \brief State
   rigid_body_state_t State_;
 
@@ -172,5 +171,5 @@ private:
   /// \brief Mass
   double Mass_;
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _RIGID_BODY_ */

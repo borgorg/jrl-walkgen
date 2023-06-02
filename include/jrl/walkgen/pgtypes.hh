@@ -40,10 +40,9 @@
 #else
 #define WALK_GEN_JRL_EXPORT
 #endif
+#include <Eigen/Dense>
 #include <fstream>
 #include <iostream>
-
-#include <Eigen/Dense>
 #include <vector>
 
 namespace PatternGeneratorJRL {
@@ -53,9 +52,9 @@ struct COMState_s;
 struct WALK_GEN_JRL_EXPORT COMPosition_s {
   double x[3], y[3];
   double z[3];
-  double yaw;   // aka theta
-  double pitch; // aka omega
-  double roll;  // aka hip
+  double yaw;    // aka theta
+  double pitch;  // aka omega
+  double roll;   // aka hip
 
   struct COMPosition_s &operator=(const COMState_s &aCS);
 };
@@ -75,9 +74,9 @@ typedef struct COMPosition_s WaistState;
 /// Structure to store the COM state computed by the preview control.
 struct WALK_GEN_JRL_EXPORT COMState_s {
   double x[3], y[3], z[3];
-  double yaw[3];   // aka theta
-  double pitch[3]; // aka omega
-  double roll[3];  // aka hip
+  double yaw[3];    // aka theta
+  double pitch[3];  // aka omega
+  double roll[3];   // aka hip
 
   struct COMState_s &operator=(const COMPosition_s &aCS);
 
@@ -97,8 +96,8 @@ struct RelativeFootPosition_s {
   double sx, sy, sz, theta;
   double SStime;
   double DStime;
-  int stepType; // 1:normal walking 2:one step before obstacle
-                // 3:first leg over obstacle 4:second leg over obstacle
+  int stepType;  // 1:normal walking 2:one step before obstacle
+                 // 3:first leg over obstacle 4:second leg over obstacle
   // 5:one step after obstacle 6 :stepping stair
   double DeviationHipHeight;
   RelativeFootPosition_s();
@@ -118,10 +117,10 @@ inline std::ostream &operator<<(std::ostream &os,
     direction at a certain time. */
 struct ZMPPosition_s {
   double px, py, pz;
-  double theta; // For COM
+  double theta;  // For COM
   double time;
-  int stepType; // 1:normal walking 2:one step before obstacle
-                // 3:first leg over obstacle 4:second leg over
+  int stepType;  // 1:normal walking 2:one step before obstacle
+                 // 3:first leg over obstacle 4:second leg over
   // obstacle 5:one step after obstacle
   // +10 if double support phase
   // *(-1) if right foot stance else left foot stance
@@ -281,5 +280,5 @@ struct ControlLoopOneStepArgs {
   Eigen::VectorXd Momentum;
 };
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif

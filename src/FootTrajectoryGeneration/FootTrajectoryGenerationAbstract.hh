@@ -78,7 +78,7 @@ namespace PatternGeneratorJRL {
 
 */
 class FootTrajectoryGenerationAbstract : public SimplePlugin {
-public:
+ public:
   /*! Constructor: In order to compute some appropriate strategies,
     this class needs to extract specific details from the humanoid model. */
   FootTrajectoryGenerationAbstract(SimplePluginManager *lSPM, PRFoot *inFoot);
@@ -202,7 +202,7 @@ public:
   */
   virtual void CallMethod(std::string &Method, std::istringstream &strm);
 
-protected:
+ protected:
   /*! Sampling period of the control. */
   double m_SamplingPeriod;
 
@@ -229,5 +229,5 @@ protected:
   double m_StepCurving;
 };
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _FOOT_TRAJECTORY_GENERATION_ABSTRACT_H_ */

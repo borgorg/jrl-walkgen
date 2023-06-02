@@ -28,16 +28,17 @@
 #ifndef NMPC_GENERATOR_H
 #define NMPC_GENERATOR_H
 
+#include <eigen-quadprog/QuadProg.h>
+
 #include <Mathematics/relative-feet-inequalities.hh>
 #include <cmath>
-#include <eigen-quadprog/QuadProg.h>
 #include <iomanip>
 #include <jrl/walkgen/pgtypes.hh>
 #include <jrl/walkgen/pinocchiorobot.hh>
 
 namespace PatternGeneratorJRL {
 class NMPCgenerator {
-public:
+ public:
   NMPCgenerator(SimplePluginManager *aSPM, PinocchioRobot *aPR);
 
   ~NMPCgenerator();
@@ -46,14 +47,13 @@ public:
                          COMState &lStartingCOMState,
                          reference_t &local_vel_ref, unsigned N, unsigned nf,
                          double T, double T_step);
-  void
-  updateInitialCondition(double time,
-                         FootAbsolutePosition &currentLeftFootAbsolutePosition,
-                         FootAbsolutePosition &currentRightFootAbsolutePosition,
-                         COMState &currentCOMState, reference_t &local_vel_ref);
+  void updateInitialCondition(
+      double time, FootAbsolutePosition &currentLeftFootAbsolutePosition,
+      FootAbsolutePosition &currentRightFootAbsolutePosition,
+      COMState &currentCOMState, reference_t &local_vel_ref);
   void solve();
 
-private:
+ private:
   //////////////////////
   // Solve the Problem :
   //////////////////////
@@ -121,11 +121,11 @@ private:
 
   // construct the constant matrix depending
   // on the Euler integration scheme and the com height
-  void buildCoMCoPIntegrationMatrix(); // depend on c_k_z_
+  void buildCoMCoPIntegrationMatrix();  // depend on c_k_z_
   void updateCoMCoPIntegrationMatrix();
-  void buildConvexHullSystems(); // depend on the robot
+  void buildConvexHullSystems();  // depend on the robot
 
-public:
+ public:
   // Getter and Setter
   ////////////////////
   void setLocalVelocityReference(reference_t local_vel_ref);
@@ -190,7 +190,7 @@ public:
     return desiredNextSupportFootRelativePosition;
   }
 
-private:
+ private:
   SimplePluginManager *SPM_;
   PinocchioRobot *PR_;
 
@@ -298,7 +298,7 @@ private:
   Eigen::VectorXd gU_obs_, gU_rot_, gU_stan_;
 
   // Cost Function
-  unsigned nv_; // number of degrees of freedom
+  unsigned nv_;  // number of degrees of freedom
   // initial problem matrix
   Eigen::MatrixXd Q_theta_, I_NN_, I_FF_;
 
@@ -311,17 +311,17 @@ private:
   // Q_x = ( Q_x_XX Q_x_XF ) = Q_y
   //       ( Q_x_FX Q_x_FF )
   Eigen::MatrixXd Q_x_XX_, Q_x_XF_, Q_x_FX_, Q_x_FF_;
-  Eigen::MatrixXd Q_y_XX_; // Q_x_XX_ != Q_y_XX_
+  Eigen::MatrixXd Q_y_XX_;  // Q_x_XX_ != Q_y_XX_
 
   // Line Search
   bool useLineSearch_;
   Eigen::VectorXd p_, U_n_, selectActiveConstraint;
   Eigen::VectorXd JdU_, contraintValue;
   Eigen::VectorXd HUn_;
-  double lineStep_, lineStep0_, stepParam_; // step searched
-  double mu_;      // weight between cost function and constraints
-  double cm_, c_;  // Merit Function Jacobian
-  double L_n_, L_; // Merit function of the next step and Merit function
+  double lineStep_, lineStep0_, stepParam_;  // step searched
+  double mu_;       // weight between cost function and constraints
+  double cm_, c_;   // Merit Function Jacobian
+  double L_n_, L_;  // Merit function of the next step and Merit function
   unsigned maxLineSearchIteration_;
   bool oneMoreStep_;
   unsigned maxSolverIteration_;
@@ -332,8 +332,8 @@ private:
   unsigned nc_;
   Eigen::MatrixXd qp_H_;
   Eigen::VectorXd qp_g_;
-  Eigen::MatrixXd qp_J_;   // constraint Jacobian
-  Eigen::VectorXd qp_ubJ_; // constraint Jacobian
+  Eigen::MatrixXd qp_J_;    // constraint Jacobian
+  Eigen::VectorXd qp_ubJ_;  // constraint Jacobian
   // temporary usefull variable for matrix manipulation
   Eigen::VectorXd qp_g_x_, qp_g_y_, qp_g_theta_;
 
@@ -453,6 +453,6 @@ private:
 //    void jacobian();
 //  };
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 
-#endif // NMPC_GENERATOR_H
+#endif  // NMPC_GENERATOR_H

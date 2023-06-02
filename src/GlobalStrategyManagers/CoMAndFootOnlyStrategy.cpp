@@ -37,7 +37,8 @@ using namespace PatternGeneratorJRL;
 
 CoMAndFootOnlyStrategy::CoMAndFootOnlyStrategy(
     SimplePluginManager *aSimplePluginManager)
-    : GlobalStrategyManager(aSimplePluginManager), m_NbOfHitBottom(0),
+    : GlobalStrategyManager(aSimplePluginManager),
+      m_NbOfHitBottom(0),
       m_BufferSizeLimit(0) {}
 
 CoMAndFootOnlyStrategy::~CoMAndFootOnlyStrategy() {}
@@ -192,14 +193,14 @@ int CoMAndFootOnlyStrategy::EndOfMotion() {
 }
 
 void CoMAndFootOnlyStrategy::Setup(
-    deque<ZMPPosition> &,          // aZMPPositions,
-    deque<COMState> &,             // aCOMBuffer,
-    deque<FootAbsolutePosition> &, // aLeftFootAbsolutePositions,
-    deque<FootAbsolutePosition> &) // aRightFootAbsolutePositions)
+    deque<ZMPPosition> &,           // aZMPPositions,
+    deque<COMState> &,              // aCOMBuffer,
+    deque<FootAbsolutePosition> &,  // aLeftFootAbsolutePositions,
+    deque<FootAbsolutePosition> &)  // aRightFootAbsolutePositions)
 {}
 
-void CoMAndFootOnlyStrategy::CallMethod(std::string &,        // Method,
-                                        std::istringstream &) // astrm)
+void CoMAndFootOnlyStrategy::CallMethod(std::string &,         // Method,
+                                        std::istringstream &)  // astrm)
 {}
 
 void CoMAndFootOnlyStrategy::SetTheLimitOfTheBuffer(

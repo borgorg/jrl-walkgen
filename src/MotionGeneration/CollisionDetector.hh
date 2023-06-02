@@ -33,10 +33,9 @@
 #ifndef _COLLISION_DETECTOR_H_
 #define _COLLISION_DETECTOR_H_
 
+#include <Eigen/Dense>
 #include <string>
 #include <vector>
-
-#include <Eigen/Dense>
 
 namespace PatternGeneratorJRL {
 
@@ -49,7 +48,7 @@ typedef struct ObstaclePar_t ObstaclePar;
     @brief Object to detect collisions between robot leg and obstacle
 */
 class CollisionDetector {
-public:
+ public:
   /// Constructor
   CollisionDetector();
 
@@ -98,7 +97,7 @@ public:
   bool CollisionLineObstacleComplete(Eigen::Vector3d &Point1,
                                      Eigen::Vector3d &Point2);
 
-protected:
+ protected:
   /*! x, y, z position of obstacle in worldframe
     (point taken on the front plan of the obstacle
     on the floor and in the middel of the width) */
@@ -118,6 +117,6 @@ protected:
   Eigen::MatrixXd m_ObstaclePoints;
 };
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #include <MotionGeneration/StepOverPlanner.hh>
 #endif /* _COLLISION_DETECTOR_H_ */

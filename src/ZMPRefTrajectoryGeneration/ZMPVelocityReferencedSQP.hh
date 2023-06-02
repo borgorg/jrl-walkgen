@@ -43,7 +43,7 @@ class ZMPVelocityReferencedSQP : public ZMPRefTrajectoryGeneration {
   //
   // Public methods:
   //
-public:
+ public:
   ZMPVelocityReferencedSQP(SimplePluginManager *SPM, string DataFile,
                            PinocchioRobot *aPR = 0);
 
@@ -155,7 +155,7 @@ public:
   //
   // Private members:
   //
-private:
+ private:
   /// \brief Standard polynomial trajectories for the feet.
   OnLineFootTrajectoryGeneration *OFTG_;
 
@@ -275,7 +275,7 @@ private:
   /// \brief Height of the CoM
   double CoMHeight_;
 
-public:
+ public:
   void GetZMPDiscretization(
       std::deque<ZMPPosition> &ZMPPositions, std::deque<COMState> &COMStates,
       std::deque<RelativeFootPosition> &RelativeFootPositions,
@@ -299,30 +299,29 @@ public:
                        deque<FootAbsolutePosition> &FinalRightFootTraj_deq,
                        StepStackHandler *aStepStackHandler);
 
-  void
-  EndPhaseOfTheWalking(deque<ZMPPosition> &ZMPPositions,
-                       deque<COMState> &FinalCOMTraj_deq,
-                       deque<FootAbsolutePosition> &LeftFootAbsolutePositions,
-                       deque<FootAbsolutePosition> &RightFootAbsolutePositions);
+  void EndPhaseOfTheWalking(
+      deque<ZMPPosition> &ZMPPositions, deque<COMState> &FinalCOMTraj_deq,
+      deque<FootAbsolutePosition> &LeftFootAbsolutePositions,
+      deque<FootAbsolutePosition> &RightFootAbsolutePositions);
 
   int ReturnOptimalTimeToRegenerateAStep();
 
   /// \brief Interpolate just enough data to pilot the robot (period of
   /// interpolation = QP_T_)
   /// uses
-  void FullTrajectoryInterpolation(double time); // INPUT
+  void FullTrajectoryInterpolation(double time);  // INPUT
   /// \brief Interpolation form the com jerk the position of the com
   /// and the zmp corresponding to the kart table model
   void CoMZMPInterpolation(
-      std::vector<double> &JerkX,                            // INPUT
-      std::vector<double> &JerkY,                            // INPUT
-      LinearizedInvertedPendulum2D *LIPM,                    // INPUT/OUTPUT
-      const unsigned numberOfSample,                         // INPUT
-      const int IterationNumber,                             // INPUT
-      const unsigned int currentIndex,                       // INPUT
-      const std::deque<support_state_t> &SupportStates_deq); // INPUT
+      std::vector<double> &JerkX,                             // INPUT
+      std::vector<double> &JerkY,                             // INPUT
+      LinearizedInvertedPendulum2D *LIPM,                     // INPUT/OUTPUT
+      const unsigned numberOfSample,                          // INPUT
+      const int IterationNumber,                              // INPUT
+      const unsigned int currentIndex,                        // INPUT
+      const std::deque<support_state_t> &SupportStates_deq);  // INPUT
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 
 #include <ZMPRefTrajectoryGeneration/ZMPDiscretization.hh>
-#endif // ZMPVELOCITYREFERENCESQP_H
+#endif  // ZMPVELOCITYREFERENCESQP_H

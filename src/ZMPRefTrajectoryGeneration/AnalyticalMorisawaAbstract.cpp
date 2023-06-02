@@ -30,9 +30,10 @@
    ICRA 2007, 3989--39994
 */
 
-#include "Debug.hh"
 #include <ZMPRefTrajectoryGeneration/AnalyticalMorisawaAbstract.hh>
 #include <fstream>
+
+#include "Debug.hh"
 
 typedef double doublereal;
 typedef int integer;
@@ -85,8 +86,7 @@ bool AnalyticalMorisawaAbstract::GetPolynomialWeights(
     vector<double> &PolynomialWeights) {
   unsigned int r = (unsigned int)m_y.size();
   PolynomialWeights.resize(r);
-  for (unsigned int i = 0; i < r; ++i)
-    PolynomialWeights[i] = m_y[i];
+  for (unsigned int i = 0; i < r; ++i) PolynomialWeights[i] = m_y[i];
   return true;
 }
 
@@ -127,8 +127,7 @@ void AnalyticalMorisawaAbstract::displayDeltaTj(ostream &aos) {
   aos << "AnalyticalMorisawaCompact:";
   for (unsigned int li = 0; li < m_DeltaTj.size(); li++) {
     aos << m_DeltaTj[li];
-    if (li < m_DeltaTj.size() - 1)
-      aos << " ";
+    if (li < m_DeltaTj.size() - 1) aos << " ";
   }
   aos << endl;
 }
@@ -141,4 +140,4 @@ void AnalyticalMorisawaAbstract::SetIsStepStairOn(int isStepStairOn) {
   m_isStepStairOn = isStepStairOn;
 }
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL

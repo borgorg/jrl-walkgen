@@ -29,13 +29,11 @@
 #ifndef _PATTERN_GENERATOR_INTERNAL_PRIVATE_H_
 #define _PATTERN_GENERATOR_INTERNAL_PRIVATE_H_
 
-#include <boost/numeric/ublas/matrix_proxy.hpp>
-#include <boost/numeric/ublas/matrix_sparse.hpp>
-
-#include <deque>
-
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
+#include <boost/numeric/ublas/matrix_proxy.hpp>
+#include <boost/numeric/ublas/matrix_sparse.hpp>
+#include <deque>
 
 namespace PatternGeneratorJRL {
 
@@ -49,11 +47,11 @@ enum foot_type_e { LEFT, RIGHT };
 
 inline std::ostream &operator<<(std::ostream &out, const foot_type_e &ft) {
   switch (ft) {
-  case LEFT:
-    out << "LEFT";
-    break;
-  default:
-    out << "RIGHT";
+    case LEFT:
+      out << "LEFT";
+      break;
+    default:
+      out << "RIGHT";
   }
   return out;
 }
@@ -62,11 +60,11 @@ enum PhaseType { SS, DS };
 
 inline std::ostream &operator<<(std::ostream &out, const PhaseType &pt) {
   switch (pt) {
-  case SS:
-    out << "SingleSupport";
-    break;
-  default:
-    out << "DoubleSupport";
+    case SS:
+      out << "SingleSupport";
+      break;
+    default:
+      out << "DoubleSupport";
   }
   return out;
 }
@@ -166,7 +164,6 @@ inline std::ostream &operator<<(std::ostream &out, const reference_t &Ref) {
 
 /// \brief Convex hull
 struct convex_hull_t {
-
   /// \brief Edges
   std::vector<double> X_vec, Y_vec, Z_vec;
   /// \brief Inequalities A_vec(i)*x+B_vec(i)y+C_vec(i)z+D_vec(i) > 0
@@ -215,7 +212,7 @@ struct convex_hull_t {
   /// \param[in] nbIneq Number inequalities
   convex_hull_t(unsigned nbVert = 0, unsigned nbIneq = 0);
 
-private:
+ private:
   /// \brief Number inequalities
   unsigned nbIneq_;
 
@@ -246,7 +243,6 @@ struct linear_inequality_t {
 
 /// \brief Support state of the robot at a certain point in time
 struct support_state_t {
-
   /// \brief Support phase
   PhaseType Phase;
   /// \brief Support foot
@@ -293,7 +289,6 @@ inline std::ostream &operator<<(std::ostream &out, const support_state_t &st) {
 
 /// \brief Solution
 struct solution_t {
-
   /// \brief Size of the solution array
   unsigned int NbVariables;
 
@@ -358,6 +353,6 @@ struct solution_t {
 
 /// \}
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 
 #endif /* _PATTERN_GENERATOR_INTERNAL_PRIVATE_H_ */

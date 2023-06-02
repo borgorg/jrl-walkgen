@@ -36,7 +36,7 @@ namespace PatternGeneratorJRL {
   trajectory using a preview control model. */
 
 class FilteringAnalyticalTrajectoryByPreviewControl : public SimplePlugin {
-public:
+ public:
   /*! \brief Default constructor */
   FilteringAnalyticalTrajectoryByPreviewControl(
       SimplePluginManager *lSPM,
@@ -73,7 +73,7 @@ public:
   /*! \brief Default destructor */
   ~FilteringAnalyticalTrajectoryByPreviewControl();
 
-private:
+ private:
   /*! \brief The trajectory used for filtering. */
   AnalyticalZMPCOGTrajectory *m_AnalyticalZMPCOGTrajectory;
 
@@ -114,5 +114,5 @@ private:
     preview control time. */
   void Resize();
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _FILTERING_ANALYTICAL_TRAJECTORY_BY_PREVIEW_CONTROL_H_ */

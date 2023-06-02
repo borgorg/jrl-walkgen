@@ -32,10 +32,11 @@
 #include <iostream>
 
 using namespace std;
+#include <assert.h>
+
 #include <Debug.hh>
 #include <SimplePlugin.hh>
 #include <SimplePluginManager.hh>
-#include <assert.h>
 
 using namespace PatternGeneratorJRL;
 
@@ -57,7 +58,6 @@ void SimplePluginManager::UnregisterPlugin(SimplePlugin *aSimplePlugin) {
 
   it_SP = m_SimplePlugins.begin();
   while (it_SP != m_SimplePlugins.end()) {
-
     if (it_SP->second == aSimplePlugin) {
       it_ToBeRemoved = it_SP;
       it_SP++;
@@ -119,8 +119,7 @@ bool SimplePluginManager::CallMethod(string &MethodName, istringstream &istrm) {
   assert(size < 65635);
 
   memset(aBuffer, 0, size + 1);
-  for (std::streamsize i = 0; i < size; i++)
-    aBuffer[i] = (char)pbuf->sbumpc();
+  for (std::streamsize i = 0; i < size; i++) aBuffer[i] = (char)pbuf->sbumpc();
   ODEBUG5(aBuffer, "PgDebug.txt");
 
   pbuf->pubsetbuf(aBuffer, size);

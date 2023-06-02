@@ -65,7 +65,7 @@ typedef struct ObstaclePar_t ObstaclePar;
   \brief Object to compute new foot trajectories to step over obstacle
   dynamically*/
 class StepOverPlanner {
-public:
+ public:
   /*! \brief  Constructor */
   StepOverPlanner(ObstaclePar &ObstacleParameters, PinocchioRobot *aPR);
 
@@ -85,13 +85,13 @@ public:
 
   /*! function which calculates the polynomial coeficients
     for the first step*/
-  void
-  PolyPlannerFirstStep(deque<FootAbsolutePosition> &aFirstStepOverFootBuffer);
+  void PolyPlannerFirstStep(
+      deque<FootAbsolutePosition> &aFirstStepOverFootBuffer);
 
   /*! function which calculates the polynomial coeficients
     for the first step*/
-  void
-  PolyPlannerSecondStep(deque<FootAbsolutePosition> &aSecondStepOverFootBuffer);
+  void PolyPlannerSecondStep(
+      deque<FootAbsolutePosition> &aSecondStepOverFootBuffer);
 
   /*! function which calculates the polynomial coeficients
     for the changing COM height*/
@@ -150,7 +150,7 @@ public:
                                    Eigen::MatrixXd WaistRot,
                                    Eigen::MatrixXd WaistPos, int WhichLeg);
 
-protected:
+ protected:
   /*! this function will calculate a feasible set
     for the stepleght and hip height during
     double support over the obstacle */
@@ -324,7 +324,7 @@ protected:
   double m_AnkleSoilDistance;
 };
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 
 #include <MotionGeneration/CollisionDetector.hh>
 #include <ZMPRefTrajectoryGeneration/ZMPDiscretization.hh>

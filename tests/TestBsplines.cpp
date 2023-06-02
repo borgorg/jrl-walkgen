@@ -25,10 +25,12 @@
 /*! \file TestBsplines.cpp
   \brief This Example shows you how to use Bsplines to create a foot trajectory
   on Z . */
-#include "Mathematics/Bsplines.hh"
+#include <stdlib.h>
+
 #include <fstream>
 #include <iostream>
-#include <stdlib.h>
+
+#include "Mathematics/Bsplines.hh"
 
 using namespace std;
 

@@ -31,7 +31,7 @@
 
 #include <deque>
 #include <string>
-//#define FULL_POLYNOME
+// #define FULL_POLYNOME
 
 #include <SimplePlugin.hh>
 #include <jrl/walkgen/pgtypes.hh>
@@ -56,7 +56,7 @@ class StepStackHandler;
 
 */
 class ZMPRefTrajectoryGeneration : public SimplePlugin {
-protected:
+ protected:
   /* ! \brief Time for single support. */
   double m_Tsingle;
 
@@ -88,7 +88,7 @@ protected:
   /*! \brief Specifies Com Height. */
   double m_ComHeight;
 
-public:
+ public:
   /* ! \brief Default constructor */
   ZMPRefTrajectoryGeneration(SimplePluginManager *lSPM);
 
@@ -293,11 +293,11 @@ public:
 
      @return If the method failed it returns -1, 0 otherwise.
   */
-  virtual void
-  OnLine(double time, std::deque<ZMPPosition> &FinalZMPPositions,
-         std::deque<COMState> &COMStates,
-         std::deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
-         std::deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions) = 0;
+  virtual void OnLine(
+      double time, std::deque<ZMPPosition> &FinalZMPPositions,
+      std::deque<COMState> &COMStates,
+      std::deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
+      std::deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions) = 0;
 
   /*! \brief Method to stop walking.
     @param[out] ZMPPositions: The queue of ZMP reference positions.
@@ -364,7 +364,7 @@ public:
   bool GetOnLineMode();
   /*! @}  */
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 
 #include <StepStackHandler.hh>
 #endif /* _ZMPREF_TRAJ_GEN_H_ */

@@ -26,13 +26,12 @@
 /* This object simulate a 2D Linearized Inverted Pendulum
    with a control at the jerk level. */
 
-//#define _DEBUG_MODE_ON_
-
-#include <fstream>
-#include <iostream>
+// #define _DEBUG_MODE_ON_
 
 #include <Debug.hh>
 #include <PreviewControl/LinearizedInvertedPendulum2D.hh>
+#include <fstream>
+#include <iostream>
 
 using namespace PatternGeneratorJRL;
 using namespace std;
@@ -85,7 +84,6 @@ void LinearizedInvertedPendulum2D::SetRobotControlPeriod(const double &aT) {
   m_SamplingPeriod = aT;
 
   if (m_SamplingPeriod != 0.0) {
-
     double dinterval = m_T / m_SamplingPeriod;
     m_InterpolationInterval = (int)dinterval;
   }
@@ -131,17 +129,14 @@ COMState LinearizedInvertedPendulum2D::GetState() {
 void LinearizedInvertedPendulum2D::setState(com_t aCoM) { m_CoM = aCoM; }
 
 int LinearizedInvertedPendulum2D::InitializeSystem() {
-  if (m_T == -1.0)
-    return -1;
+  if (m_T == -1.0) return -1;
 
-  if (m_ComHeight == -1.0)
-    return -2;
+  if (m_ComHeight == -1.0) return -2;
 
   for (int i = 0; i < 3; i++) {
     m_B(i, 0) = 0.0;
     m_C(0, i) = 0.0;
-    for (int j = 0; j < 3; j++)
-      m_A(i, j) = 0.0;
+    for (int j = 0; j < 3; j++) m_A(i, j) = 0.0;
   }
 
   m_A(0, 0) = 1.0;
@@ -185,29 +180,29 @@ int LinearizedInvertedPendulum2D::Interpolation(
     double lkSP;
     lkSP = (lk + 1) * m_SamplingPeriod;
 
-    aCOMPos.x[0] = m_CoM.x[0] +                     // Position
-                   lkSP * m_CoM.x[1] +              // Speed
-                   0.5 * lkSP * lkSP * m_CoM.x[2] + // Acceleration
-                   lkSP * lkSP * lkSP * CX / 6.0;   // Jerk
+    aCOMPos.x[0] = m_CoM.x[0] +                      // Position
+                   lkSP * m_CoM.x[1] +               // Speed
+                   0.5 * lkSP * lkSP * m_CoM.x[2] +  // Acceleration
+                   lkSP * lkSP * lkSP * CX / 6.0;    // Jerk
 
-    aCOMPos.x[1] = m_CoM.x[1] +            // Speed
-                   lkSP * m_CoM.x[2] +     // Acceleration
-                   0.5 * lkSP * lkSP * CX; // Jerk
+    aCOMPos.x[1] = m_CoM.x[1] +             // Speed
+                   lkSP * m_CoM.x[2] +      // Acceleration
+                   0.5 * lkSP * lkSP * CX;  // Jerk
 
-    aCOMPos.x[2] = m_CoM.x[2] + // Acceleration
-                   lkSP * CX;   // Jerk
+    aCOMPos.x[2] = m_CoM.x[2] +  // Acceleration
+                   lkSP * CX;    // Jerk
 
-    aCOMPos.y[0] = m_CoM.y[0] +                     // Position
-                   lkSP * m_CoM.y[1] +              // Speed
-                   0.5 * lkSP * lkSP * m_CoM.y[2] + // Acceleration
-                   lkSP * lkSP * lkSP * CY / 6.0;   // Jerk
+    aCOMPos.y[0] = m_CoM.y[0] +                      // Position
+                   lkSP * m_CoM.y[1] +               // Speed
+                   0.5 * lkSP * lkSP * m_CoM.y[2] +  // Acceleration
+                   lkSP * lkSP * lkSP * CY / 6.0;    // Jerk
 
-    aCOMPos.y[1] = m_CoM.y[1] +            // Speed
-                   lkSP * m_CoM.y[2] +     // Acceleration
-                   0.5 * lkSP * lkSP * CY; // Jerk
+    aCOMPos.y[1] = m_CoM.y[1] +             // Speed
+                   lkSP * m_CoM.y[2] +      // Acceleration
+                   0.5 * lkSP * lkSP * CY;  // Jerk
 
-    aCOMPos.y[2] = m_CoM.y[2] + // Acceleration
-                   lkSP * CY;   // Jerk
+    aCOMPos.y[2] = m_CoM.y[2] +  // Acceleration
+                   lkSP * CY;    // Jerk
 
     aCOMPos.yaw[0] = ZMPRefPositions[lCurrentPosition].theta;
 

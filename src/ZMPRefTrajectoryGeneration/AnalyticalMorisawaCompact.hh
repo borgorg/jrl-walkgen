@@ -37,8 +37,6 @@
 #ifndef _ANALYTICAL_MORISAWA_FULL_H_
 #define _ANALYTICAL_MORISAWA_FULL_H_
 
-#include "FilteringAnalyticalTrajectoryByPreviewControl.hh"
-#include "LeftAndRightFootTrajectoryGenerationMultiple.hh"
 #include <Clock.hh>
 #include <Mathematics/AnalyticalZMPCOGTrajectory.hh>
 #include <Mathematics/ConvexHull.hh>
@@ -46,6 +44,9 @@
 #include <PreviewControl/PreviewControl.hh>
 #include <ZMPRefTrajectoryGeneration/AnalyticalMorisawaAbstract.hh>
 #include <ZMPRefTrajectoryGeneration/DynamicFilter.hh>
+
+#include "FilteringAnalyticalTrajectoryByPreviewControl.hh"
+#include "LeftAndRightFootTrajectoryGenerationMultiple.hh"
 
 namespace PatternGeneratorJRL {
 /*!     @ingroup analyticalformulation
@@ -86,8 +87,7 @@ typedef struct {
   @ingroup analyticalformulation
 */
 class AnalyticalMorisawaCompact : public AnalyticalMorisawaAbstract {
-
-public:
+ public:
   /*! \name Constants to handle errors
     when changing foot steps.
     @{ */
@@ -193,15 +193,14 @@ public:
     @param[in] lStartingZMPPosition:
     The initial position of the ZMP given as a 3D vector.
   */
-  std::size_t
-  InitOnLine(deque<ZMPPosition> &FinalZMPPositions, deque<COMState> &CoMStates,
-             deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
-             deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions,
-             FootAbsolutePosition &InitLeftFootAbsolutePosition,
-             FootAbsolutePosition &InitRightFootAbsolutePosition,
-             deque<RelativeFootPosition> &RelativeFootPositions,
-             COMState &lStartingCOMState,
-             Eigen::Vector3d &lStartingZMPPosition);
+  std::size_t InitOnLine(
+      deque<ZMPPosition> &FinalZMPPositions, deque<COMState> &CoMStates,
+      deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
+      deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions,
+      FootAbsolutePosition &InitLeftFootAbsolutePosition,
+      FootAbsolutePosition &InitRightFootAbsolutePosition,
+      deque<RelativeFootPosition> &RelativeFootPositions,
+      COMState &lStartingCOMState, Eigen::Vector3d &lStartingZMPPosition);
 
   /* ! \brief Methods to update the stack on-line by inserting a
      new foot position.
@@ -222,13 +221,12 @@ public:
      @param[in] EndSequence: Inherited from abstract interface and unused.
 
   */
-  void
-  OnLineAddFoot(RelativeFootPosition &NewRelativeFootPosition,
-                deque<ZMPPosition> &FinalZMPPositions,
-                deque<COMState> &CoMStates,
-                deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
-                deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions,
-                bool EndSequence);
+  void OnLineAddFoot(
+      RelativeFootPosition &NewRelativeFootPosition,
+      deque<ZMPPosition> &FinalZMPPositions, deque<COMState> &CoMStates,
+      deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
+      deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions,
+      bool EndSequence);
 
   /* ! \brief Method to update the stacks on-line */
   void OnLine(double time, deque<ZMPPosition> &FinalZMPPositions,
@@ -264,11 +262,10 @@ public:
     @param[out] RightFootAbsolutePositions: The queue of right foot
     absolute positions.
   */
-  void
-  EndPhaseOfTheWalking(deque<ZMPPosition> &ZMPPositions,
-                       deque<COMState> &FinalCOMStates,
-                       deque<FootAbsolutePosition> &LeftFootAbsolutePositions,
-                       deque<FootAbsolutePosition> &RightFootAbsolutePositions);
+  void EndPhaseOfTheWalking(
+      deque<ZMPPosition> &ZMPPositions, deque<COMState> &FinalCOMStates,
+      deque<FootAbsolutePosition> &LeftFootAbsolutePositions,
+      deque<FootAbsolutePosition> &RightFootAbsolutePositions);
 
   /*! \brief Return the time at which it is optimal to regenerate
     a step in online mode.
@@ -456,7 +453,7 @@ public:
   void CallMethod(std::string &Method, std::istringstream &strm);
 
   /*! @} */
-protected:
+ protected:
   /*! \name Internal Methods to compute the full linear
     system.
     @{
@@ -716,7 +713,7 @@ protected:
   PatternGeneratorJRL::BSplinesFoot *m_CoMbsplinesZ;
   PatternGeneratorJRL::Polynome3 *m_ZMPpolynomeZ;
 
-public:
+ public:
   /*! \name Methods related to the Preview Control object used
     by this class. @{ */
   /*! Allows to set the preview control object. */
@@ -729,5 +726,5 @@ public:
   /*! \brief Propagate Absolute Reference Time */
   void PropagateAbsoluteReferenceTime(double x);
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif

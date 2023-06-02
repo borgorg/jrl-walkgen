@@ -28,29 +28,26 @@
 #ifndef GENERATORVELREF_HH_
 #define GENERATORVELREF_HH_
 
-#include <ZMPRefTrajectoryGeneration/mpc-trajectory-generation.hh>
-
 #include <Mathematics/intermediate-qp-matrices.hh>
 #include <Mathematics/relative-feet-inequalities.hh>
 #include <PreviewControl/LinearizedInvertedPendulum2D.hh>
 #include <PreviewControl/SupportFSM.hh>
 #include <PreviewControl/rigid-body-system.hh>
 #include <PreviewControl/rigid-body.hh>
+#include <ZMPRefTrajectoryGeneration/mpc-trajectory-generation.hh>
 #include <ZMPRefTrajectoryGeneration/qp-problem.hh>
-#include <jrl/walkgen/pinocchiorobot.hh>
-
 #include <cmath>
+#include <jrl/walkgen/pinocchiorobot.hh>
 #include <privatepgtypes.hh>
 
 namespace PatternGeneratorJRL {
 
 /// \brief Generate optimization problem as proposed in Herdt2010IROS
 class GeneratorVelRef : public MPCTrajectoryGeneration {
-
   //
   // Public methods
   //
-public:
+ public:
   /// \name Constructors and destructors.
   /// \{
   GeneratorVelRef(SimplePluginManager *lSPM, IntermedQPMat *Data,
@@ -145,7 +142,7 @@ public:
   //
   // Protected methods
   //
-protected:
+ protected:
   /// \brief Compute the selection matrices
   ///
   /// \param[in] SupportStates_deq
@@ -240,7 +237,7 @@ protected:
   //
   // Protected members
   //
-protected:
+ protected:
   IntermedQPMat *IntermedData_;
   RigidBodySystem *Robot_;
   RelativeFeetInequalities *RFI_;
@@ -249,7 +246,7 @@ protected:
   //
   // Private members
   //
-private:
+ private:
   /// \name Temporary vectors
   /// \{
   Eigen::MatrixXd MM_;
@@ -257,6 +254,6 @@ private:
   Eigen::VectorXd MV2_;
   /// \}
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 
 #endif /* GENERATORVELREF_HH_ */

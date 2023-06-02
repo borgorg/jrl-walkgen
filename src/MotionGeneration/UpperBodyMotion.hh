@@ -32,7 +32,7 @@
 
 #include <string>
 #include <vector>
-//#define FULL_POLYNOME
+// #define FULL_POLYNOME
 
 using namespace ::std;
 
@@ -42,7 +42,7 @@ using namespace ::std;
 namespace PatternGeneratorJRL {
 
 class UpperBodyMotion {
-public:
+ public:
   /// Constructor
   UpperBodyMotion();
 
@@ -55,7 +55,7 @@ public:
 
   void WriteDataFile(string aFileName, Eigen::MatrixXd &UpperBodyAngles);
 
-protected:
+ protected:
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _UPPER_BODY_MOTION_*/

@@ -34,11 +34,10 @@
 #ifndef _GENERATE_MOTION_FROM_KINEOWORKS_H_
 #define _GENERATE_MOTION_FROM_KINEOWORKS_H_
 
-#include <string>
-#include <vector>
-
 #include <PreviewControl/PreviewControl.hh>
 #include <ZMPRefTrajectoryGeneration/ZMPDiscretization.hh>
+#include <string>
+#include <vector>
 
 namespace PatternGeneratorJRL {
 
@@ -51,7 +50,7 @@ typedef struct s_KWNode {
   a proper motion for the walking pattern generator.
 */
 class GenerateMotionFromKineoWorks {
-public:
+ public:
   /*! Constructor */
   GenerateMotionFromKineoWorks();
 
@@ -98,7 +97,7 @@ public:
       deque<KWNode> &UpperBodyPositionsBuffer,
       std::vector<int> &ConversionFromLocalToRobotDOFsIndex);
 
-protected:
+ protected:
   /*! Number of DOFs inside the path provided by KineoWorks. */
   int m_NbOfDOFsFromKW;
 
@@ -133,5 +132,5 @@ protected:
   unsigned int m_NL;
 };
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _GENERATE_MOTION_FROM_KINEOWORKS_H_ */

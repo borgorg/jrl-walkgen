@@ -42,12 +42,11 @@ class SimplePluginManager;
   parsing from the PGI.
 */
 class SimplePlugin {
-
-private:
+ private:
   SimplePluginManager *m_SimplePluginManager;
   friend class SimplePluginManager;
 
-public:
+ public:
   /*! \brief Pointer towards the PGI which is handling this object. */
   inline SimplePlugin(SimplePluginManager *lSPM)
       : m_SimplePluginManager(lSPM){};
@@ -66,6 +65,6 @@ public:
     return m_SimplePluginManager;
   }
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #include <SimplePluginManager.hh>
 #endif /* _PGI_SIMPLE_PLUGIN_H_ */

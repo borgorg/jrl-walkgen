@@ -28,12 +28,11 @@
    an auxiliary file, and the redefinition of the virtual
    functions of this class.
 */
-#include <fstream>
-#include <iostream>
-
 #include <MotionGeneration/GenerateMotionFromKineoWorks.hh>
 #include <PreviewControl/PreviewControl.hh>
 #include <ZMPRefTrajectoryGeneration/ZMPDiscretization.hh>
+#include <fstream>
+#include <iostream>
 
 #define _DEBUG_
 namespace PatternGeneratorJRL {
@@ -122,7 +121,7 @@ int GenerateMotionFromKineoWorks::ReadKineoWorksPath(string aFileName) {
         for (int j = 1; j < m_NbOfDOFsFromKW; j++) {
           aif >> aNode.Joints[j];
         }
-        aif >> atmp; // read ")"
+        aif >> atmp;  // read ")"
         if (atmp != ")") {
           cerr << " ) expected. Aborted. " << atmp << endl;
           return -1;
@@ -175,8 +174,8 @@ void GenerateMotionFromKineoWorks::CreateBufferFirstPreview(
   m_COMBuffer.resize(ZMPRefBuffer.size() - m_NL);
 
   // use accumulated zmp error  of preview control so far
-  aSxzmp = 0.0; // m_sxzmp;
-  aSyzmp = 0.0; // m_syzmp;
+  aSxzmp = 0.0;  // m_sxzmp;
+  aSyzmp = 0.0;  // m_syzmp;
 
   aPC1x.resize(3, 1);
   aPC1y.resize(3, 1);
@@ -199,12 +198,10 @@ void GenerateMotionFromKineoWorks::CreateBufferFirstPreview(
     aof_COMBuffer.open("CartCOMBuffer_1.dat", ofstream::app);
   }
 
-  if (FirstCall)
-    FirstCall = 0;
+  if (FirstCall) FirstCall = 0;
 #endif
 
   for (unsigned int i = 0; i < ZMPRefBuffer.size() - m_NL; i++) {
-
     aFIFOZMPRefPositions.push_back(ZMPRefBuffer[i + m_NL]);
 
     m_PC->OneIterationOfPreview(aPC1x, aPC1y, aSxzmp, aSyzmp,
@@ -236,7 +233,6 @@ void GenerateMotionFromKineoWorks::CreateBufferFirstPreview(
 }
 
 void GenerateMotionFromKineoWorks::SetPreviewControl(PreviewControl *aPC) {
-
   m_PC = aPC;
   m_SamplingPeriod = m_PC->SamplingPeriod();
   m_PreviewControlTime = m_PC->PreviewControlTime();
@@ -258,8 +254,7 @@ void GenerateMotionFromKineoWorks::ComputeUpperBodyPosition(
   KWNode deltaJoints;
 
   for (unsigned int i = 0; i < m_IndexFromKWToRobot.size(); i++)
-    if (m_IndexFromKWToRobot[i] != -1)
-      NbOfUsedDOFs++;
+    if (m_IndexFromKWToRobot[i] != -1) NbOfUsedDOFs++;
   ConversionFromLocalToRobotDOFsIndex.resize(NbOfUsedDOFs);
   deltaJoints.Joints.resize(NbOfUsedDOFs);
   ConversionFromLocalToKW.resize(NbOfUsedDOFs);
@@ -278,7 +273,6 @@ void GenerateMotionFromKineoWorks::ComputeUpperBodyPosition(
   for (unsigned int i = 0; i < m_Path[0].Joints.size(); i++) {
     int IdDOF = 0;
     if ((IdDOF = m_IndexFromKWToRobot[i]) != -1) {
-
       UpperBodyPositionsBuffer[count].Joints[k] = m_Path[0].Joints[i];
       ConversionFromLocalToRobotDOFsIndex[k] = IdDOF;
       ConversionFromLocalToKW[k] = i;
@@ -340,4 +334,4 @@ void GenerateMotionFromKineoWorks::ComputeUpperBodyPosition(
   }
 }
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL

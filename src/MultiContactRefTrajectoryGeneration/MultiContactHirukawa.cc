@@ -1,8 +1,10 @@
 #include "MultiContactHirukawa.hh"
+
+#include <Eigen/SVD>
+
 #include "pinocchio/algorithm/crba.hpp"
 #include "pinocchio/algorithm/jacobian.hpp"
-#include <Eigen/SVD>
-//#define VERBOSE
+// #define VERBOSE
 
 using namespace std;
 using namespace PatternGeneratorJRL;
@@ -10,19 +12,38 @@ using namespace Eigen;
 using namespace se3;
 
 MultiContactHirukawa::MultiContactHirukawa(se3::Model *model)
-    : robot_model_(model), q_(model->nq), dq_(model->nv), dqrh_(6), dqlh_(6),
-      dqrf_(6), dqlf_(6), idx_r_wrist_(findIndex(model, "RARM_JOINT5")),
+    : robot_model_(model),
+      q_(model->nq),
+      dq_(model->nv),
+      dqrh_(6),
+      dqlh_(6),
+      dqrf_(6),
+      dqlf_(6),
+      idx_r_wrist_(findIndex(model, "RARM_JOINT5")),
       idx_l_wrist_(findIndex(model, "LARM_JOINT5")),
       idx_r_ankle_(findIndex(model, "RLEG_JOINT5")),
-      idx_l_ankle_(findIndex(model, "LLEG_JOINT5")), idx_r_hip_(30),
-      idx_l_hip_(24), idx_r_shoulder_(17), idx_l_shoulder_(10),
-      tmpJ_(6, model->nv), Jrh_(6, 6), Jlh_(6, 6), Jrf_(6, 6), Jlf_(6, 6),
-      Jrh_1_(6, 6), Jlh_1_(6, 6), Jrf_1_(6, 6), Jlf_1_(6, 6), xirf_(6),
-      xilf_(6), xirh_(6), xilh_(6),
+      idx_l_ankle_(findIndex(model, "LLEG_JOINT5")),
+      idx_r_hip_(30),
+      idx_l_hip_(24),
+      idx_r_shoulder_(17),
+      idx_l_shoulder_(10),
+      tmpJ_(6, model->nv),
+      Jrh_(6, 6),
+      Jlh_(6, 6),
+      Jrf_(6, 6),
+      Jlf_(6, 6),
+      Jrh_1_(6, 6),
+      Jlh_1_(6, 6),
+      Jrf_1_(6, 6),
+      Jlf_1_(6, 6),
+      xirf_(6),
+      xilf_(6),
+      xirh_(6),
+      xilh_(6),
       svd_(JacobiSVD<MatrixXd>(6, 6, ComputeThinU | ComputeThinV)) {
   robot_data_ = new se3::Data(*model);
-  n_it_ = 5;                // number of iteration max to converge
-  sampling_period_ = 0.005; // sampling period in seconds
+  n_it_ = 5;                 // number of iteration max to converge
+  sampling_period_ = 0.005;  // sampling period in seconds
 
   q_.fill(0.0);
   dq_.fill(0.0);
@@ -69,22 +90,22 @@ MultiContactHirukawa::MultiContactHirukawa(se3::Model *model)
   contacts_[RightFoot].p.fill(0.0);
   contacts_[RightFoot].n.fill(0.0);
   contacts_[RightFoot].lambda =
-      1.0; // arbitrary value, Check the paper to get more intuition about it
+      1.0;  // arbitrary value, Check the paper to get more intuition about it
 
   contacts_[LeftFoot].p.fill(0.0);
   contacts_[LeftFoot].n.fill(0.0);
   contacts_[LeftFoot].lambda =
-      1.0; // arbitrary value, Check the paper to get more intuition about it
+      1.0;  // arbitrary value, Check the paper to get more intuition about it
 
   contacts_[RightHand].p.fill(0.0);
   contacts_[RightHand].n.fill(0.0);
   contacts_[RightHand].lambda =
-      0.2; // arbitrary value, Check the paper to get more intuition about it
+      0.2;  // arbitrary value, Check the paper to get more intuition about it
 
   contacts_[LeftHand].p.fill(0.0);
   contacts_[LeftHand].n.fill(0.0);
   contacts_[LeftHand].lambda =
-      0.2; // arbitrary value, Check the paper to get more intuition about it
+      0.2;  // arbitrary value, Check the paper to get more intuition about it
 
   epsilons_.resize(4, 0.0);
 
@@ -255,11 +276,11 @@ int MultiContactHirukawa::inverseMomentum() {
   return 0;
 }
 
-int MultiContactHirukawa::oneIteration(COMState &comState,       // INPUT/OUTPUT
-                                       FootAbsolutePosition &rf, // INPUT
-                                       FootAbsolutePosition &lf, // INPUT
-                                       HandAbsolutePosition &rh, // INPUT
-                                       HandAbsolutePosition &lh) // INPUT
+int MultiContactHirukawa::oneIteration(COMState &comState,  // INPUT/OUTPUT
+                                       FootAbsolutePosition &rf,  // INPUT
+                                       FootAbsolutePosition &lf,  // INPUT
+                                       HandAbsolutePosition &rh,  // INPUT
+                                       HandAbsolutePosition &lh)  // INPUT
 {
   cout << "dq_.head(6) = " << endl << dq_.head(6) << endl;
   for (unsigned i = 0; i < 500; ++i) {
@@ -307,7 +328,7 @@ int MultiContactHirukawa::oneIteration(COMState &comState,       // INPUT/OUTPUT
 }
 
 int MultiContactHirukawa::invertMatrix(Eigen::MatrixXd &A,
-                                       Eigen::MatrixXd &A_1 // Right Hand Side
+                                       Eigen::MatrixXd &A_1  // Right Hand Side
 ) {
   svd_.compute(A);
   S_ = svd_.singularValues();

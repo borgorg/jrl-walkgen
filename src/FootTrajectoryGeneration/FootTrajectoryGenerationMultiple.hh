@@ -55,7 +55,7 @@ namespace PatternGeneratorJRL {
 
 */
 class FootTrajectoryGenerationMultiple : public SimplePlugin {
-public:
+ public:
   /*! \name Constants to define the nature of the foot trajectory.
     @{
   */
@@ -218,10 +218,10 @@ public:
 
   /*! @} */
 
-  FootTrajectoryGenerationMultiple &
-  operator=(const FootTrajectoryGenerationMultiple &aFTGM);
+  FootTrajectoryGenerationMultiple &operator=(
+      const FootTrajectoryGenerationMultiple &aFTGM);
 
-protected:
+ protected:
   /*! \brief Handle a set of object allowing the generation of the foot
     trajectory.*/
   std::vector<FootTrajectoryGenerationStandard *>
@@ -245,5 +245,5 @@ protected:
   /*! \brief Sensitivity to numerical unstability when using time. */
   double m_Sensitivity;
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _FOOT_TRAJECTORY_GENERATION_MULTIPLE_H_ */

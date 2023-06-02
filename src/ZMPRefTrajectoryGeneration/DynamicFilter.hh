@@ -29,13 +29,14 @@
 #ifndef DYNAMICFILTER_HH
 #define DYNAMICFILTER_HH
 
-#include "Clock.hh"
 #include <MotionGeneration/ComAndFootRealizationByGeometry.hh>
+
+#include "Clock.hh"
 
 namespace PatternGeneratorJRL {
 
 class DynamicFilter : SimplePlugin {
-public: // Public methods
+ public:  // Public methods
   /// \brief
   DynamicFilter(SimplePluginManager *SPM, PinocchioRobot *aPR);
   ~DynamicFilter();
@@ -87,11 +88,11 @@ public: // Public methods
 
   void CallMethod(std::string &Method, std::istringstream &strm);
 
-private: // Private methods
-         // void computeWaist(const FootAbsolutePosition & inputLeftFoot) ;
+ private:  // Private methods
+           // void computeWaist(const FootAbsolutePosition & inputLeftFoot) ;
   // -------------------------------------------------------------------
 
-public: // The accessors
+ public:  // The accessors
   void setRobotUpperPart(const Eigen::VectorXd &configuration,
                          const Eigen::VectorXd &velocity,
                          const Eigen::VectorXd &acceleration);
@@ -118,7 +119,7 @@ public: // The accessors
 
   inline deque<Eigen::Vector3d> zmpmb() { return ZMPMB_vec_; }
 
-private: // Private members
+ private:  // Private members
   /// \brief Time variables
   /// -----------------------------------
   ///
@@ -222,7 +223,7 @@ private: // Private members
 
   const unsigned int MODE_PC_;
 
-public: // debug functions
+ public:  // debug functions
   // to use the vector of eigen used by metapod
   // EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
@@ -236,6 +237,6 @@ public: // debug functions
              const deque<COMState> &outputDeltaCOMTraj_deq_);
 };
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 
-#endif // DYNAMICFILTER_HH
+#endif  // DYNAMICFILTER_HH

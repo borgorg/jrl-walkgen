@@ -42,7 +42,7 @@ namespace Solver {
   optimal problem:
  */
 class PLDPSolverHerdt {
-public:
+ public:
   /*! \brief Constructor */
   PLDPSolverHerdt(unsigned int CardU, double *iPu, double *Px, double *Pu,
                   double *iLQ);
@@ -62,7 +62,7 @@ public:
       unsigned int NbRemovedFootCstr, bool StartingSequence,
       unsigned int NumberSteps, bool CurrentStateChanged, double time);
 
-protected:
+ protected:
   /*! \name Initial solution methods related
     @{
   */
@@ -123,7 +123,7 @@ protected:
   /*! \name Methods related to a limited amount of computational time
     @{ */
 
-private:
+ private:
   bool m_NoCholesky;
   /*! \brief Store Pu */
   double *m_Pu;
@@ -232,6 +232,6 @@ private:
 
   /*! @} */
 };
-} // namespace Solver
-} // namespace Optimization
+}  // namespace Solver
+}  // namespace Optimization
 #endif /* _PLDPSOLVER_H_*/

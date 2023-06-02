@@ -50,7 +50,7 @@ class PatternGeneratorInterfacePrivate;
 
 */
 class ComAndFootRealization : public SimplePlugin {
-private:
+ private:
   /*! \brief Store the dynamic robot. */
   PinocchioRobot *m_PinocchioRobot;
 
@@ -63,7 +63,7 @@ private:
   /*! Object which handles a Stack of steps */
   StepStackHandler *m_StepStackHandler;
 
-public:
+ public:
   /* \name Constructor and destructor.*/
 
   /*! \brief Constructor
@@ -73,7 +73,9 @@ public:
       PatternGeneratorInterfacePrivate *aPatternGeneratorInterface)
       : SimplePlugin((PatternGeneratorJRL::SimplePluginManager *)
                          aPatternGeneratorInterface),
-        m_PinocchioRobot(0), m_HeightOfCoM(0), m_SamplingPeriod(0.005),
+        m_PinocchioRobot(0),
+        m_HeightOfCoM(0),
+        m_SamplingPeriod(0.005),
         m_StepStackHandler(0){};
 
   /*! \brief virtual destructor */
@@ -147,12 +149,11 @@ public:
     IMPORTANT: The jrlHumanoidDynamicRobot must have been properly set up.
 
   */
-  virtual bool
-  InitializationCoM(Eigen::VectorXd &BodyAnglesIni,
-                    Eigen::Vector3d &lStartingCOMPosition,
-                    Eigen::Matrix<double, 6, 1> &lStartingWaistPose,
-                    FootAbsolutePosition &InitLeftFootAbsPos,
-                    FootAbsolutePosition &InitRightFootAbsPos) = 0;
+  virtual bool InitializationCoM(
+      Eigen::VectorXd &BodyAnglesIni, Eigen::Vector3d &lStartingCOMPosition,
+      Eigen::Matrix<double, 6, 1> &lStartingWaistPose,
+      FootAbsolutePosition &InitLeftFootAbsPos,
+      FootAbsolutePosition &InitRightFootAbsPos) = 0;
 
   /*! This initialization phase, make sure that the needed buffers
     for the upper body motion are correctly setup.
@@ -209,6 +210,6 @@ public:
   virtual Eigen::Vector3d GetCOGInitialAnkles() = 0;
 };
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 
 #endif

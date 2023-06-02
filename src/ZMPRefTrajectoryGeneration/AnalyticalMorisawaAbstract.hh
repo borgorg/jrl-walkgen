@@ -49,8 +49,7 @@ namespace PatternGeneratorJRL {
 
 */
 class AnalyticalMorisawaAbstract : public ZMPRefTrajectoryGeneration {
-
-public:
+ public:
   const static unsigned int SINGLE_SUPPORT = 0;
   const static unsigned int DOUBLE_SUPPORT = 1;
 
@@ -128,43 +127,40 @@ public:
     Returns the number of steps which has been completely put inside
     the queue of ZMP, and foot positions.
   */
-  virtual std::size_t
-  InitOnLine(deque<ZMPPosition> &FinalZMPPositions, deque<COMState> &CoMStates,
-             deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
-             deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions,
-             FootAbsolutePosition &InitLeftFootAbsolutePosition,
-             FootAbsolutePosition &InitRightFootAbsolutePosition,
-             deque<RelativeFootPosition> &RelativeFootPositions,
-             COMState &lStartingCOMState,
-             Eigen::Vector3d &aStartingZMPPosition) = 0;
+  virtual std::size_t InitOnLine(
+      deque<ZMPPosition> &FinalZMPPositions, deque<COMState> &CoMStates,
+      deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
+      deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions,
+      FootAbsolutePosition &InitLeftFootAbsolutePosition,
+      FootAbsolutePosition &InitRightFootAbsolutePosition,
+      deque<RelativeFootPosition> &RelativeFootPositions,
+      COMState &lStartingCOMState, Eigen::Vector3d &aStartingZMPPosition) = 0;
 
   /* ! \brief Method to update the stacks on-line */
-  virtual void
-  OnLine(double time, deque<ZMPPosition> &FinalZMPPositions,
-         deque<COMState> &CoMStates,
-         deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
-         deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions) = 0;
+  virtual void OnLine(
+      double time, deque<ZMPPosition> &FinalZMPPositions,
+      deque<COMState> &CoMStates,
+      deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
+      deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions) = 0;
 
   /* ! Methods to update the stack on-line by
      inserting a new foot position. */
-  virtual void
-  OnLineAddFoot(RelativeFootPosition &NewRelativeFootPosition,
-                deque<ZMPPosition> &FinalZMPPositions,
-                deque<COMState> &CoMStates,
-                deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
-                deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions,
-                bool EndSequence) = 0;
+  virtual void OnLineAddFoot(
+      RelativeFootPosition &NewRelativeFootPosition,
+      deque<ZMPPosition> &FinalZMPPositions, deque<COMState> &CoMStates,
+      deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
+      deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions,
+      bool EndSequence) = 0;
 
   /* ! \brief Method to change on line the landing position of a foot.
      @return If the method failed it returns -1, 0 otherwise.
   */
-  virtual int
-  OnLineFootChange(double time, FootAbsolutePosition &aFootAbsolutePosition,
-                   deque<ZMPPosition> &FinalZMPPositions,
-                   deque<COMState> &CoMStates,
-                   deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
-                   deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions,
-                   StepStackHandler *aStepStackHandler) = 0;
+  virtual int OnLineFootChange(
+      double time, FootAbsolutePosition &aFootAbsolutePosition,
+      deque<ZMPPosition> &FinalZMPPositions, deque<COMState> &CoMStates,
+      deque<FootAbsolutePosition> &FinalLeftFootAbsolutePositions,
+      deque<FootAbsolutePosition> &FinalRightFootAbsolutePositions,
+      StepStackHandler *aStepStackHandler) = 0;
 
   /*! \brief Method to stop walking.
     @param[out] ZMPPositions: The queue of ZMP reference positions.
@@ -284,7 +280,7 @@ public:
 
   /*! @} */
 
-protected:
+ protected:
   /*! \name Store the matrices used for compution.
     @{
   */
@@ -376,7 +372,7 @@ protected:
 
   int m_isStepStairOn;
 
-public:
+ public:
   /*! \brief Get the absolute reference time of
     the system */
   double GetAbsoluteTimeReference() const { return m_AbsoluteTimeReference; }
@@ -395,5 +391,5 @@ public:
     humanoid specificities */
   void SetHumanoidSpecificities(PinocchioRobot *aPR) { m_PR = aPR; };
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif

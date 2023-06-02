@@ -26,16 +26,15 @@
   \brief implement an SQP method to generate online stable walking motion */
 
 #define EIGEN_RUNTIME_NO_MALLOC
-#include <Eigen/Dense>
-
 #include <Debug.hh>
+#include <Eigen/Dense>
 #include <ZMPRefTrajectoryGeneration/nmpc_generator.hh>
 #include <cmath>
 
-//#define DEBUG
-//#define DEBUG_COUT
+// #define DEBUG
+// #define DEBUG_COUT
 
-//#ifdef DEBUG
+// #ifdef DEBUG
 
 void DumpMatrix(std::string fileName, Eigen::MatrixXd &M) {
   std::ofstream aof;
@@ -77,7 +76,7 @@ void DumpVector(std::string fileName, Eigen::VectorXd &M) {
     }
   }
 }
-//#endif // DEBUG
+// #endif // DEBUG
 
 using namespace std;
 using namespace PatternGeneratorJRL;
@@ -260,13 +259,13 @@ void NMPCgenerator::initNMPCgenerator(bool useLineSearch,
   T_step_ = T_step;
   useLineSearch_ = useLineSearch;
 
-  alpha_x_ = 5;         // weight for CoM velocity X tracking  : 0.5 * a ; 2.5
-  alpha_y_ = 5;         // weight for CoM velocity Y tracking  : 0.5 * a ; 2.5
-  alpha_theta_ = 1e+06; // weight for CoM velocity Yaw tracking : 0.5 * a ; 2.5
-  beta_ = 1e+03;        // weight for ZMP reference tracking : 0.5 * b ; 1e+03
-  minjerk_ = 1e-08;     // weight for jerk minimization      : 0.5 * c ; 1e-04
-  delta_ = 1e-06;       // weight for foot position evolution: 0.5 * d ; 1e-04
-  kappa_ = 0.0; // weight for foot distance from support: 0.5 * d ; 1e-04
+  alpha_x_ = 5;          // weight for CoM velocity X tracking  : 0.5 * a ; 2.5
+  alpha_y_ = 5;          // weight for CoM velocity Y tracking  : 0.5 * a ; 2.5
+  alpha_theta_ = 1e+06;  // weight for CoM velocity Yaw tracking : 0.5 * a ; 2.5
+  beta_ = 1e+03;         // weight for ZMP reference tracking : 0.5 * b ; 1e+03
+  minjerk_ = 1e-08;      // weight for jerk minimization      : 0.5 * c ; 1e-04
+  delta_ = 1e-06;        // weight for foot position evolution: 0.5 * d ; 1e-04
+  kappa_ = 0.0;  // weight for foot distance from support: 0.5 * d ; 1e-04
 
   SecurityMarginX_ = 0.095;
   SecurityMarginY_ = 0.055;
@@ -288,9 +287,9 @@ void NMPCgenerator::initNMPCgenerator(bool useLineSearch,
   currentSupport_ = currentSupport;
   SupportStates_deq_.resize(N_ + 1, currentSupport_);
   FSM_->StepPeriod(T_step_);
-  FSM_->DSPeriod(1e9); // period during the robot move at 0.0 com speed
+  FSM_->DSPeriod(1e9);  // period during the robot move at 0.0 com speed
   FSM_->DSSSPeriod(T_step_);
-  FSM_->NbStepsSSDS(2); // number of previw step
+  FSM_->NbStepsSSDS(2);  // number of previw step
   FSM_->SamplingPeriod(T_);
 
   ostringstream oss(std::ostringstream::ate);
@@ -422,13 +421,11 @@ void NMPCgenerator::updateConstraint() {
   // Fill up qp_J_
   unsigned index = 0;
   for (unsigned i = 0; i < nc_vel_; ++i) {
-    for (unsigned j = 0; j < nv_; ++j)
-      qp_J_(i + index, j) = Avel_(i, j);
+    for (unsigned j = 0; j < nv_; ++j) qp_J_(i + index, j) = Avel_(i, j);
   }
   index += nc_vel_;
   for (unsigned i = 0; i < nc_cop_; ++i) {
-    for (unsigned j = 0; j < N2nf2; ++j)
-      qp_J_(i + index, j) = Acop_xy_(i, j);
+    for (unsigned j = 0; j < N2nf2; ++j) qp_J_(i + index, j) = Acop_xy_(i, j);
     for (unsigned j = 0; j < nf_; ++j)
       qp_J_(i + index, j + N2nf2) = Acop_theta_(i, j);
   }
@@ -448,7 +445,6 @@ void NMPCgenerator::updateConstraint() {
   index += nc_rot_;
   for (unsigned obs = 0; obs < obstacles_.size(); ++obs) {
     for (unsigned n = 0; n < nf_; ++n) {
-
       qp_J_obs_i_ = 2 * U_xy_.transpose() * Hobs_[obs][n] + Aobs_[obs][n];
       for (unsigned j = 0; j < N2nf2; ++j)
         qp_J_((obs + 1) * n, j) = qp_J_obs_i_(j);
@@ -599,8 +595,7 @@ void NMPCgenerator::updateInitialCondition(
               ((double)(int)((time_ - currentSupport_.StartTime) / T_) * T_);
     Tfirst_ = T_ - Tfirst_;
   }
-  if (Tfirst_ < 0.0001)
-    Tfirst_ = T_;
+  if (Tfirst_ < 0.0001) Tfirst_ = T_;
 
 #ifdef DEBUG_COUT
   cout << time_ << " ";
@@ -628,8 +623,7 @@ void NMPCgenerator::guessWarmStart() {
     else
       sign = -1.0;
 
-    if ((nf_ % 2 == 0))
-      sign = -sign;
+    if ((nf_ % 2 == 0)) sign = -sign;
 
     if (nf_ == 1) {
       F_kp1_x_[0] = currentSupport_.X +
@@ -666,8 +660,7 @@ void NMPCgenerator::guessWarmStart() {
     }
 
     // update U_xy_
-    for (unsigned i = 0; i < 2 * N_ + 2 * nf_; ++i)
-      U_xy_(i) = U_(i);
+    for (unsigned i = 0; i < 2 * N_ + 2 * nf_; ++i) U_xy_(i) = U_(i);
   }
   return;
 }
@@ -719,8 +712,7 @@ void NMPCgenerator::updateInitialConditionDependentMatrices() {
 }
 
 void NMPCgenerator::solve() {
-  if (currentSupport_.Phase == DS && currentSupport_.NbStepsLeft == 0)
-    return;
+  if (currentSupport_.Phase == DS && currentSupport_.NbStepsLeft == 0) return;
   Eigen::internal::set_is_malloc_allowed(false);
   /* Process and solve problem, s.t. pattern generator data is consistent */
   unsigned iter = 0;
@@ -753,10 +745,10 @@ void NMPCgenerator::solve() {
   Eigen::internal::set_is_malloc_allowed(true);
   ofstream os("iteration_solver.dat", ios::app);
   os << time_ << " " << iter - 1 << " " << normDeltaU << endl;
-#endif // DEBUG
+#endif  // DEBUG
 #ifdef DEBUG_COUT
   // cout << "solver number of iteration = " << iter << endl ;
-#endif // DEBUG_COUT
+#endif  // DEBUG_COUT
 }
 
 void NMPCgenerator::preprocess_solution() {
@@ -802,13 +794,11 @@ void NMPCgenerator::solve_qp() {
   //    cerr << "qp solveur succeded" << endl ;
   if (QP_->fail() == 1) {
     cerr << "qp solveur failed : problem has no solution" << endl;
-    if (exit_on_error_)
-      exit(-1);
+    if (exit_on_error_) exit(-1);
   }
   if (QP_->fail() == 2) {
     cerr << "qp solveur failed : problems with decomposing H" << endl;
-    if (exit_on_error_)
-      exit(-1);
+    if (exit_on_error_) exit(-1);
   }
 
   deltaU_ = QP_->result();
@@ -850,8 +840,7 @@ void NMPCgenerator::postprocess_solution() {
   // data(k+1) = data(k) + alpha * dofs
 
   // TODO add line search when problematic
-  for (unsigned i = 0; i < nv_; ++i)
-    deltaU_thresh_(i) = deltaU_(i);
+  for (unsigned i = 0; i < nv_; ++i) deltaU_thresh_(i) = deltaU_(i);
 
   lineSearch();
 
@@ -865,8 +854,7 @@ void NMPCgenerator::postprocess_solution() {
 
   U_ += lineStep_ * deltaU_thresh_;
 
-  for (unsigned i = 0; i < 2 * N_ + 2 * nf_; ++i)
-    U_xy_(i) = U_(i);
+  for (unsigned i = 0; i < 2 * N_ + 2 * nf_; ++i) U_xy_(i) = U_(i);
 
   for (unsigned i = 0; i < N_; ++i) {
     U_x_(i) = U_(i);
@@ -883,8 +871,7 @@ void NMPCgenerator::postprocess_solution() {
 #ifdef DEBUG_COUT
   cout << "U_ = " << U_ << endl;
   cout << "delta_F_X = [";
-  for (unsigned i = N_; i < N_ + nf_; ++i)
-    cout << deltaU_thresh_[i] << " , ";
+  for (unsigned i = N_; i < N_ + nf_; ++i) cout << deltaU_thresh_[i] << " , ";
   cout << "]" << endl;
 
   cout << "delta_F_Y = [";
@@ -932,7 +919,7 @@ void NMPCgenerator::getSolution(std::vector<double> &JerkX,
 #ifdef DEBUG_COUT
   cout << currentSupport_.NbStepsLeft << " "
        << SupportStates_deq_.back().StepNumber << endl;
-#endif // DEBUG_COUT
+#endif  // DEBUG_COUT
   if (currentSupport_.NbStepsLeft <= 0 &&
       SupportStates_deq_.back().StepNumber <= 0) {
     FootStepX[0] =
@@ -956,20 +943,14 @@ void NMPCgenerator::getSolution(std::vector<double> &JerkX,
     double vy = vel_ref_.Global.Y;
     double vtheta = vel_ref_.Global.Yaw;
     double thresh = 0.17;
-    if (vx > thresh)
-      vx = thresh;
-    if (vx < -thresh)
-      vx = -thresh;
+    if (vx > thresh) vx = thresh;
+    if (vx < -thresh) vx = -thresh;
 
-    if (vy > thresh)
-      vy = thresh;
-    if (vy < -thresh)
-      vy = -thresh;
+    if (vy > thresh) vy = thresh;
+    if (vy < -thresh) vy = -thresh;
 
-    if (vtheta > thresh)
-      vtheta = thresh;
-    if (vtheta < -thresh)
-      vtheta = -thresh;
+    if (vtheta > thresh) vtheta = thresh;
+    if (vtheta < -thresh) vtheta = -thresh;
 
     double fx = FootStepX[nf - 1];
     double fy = FootStepY[nf - 1];
@@ -1030,7 +1011,7 @@ void NMPCgenerator::updateSupportdeque(double time,
   for (unsigned pi = 1; pi <= N_; pi++) {
     FSM_->set_support_state(currentTime, pi, PreviewedSupport, vel);
     if (PreviewedSupport.StateChanged) {
-      if (pi == 1 || SupportStates_deq_[pi - 1].Phase == DS) // Foot down
+      if (pi == 1 || SupportStates_deq_[pi - 1].Phase == DS)  // Foot down
       {
         if (PreviewedSupport.Foot == LEFT)
           FAP = &FinalLeftFoot;
@@ -1061,7 +1042,7 @@ void NMPCgenerator::updateSupportdeque(double time,
 
 void NMPCgenerator::computeFootSelectionMatrix() {
   std::deque<support_state_t>::const_iterator SS_it;
-  SS_it = SupportStates_deq_.begin(); // points at the cur. sup. st.
+  SS_it = SupportStates_deq_.begin();  // points at the cur. sup. st.
   ++SS_it;
   v_kp1_.setZero();
   V_kp1_.setZero();
@@ -1208,7 +1189,7 @@ void NMPCgenerator::buildConvexHullSystems() {
     ubB0lf_(i) = hull4_.D_vec[i];
   }
   // "SWITCHING MASS"/"DOUBLE SUPPORT" HULL
-  dummySupp_.Foot = LEFT; // foot by default, it shouldn't cause any trouble
+  dummySupp_.Foot = LEFT;  // foot by default, it shouldn't cause any trouble
   dummySupp_.Phase = SS;
   RFI_->set_vertices(hull4_, dummySupp_, INEQ_COP);
   RFI_->compute_linear_system(hull4_, dummySupp_);
@@ -1232,15 +1213,15 @@ void NMPCgenerator::buildConvexHullSystems() {
   dummySupp_.Foot = RIGHT;
   dummySupp_.Phase = SS;
   hull5_.X_vec[0] = -0.28;
-  hull5_.Y_vec[0] = -0.162; // -0.2
+  hull5_.Y_vec[0] = -0.162;  // -0.2
   hull5_.X_vec[1] = -0.2;
-  hull5_.Y_vec[1] = -0.3; // -0.3
+  hull5_.Y_vec[1] = -0.3;  // -0.3
   hull5_.X_vec[2] = 0.0;
-  hull5_.Y_vec[2] = -0.4; // -0.4
+  hull5_.Y_vec[2] = -0.4;  // -0.4
   hull5_.X_vec[3] = 0.2;
-  hull5_.Y_vec[3] = -0.3; // -0.3
+  hull5_.Y_vec[3] = -0.3;  // -0.3
   hull5_.X_vec[4] = 0.28;
-  hull5_.Y_vec[4] = -0.162; // -0.162
+  hull5_.Y_vec[4] = -0.162;  // -0.162
   RFI_->compute_linear_system(hull5_, dummySupp_);
   for (unsigned i = 0; i < hull5_.A_vec.size(); ++i) {
     A0r_(i, 0) = hull5_.A_vec[i];
@@ -1251,15 +1232,15 @@ void NMPCgenerator::buildConvexHullSystems() {
   dummySupp_.Foot = LEFT;
   dummySupp_.Phase = SS;
   hull5_.X_vec[0] = -0.28;
-  hull5_.Y_vec[0] = 0.162; // 0.2
+  hull5_.Y_vec[0] = 0.162;  // 0.2
   hull5_.X_vec[1] = -0.2;
-  hull5_.Y_vec[1] = 0.3; // 0.3
+  hull5_.Y_vec[1] = 0.3;  // 0.3
   hull5_.X_vec[2] = 0.0;
-  hull5_.Y_vec[2] = 0.4; // 0.4
+  hull5_.Y_vec[2] = 0.4;  // 0.4
   hull5_.X_vec[3] = 0.2;
-  hull5_.Y_vec[3] = 0.3; // 0.3
+  hull5_.Y_vec[3] = 0.3;  // 0.3
   hull5_.X_vec[4] = 0.28;
-  hull5_.Y_vec[4] = 0.162; // 0.2
+  hull5_.Y_vec[4] = 0.162;  // 0.2
   RFI_->compute_linear_system(hull5_, dummySupp_);
   for (unsigned i = 0; i < hull5_.A_vec.size(); ++i) {
     A0l_(i, 0) = hull5_.A_vec[i];
@@ -1325,8 +1306,7 @@ void NMPCgenerator::initializeCoPConstraint() {
 
   // mapping matrix to compute the gradient_theta of the CoP Constraint Jacobian
   for (unsigned j = 0, k = 0; j < N_; ++j, k += (unsigned int)A0rf_.rows())
-    for (unsigned i = 0; i < A0rf_.rows(); ++i)
-      derv_Acop_map_(i + k, j) = 1.0;
+    for (unsigned i = 0; i < A0rf_.rows(); ++i) derv_Acop_map_(i + k, j) = 1.0;
 #ifdef DEBUG
   DumpMatrix("derv_Acop_map_", derv_Acop_map_);
   DumpMatrix("Pzu_", Pzu_);
@@ -1335,8 +1315,7 @@ void NMPCgenerator::initializeCoPConstraint() {
 }
 
 void NMPCgenerator::updateCoPconstraint(Eigen::VectorXd &U) {
-  if (nc_cop_ == 0)
-    return;
+  if (nc_cop_ == 0) return;
 
   // buils Acop_xy_ + UBcop_
   evalCoPconstraint(U);
@@ -1345,11 +1324,10 @@ void NMPCgenerator::updateCoPconstraint(Eigen::VectorXd &U) {
   vector<double> theta_vec(nf_ + 1);
   theta_vec[0] = SupportStates_deq_[1].Yaw;
   for (unsigned i = 0; i < nf_; ++i) {
-    theta_vec[i + 1] = U(2 * N_ + 2 * nf_ + i); // F_kp1_theta_(i);
+    theta_vec[i + 1] = U(2 * N_ + 2 * nf_ + i);  // F_kp1_theta_(i);
   }
   Eigen::MatrixXd U_xy(2 * N_ + 2 * nf_, 1);
-  for (unsigned i = 0; i < U_xy.size(); ++i)
-    U_xy(i) = U(i);
+  for (unsigned i = 0; i < U_xy.size(); ++i) U_xy(i) = U(i);
   // every time instant in the pattern generator constraints
   // depend on the support order
   for (unsigned i = 0; i < N_; ++i) {
@@ -1381,7 +1359,7 @@ void NMPCgenerator::updateCoPconstraint(Eigen::VectorXd &U) {
       Acop_theta_(i, j) =
           derv_Acop_map2_(i,
                           j) *
-          Acop_theta_dummy1_(i); // warning this is the real jacobian
+          Acop_theta_dummy1_(i);  // warning this is the real jacobian
       // Acop_theta_(i,j) = 0.0 ; // WARNING this is not the real jacobian !
     }
   }
@@ -1389,14 +1367,13 @@ void NMPCgenerator::updateCoPconstraint(Eigen::VectorXd &U) {
 }
 
 void NMPCgenerator::evalCoPconstraint(Eigen::VectorXd &U) {
-  if (nc_cop_ == 0)
-    return;
+  if (nc_cop_ == 0) return;
 
   // Compute D_kp1_, it depends on the feet hulls
   vector<double> theta_vec(nf_ + 1);
   theta_vec[0] = SupportStates_deq_[1].Yaw;
   for (unsigned i = 0; i < nf_; ++i) {
-    theta_vec[i + 1] = U(2 * N_ + 2 * nf_ + i); // F_kp1_theta_(i);
+    theta_vec[i + 1] = U(2 * N_ + 2 * nf_ + i);  // F_kp1_theta_(i);
   }
   // every time instant in the pattern generator constraints
   // depend on the support order
@@ -1470,7 +1447,7 @@ void NMPCgenerator::initializeFootPoseConstraint() {
     UBfoot_[i].resize(n_vertices_);
     SelecMat_[i].resize(2, 2 * (N_ + nf_));
     AdRdF_[i].resize(n_vertices_);
-    deltaF_[i].resize(2); // 2 as [deltaFx,deltaFy]
+    deltaF_[i].resize(2);  // 2 as [deltaFx,deltaFy]
   }
   rotMat_vec_.resize(nf_, tmpRotMat_);
   drotMat_vec_.resize(nf_, tmpRotMat_);
@@ -1502,8 +1479,7 @@ void NMPCgenerator::updateFootPoseConstraint(Eigen::VectorXd &U) {
   //    return ;
 
   int ignoreFirstStep = 0;
-  if (isFootCloseToLand())
-    ignoreFirstStep = nf_;
+  if (isFootCloseToLand()) ignoreFirstStep = nf_;
 
   nc_foot_ = (nf_ - ignoreFirstStep) * n_vertices_;
 
@@ -1534,7 +1510,7 @@ void NMPCgenerator::updateFootPoseConstraint(Eigen::VectorXd &U) {
       support_state[n] = SupportStates_deq_[i + 1];
       if (support_state[n].StepNumber != 0) {
         support_state[n].Yaw =
-            U(2 * N_ + 2 * nf_ + n - 1); // F_kp1_theta_(n-1);
+            U(2 * N_ + 2 * nf_ + n - 1);  // F_kp1_theta_(n-1);
       }
       ++n;
       done = true;
@@ -1558,7 +1534,7 @@ void NMPCgenerator::updateFootPoseConstraint(Eigen::VectorXd &U) {
       A0f_theta_[n] = A0l_ * drotMat_vec_[n];
     }
     if (n != 0) {
-      deltaF_[n](0) = U(N_ + n) - U(N_ + n - 1); // F_kp1_x_[n]-F_kp1_x_[n-1];
+      deltaF_[n](0) = U(N_ + n) - U(N_ + n - 1);  // F_kp1_x_[n]-F_kp1_x_[n-1];
       deltaF_[n](1) = U(2 * N_ + nf_ + n) - U(2 * N_ + nf_ + n - 1);
       // F_kp1_y_[n]-F_kp1_y_[n-1];
       AdRdF_[n] = A0f_theta_[n] * deltaF_[n];
@@ -1586,22 +1562,20 @@ void NMPCgenerator::updateFootPoseConstraint(Eigen::VectorXd &U) {
     os.str("");
     os << "Afoot_theta_" << n << "_";
     DumpMatrix(os.str(), Afoot_theta_[n]);
-#endif // DEBUG
+#endif  // DEBUG
   }
 #ifdef DEBUG_COUT
   cout << Afoot_xy_full_ << endl;
   cout << Afoot_theta_full_ << endl;
-#endif // DEBUG_COUT
+#endif  // DEBUG_COUT
   return;
 }
 
 void NMPCgenerator::evalFootPoseConstraint(Eigen::VectorXd &U) {
-  if (nc_foot_ == 0)
-    return;
+  if (nc_foot_ == 0) return;
 
   int ignoreFirstStep = 0;
-  if (isFootCloseToLand())
-    ignoreFirstStep = 1;
+  if (isFootCloseToLand()) ignoreFirstStep = 1;
 
   // rotation matrice from F_k+1 to F_k
   vector<support_state_t> support_state(nf_);
@@ -1612,7 +1586,7 @@ void NMPCgenerator::evalFootPoseConstraint(Eigen::VectorXd &U) {
       support_state[n] = SupportStates_deq_[i + 1];
       if (support_state[n].StepNumber != 0) {
         support_state[n].Yaw =
-            U(2 * N_ + 2 * nf_ + n - 1); // F_kp1_theta_(n-1);
+            U(2 * N_ + 2 * nf_ + n - 1);  // F_kp1_theta_(n-1);
       }
       ++n;
       done = true;
@@ -1731,28 +1705,23 @@ void NMPCgenerator::initializeRotIneqConstraint() {
 
   for (unsigned i = 0; i < nf_; ++i) {
     for (unsigned j = 0; j < nf_; ++j) {
-      if (i == j)
-        Arot_(i, 2 * N_ + 2 * nf_ + j) = 1.0;
-      if ((i - 1) == j)
-        Arot_(i, 2 * N_ + 2 * nf_ + j) = -1.0;
+      if (i == j) Arot_(i, 2 * N_ + 2 * nf_ + j) = 1.0;
+      if ((i - 1) == j) Arot_(i, 2 * N_ + 2 * nf_ + j) = -1.0;
     }
     UBrot_(i) = 0.17;
   }
 
   for (unsigned i = nf_; i < 2 * nf_; ++i) {
     for (unsigned j = 0; j < nf_; ++j) {
-      if ((i - nf_) == j)
-        Arot_(i, 2 * N_ + 2 * nf_ + j) = -1.0;
-      if ((i - nf_ - 1) == j)
-        Arot_(i, 2 * N_ + 2 * nf_ + j) = 1.0;
+      if ((i - nf_) == j) Arot_(i, 2 * N_ + 2 * nf_ + j) = -1.0;
+      if ((i - nf_ - 1) == j) Arot_(i, 2 * N_ + 2 * nf_ + j) = 1.0;
     }
     UBrot_(i) = 0.17;
   }
 }
 
 void NMPCgenerator::updateRotIneqConstraint() {
-  if (nc_rot_ == 0)
-    return;
+  if (nc_rot_ == 0) return;
 
   UBrot_(0) = 0.17 + currentSupport_.Yaw;
   UBrot_(nf_) = 0.17 - currentSupport_.Yaw;
@@ -1833,7 +1802,7 @@ void NMPCgenerator::updateObstacleConstraint() {
 
 void NMPCgenerator::initializeStandingConstraint() {
   // constraint on the foot position we force them to be next to each other
-  nc_stan_ = 3 * nf_; // 3 because we constraint x,y and theta
+  nc_stan_ = 3 * nf_;  // 3 because we constraint x,y and theta
   Astan_.resize(nc_stan_, nv_);
   Astan_.setZero();
   UBstan_.resize(nc_stan_);
@@ -1955,8 +1924,7 @@ void NMPCgenerator::initializeCostFunction() {
   diffMat_.setIdentity();
   for (unsigned i = 0; i < nf_; ++i)
     for (unsigned j = 0; j < nf_; ++j)
-      if ((i - j) == 1)
-        diffMat_(i, j) = -1;
+      if ((i - j) == 1) diffMat_(i, j) = -1;
 #ifdef DEBUG_COUT
   cout << diffMat_ << endl;
 #endif
@@ -2087,17 +2055,13 @@ void NMPCgenerator::updateCostFunction() {
   cout << "Pvsc_y_ = " << Pvsc_y_ << endl;
 #endif
   unsigned index = 0;
-  for (unsigned i = 0; i < N_; ++i)
-    p_(index + i) = p_xy_X_(i);
+  for (unsigned i = 0; i < N_; ++i) p_(index + i) = p_xy_X_(i);
   index += N_;
-  for (unsigned i = 0; i < nf_; ++i)
-    p_(index + i) = p_xy_Fx_(i);
+  for (unsigned i = 0; i < nf_; ++i) p_(index + i) = p_xy_Fx_(i);
   index += nf_;
-  for (unsigned i = 0; i < N_; ++i)
-    p_(index + i) = p_xy_Y_(i);
+  for (unsigned i = 0; i < N_; ++i) p_(index + i) = p_xy_Y_(i);
   index += N_;
-  for (unsigned i = 0; i < nf_; ++i)
-    p_(index + i) = p_xy_Fy_(i);
+  for (unsigned i = 0; i < nf_; ++i) p_(index + i) = p_xy_Fy_(i);
   index += nf_;
   // p_theta_ = ( 0.5 * a * [ f_k_theta+T_step*dTheta^ref
   // f_k_theta+2*T_step*dTheta^ref ] )
@@ -2130,20 +2094,14 @@ void NMPCgenerator::setLocalVelocityReference(reference_t local_vel_ref) {
                       vel_ref_.Local.Y * cos(currentSupport_.Yaw);
   vel_ref_.Global.Yaw = vel_ref_.Local.Yaw;
 
-  if (vel_ref_.Global.X > 0.4)
-    vel_ref_.Global.X = 0.4;
-  if (vel_ref_.Global.X < -0.4)
-    vel_ref_.Global.X = -0.4;
+  if (vel_ref_.Global.X > 0.4) vel_ref_.Global.X = 0.4;
+  if (vel_ref_.Global.X < -0.4) vel_ref_.Global.X = -0.4;
 
-  if (vel_ref_.Global.Y > 0.3)
-    vel_ref_.Global.Y = 0.3;
-  if (vel_ref_.Global.Y < -0.3)
-    vel_ref_.Global.Y = -0.3;
+  if (vel_ref_.Global.Y > 0.3) vel_ref_.Global.Y = 0.3;
+  if (vel_ref_.Global.Y < -0.3) vel_ref_.Global.Y = -0.3;
 
-  if (vel_ref_.Global.Yaw > 0.2)
-    vel_ref_.Global.Yaw = 0.2;
-  if (vel_ref_.Global.Yaw < -0.2)
-    vel_ref_.Global.Yaw = -0.2;
+  if (vel_ref_.Global.Yaw > 0.2) vel_ref_.Global.Yaw = 0.2;
+  if (vel_ref_.Global.Yaw < -0.2) vel_ref_.Global.Yaw = -0.2;
 #ifdef DEBUG_COUT
   cout << "velocity = ";
   cout << vel_ref_.Global.X << " ";
@@ -2165,20 +2123,14 @@ void NMPCgenerator::setGlobalVelocityReference(reference_t global_vel_ref) {
   vel_ref_.Global.Y = global_vel_ref.Local.Y;
   vel_ref_.Global.Yaw = global_vel_ref.Local.Yaw;
 
-  if (vel_ref_.Global.X > 0.4)
-    vel_ref_.Global.X = 0.4;
-  if (vel_ref_.Global.X < -0.4)
-    vel_ref_.Global.X = -0.4;
+  if (vel_ref_.Global.X > 0.4) vel_ref_.Global.X = 0.4;
+  if (vel_ref_.Global.X < -0.4) vel_ref_.Global.X = -0.4;
 
-  if (vel_ref_.Global.Y > 0.3)
-    vel_ref_.Global.Y = 0.3;
-  if (vel_ref_.Global.Y < -0.3)
-    vel_ref_.Global.Y = -0.3;
+  if (vel_ref_.Global.Y > 0.3) vel_ref_.Global.Y = 0.3;
+  if (vel_ref_.Global.Y < -0.3) vel_ref_.Global.Y = -0.3;
 
-  if (vel_ref_.Global.Yaw > 0.2)
-    vel_ref_.Global.Yaw = 0.2;
-  if (vel_ref_.Global.Yaw < -0.2)
-    vel_ref_.Global.Yaw = -0.2;
+  if (vel_ref_.Global.Yaw > 0.2) vel_ref_.Global.Yaw = 0.2;
+  if (vel_ref_.Global.Yaw < -0.2) vel_ref_.Global.Yaw = -0.2;
 
   vel_ref_.Local.X = vel_ref_.Global.X * cos(currentSupport_.Yaw) +
                      vel_ref_.Global.Y * sin(currentSupport_.Yaw);
@@ -2212,13 +2164,13 @@ void NMPCgenerator::initializeLineSearch() {
   selectActiveConstraint.resize(nc_);
   selectActiveConstraint.setZero();
   lineStep_ = 1.0;
-  lineStep0_ = 1.0; // step searched
+  lineStep0_ = 1.0;  // step searched
   cm_ = 0.0;
-  c_ = 1.0; // Merit Function Jacobian
+  c_ = 1.0;  // Merit Function Jacobian
   mu_ = 1.0;
   stepParam_ = 0.8;
   L_n_ = 0.0;
-  L_ = 0.0; // Merit function of the next step and Merit function
+  L_ = 0.0;  // Merit function of the next step and Merit function
   maxLineSearchIteration_ = 1000;
 }
 
@@ -2249,8 +2201,7 @@ double NMPCgenerator::evalMeritFunctionJacobian() {
       }
 
       double sign = 1.0;
-      if (constrValue < 0.0)
-        sign = -1.0;
+      if (constrValue < 0.0) sign = -1.0;
 
       meritJac += mu_ * sign * JdU_(i);
     }
@@ -2272,8 +2223,7 @@ double NMPCgenerator::evalMeritFunction() {
     if (selectActiveConstraint(i) != 0.0) {
       if (selectActiveConstraint(i) > 0.0) {
         double tmp = gU_(i) - ub_(i);
-        if (tmp < 0)
-          tmp = -tmp;
+        if (tmp < 0) tmp = -tmp;
         constrValueNorm += tmp;
       }
     }
@@ -2293,8 +2243,7 @@ void NMPCgenerator::updateIterationBeforeLanding() {
     else
       break;
   --itBeforeLanding_;
-  if (itBeforeLanding_ > (unsigned int)itMax_)
-    itBeforeLanding_ = itMax_;
+  if (itBeforeLanding_ > (unsigned int)itMax_) itBeforeLanding_ = itMax_;
 #ifdef DEBUG_COUT
   cout << "itBeforeLanding_ = " << itBeforeLanding_ << endl;
 #endif

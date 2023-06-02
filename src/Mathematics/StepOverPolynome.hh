@@ -31,16 +31,15 @@
 #ifndef _STEPOVER_POLYNOME_H_
 #define _STEPOVER_POLYNOME_H_
 
-#include <vector>
-
 #include <Eigen/Dense>
 #include <Mathematics/Polynome.hh>
+#include <vector>
 
 namespace PatternGeneratorJRL {
 /*! @ingroup steppingover
   @brief Polynome used for Z trajectory during stepover. */
 class StepOverPolynomeFoot : public Polynome {
-public:
+ public:
   /*! Constructor:
     boundCond: the different boundary conditions begin,
     intermediate and end of polynomial
@@ -58,7 +57,7 @@ public:
 /*! @ingroup steppingover
   @brief Polynome used for Z trajectory during stepover. */
 class StepOverPolynomeFootZtoX : public Polynome {
-public:
+ public:
   /*! Constructor:
     Zpos: vector with Zpos
     Xpos: vector Xpos */
@@ -75,7 +74,7 @@ public:
   @brief Polynome used for X trajectory in function of time
   to combine with StepOverPolynomeFootZtoX.*/
 class StepOverPolynomeFootXtoTime : public Polynome {
-public:
+ public:
   /*! Constructor:
     Zpos: vector with Zpos */
   StepOverPolynomeFootXtoTime();
@@ -91,7 +90,7 @@ public:
   @brief Polynome for the hip trajectory.
 */
 class StepOverPolynomeHip4 : public Polynome {
-public:
+ public:
   /*! Constructor:
     boundCond: the different boundary conditions begin,
     intermediate and end of polynomial
@@ -111,7 +110,7 @@ public:
   @brief spline function calculation
   class to calculate cubic splines */
 class StepOverSpline {
-public:
+ public:
   /*! Constructor: */
   StepOverSpline();
 
@@ -125,7 +124,7 @@ public:
   /*! Destructor. */
   ~StepOverSpline();
 
-protected:
+ protected:
   unsigned long int m_number;
   Eigen::MatrixXd m_Coefficients;
 };
@@ -133,7 +132,7 @@ protected:
 /*! @ingroup steppingover
   class to calculate Clamped Cubic splines */
 class StepOverClampedCubicSpline {
-public:
+ public:
   /*! Constructor: */
   StepOverClampedCubicSpline();
 
@@ -147,11 +146,11 @@ public:
   /*! Destructor. */
   ~StepOverClampedCubicSpline();
 
-protected:
+ protected:
   unsigned long int m_number;
   Eigen::MatrixXd m_Coefficients;
 };
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 
 #endif /* _STEPOVER_POLYNOME_H_ */

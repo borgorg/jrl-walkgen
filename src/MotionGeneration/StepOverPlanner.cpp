@@ -28,17 +28,15 @@
     to step over obstacles.
 */
 
+#include <MotionGeneration/StepOverPlanner.hh>
 #include <fstream>
 
 #include "Debug.hh"
-
-#include <MotionGeneration/StepOverPlanner.hh>
 
 using namespace ::PatternGeneratorJRL;
 
 StepOverPlanner::StepOverPlanner(ObstaclePar &ObstacleParameters,
                                  PinocchioRobot *aPR) {
-
   m_PR = aPR;
   // Get information specific to the humanoid.
   double lWidth;
@@ -179,12 +177,9 @@ StepOverPlanner::StepOverPlanner(ObstaclePar &ObstacleParameters,
 }
 
 StepOverPlanner::~StepOverPlanner() {
+  if (m_PolynomeStepOverHipRotation != 0) delete m_PolynomeStepOverHipRotation;
 
-  if (m_PolynomeStepOverHipRotation != 0)
-    delete m_PolynomeStepOverHipRotation;
-
-  if (m_PolynomeStepOverHipStep2 != 0)
-    delete m_PolynomeStepOverHipStep2;
+  if (m_PolynomeStepOverHipStep2 != 0) delete m_PolynomeStepOverHipStep2;
 
   if (m_ClampedCubicSplineStepOverFootX != 0)
     delete m_ClampedCubicSplineStepOverFootX;
@@ -201,13 +196,11 @@ StepOverPlanner::~StepOverPlanner() {
   if (m_ClampedCubicSplineStepOverFootOmegaImpact != 0)
     delete m_ClampedCubicSplineStepOverFootOmegaImpact;
 
-  if (m_CollDet != 0)
-    delete m_CollDet;
+  if (m_CollDet != 0) delete m_CollDet;
 }
 
 void StepOverPlanner::CalculateFootHolds(
     deque<RelativeFootPosition> &aFootHolds) {
-
   m_FootHolds.clear();
 
   m_Tsingle = m_ZMPDiscr->GetTSingleSupport();
@@ -418,7 +411,6 @@ void StepOverPlanner::DoubleSupportFeasibility() {
     to the obstacle */
   for (int i = 0; i < EvaluationNumber + 1; i++) {
     for (int j = 0; j < EvaluationNumber + 1; j++) {
-
       StepOverStepLenght = StepOverStepLenghtMin + i * IncrementStepLenght;
       StepOverCOMHeight =
           StepOverCOMHeightMax - (double(j * IncrementCOMHeight));
@@ -559,7 +551,6 @@ void StepOverPlanner::DoubleSupportFeasibility() {
       // protection against knee overstretch built in
       if (!((LeftLegAngles(3) < m_KneeAngleBound) ||
             (RightLegAngles(3) < m_KneeAngleBound))) {
-
         WaistPos(0) = aCOMState.x[0];
         WaistPos(1) = aCOMState.y[0];
         WaistPos(2) = aCOMState.z[0] + m_DiffBetweenComAndWaist;
@@ -632,8 +623,7 @@ void StepOverPlanner::DoubleSupportFeasibility() {
         }
       }
       // cout << "FinalCollisionStatus is " << FinalCollisionStatus << endl;
-      if (!FinalCollisionStatus)
-        break;
+      if (!FinalCollisionStatus) break;
     }
     if (!FinalCollisionStatus) {
       m_StepOverStepLenght = StepOverStepLenght;
@@ -659,7 +649,7 @@ void StepOverPlanner::PolyPlanner(deque<COMState> &aCOMBuffer,
   m_ZMPPositions = aZMPPositions;
 
   m_ModulationSupportCoefficient =
-      0.9; // m_ZMPDiscr->GetModulationSupportCoefficient();
+      0.9;  // m_ZMPDiscr->GetModulationSupportCoefficient();
 
   m_StartStepOver = 0;
   m_StartDoubleSupp = 0;
@@ -736,8 +726,7 @@ void StepOverPlanner::PolyPlanner(deque<COMState> &aCOMBuffer,
     aof_StepOverBuffers.open("StepOverBuffers_1.csv", ofstream::app);
   }
 
-  if (FirstCall)
-    FirstCall = 0;
+  if (FirstCall) FirstCall = 0;
 
   for (unsigned int i = 0; i < m_LeftFootBuffer.size(); i++) {
     if (aof_StepOverBuffers.is_open()) {
@@ -769,7 +758,6 @@ void StepOverPlanner::PolyPlanner(deque<COMState> &aCOMBuffer,
 
 void StepOverPlanner::PolyPlannerFirstStep(
     deque<FootAbsolutePosition> &aStepOverFootBuffer) {
-
   Eigen::Matrix<double, 8, 1> aBoundCondZ;
   Eigen::Matrix<double, 8, 1> aBoundCondY;
   Eigen::Matrix<double, 8, 1> aBoundCondX;
@@ -1088,7 +1076,6 @@ void StepOverPlanner::PolyPlannerFirstStep(
 
 void StepOverPlanner::PolyPlannerSecondStep(
     deque<FootAbsolutePosition> &aStepOverFootBuffer) {
-
   Eigen::Matrix<double, 8, 1> aBoundCondZ;
   Eigen::Matrix<double, 8, 1> aBoundCondY;
   Eigen::Matrix<double, 8, 1> aBoundCondX;
@@ -1109,7 +1096,7 @@ void StepOverPlanner::PolyPlannerSecondStep(
 
   xOffset = 0.0;
 
-  Omega1 = 120.0 * m_ObstacleParameters.h; // in degrees
+  Omega1 = 120.0 * m_ObstacleParameters.h;  // in degrees
   Omega2 = 120.0 * m_ObstacleParameters.h;
   OmegaImpact = -2.0;
 
@@ -1517,7 +1504,6 @@ void StepOverPlanner::GetFootBuffers(
 }
 
 void StepOverPlanner::SetObstacleInformation(ObstaclePar ObstacleParameters) {
-
   // add safety boundaries to the obstacle ,
   // the safety bounderies at the moment are chosen
   // but they can vary in the fuuter in function
@@ -1592,7 +1578,6 @@ void StepOverPlanner::SetDynamicMultiBodyModel(PinocchioRobot *aPR) {
 }
 
 void StepOverPlanner::TimeDistributeFactor(vector<double> &TimeDistrFactor) {
-
   for (unsigned int i = 0; i < TimeDistrFactor.size(); i++) {
     m_TimeDistrFactor[i] = TimeDistrFactor[i];
   }
@@ -1617,8 +1602,8 @@ void StepOverPlanner::CreateBufferFirstPreview(
     aFIFOZMPRefPositions.push_back(m_ZMPRefBuffer[i]);
 
   // use accumulated zmp error  of preview control so far
-  aSxzmp = 0.0; // m_sxzmp;
-  aSyzmp = 0.0; // m_syzmp;
+  aSxzmp = 0.0;  // m_sxzmp;
+  aSyzmp = 0.0;  // m_syzmp;
 
   aPC1x.resize(3, 1);
   aPC1y.resize(3, 1);
@@ -1641,12 +1626,10 @@ void StepOverPlanner::CreateBufferFirstPreview(
     aof_COMBuffer.open("CartCOMBuffer_1.dat", ofstream::app);
   }
 
-  if (FirstCall)
-    FirstCall = 0;
+  if (FirstCall) FirstCall = 0;
 #endif
 
   for (unsigned int i = 0; i < m_ZMPRefBuffer.size() - m_NL; i++) {
-
     aFIFOZMPRefPositions.push_back(m_ZMPRefBuffer[i + m_NL]);
 
     m_PC->OneIterationOfPreview(aPC1x, aPC1y, aSxzmp, aSyzmp,
@@ -1681,7 +1664,6 @@ void StepOverPlanner::CreateBufferFirstPreview(
 }
 
 void StepOverPlanner::m_SetObstacleParameters(istringstream &strm) {
-
   ODEBUG("I am reading the obstacle parameters"
          << " ");
 

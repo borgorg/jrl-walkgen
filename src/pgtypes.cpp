@@ -85,4 +85,4 @@ std::ostream &operator<<(std::ostream &os, const COMState_s &acs) {
   return os;
 }
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL

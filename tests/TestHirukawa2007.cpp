@@ -25,9 +25,9 @@
 /* \file This file tests A. Herdt's walking algorithm for
  * automatic foot placement giving an instantaneous CoM velocity reference.
  */
-#include "Debug.hh"
 #include <MultiContactRefTrajectoryGeneration/MultiContactHirukawa.hh>
 
+#include "Debug.hh"
 #include "pinocchio/algorithm/jacobian.hpp"
 #include "pinocchio/multibody/model.hpp"
 #include "pinocchio/multibody/parser/urdf.hpp"
@@ -48,8 +48,9 @@ int main(int argc, char *argv[]) {
   if (argc >= 2) {
     filename = argv[1];
   } else {
-    filename = "/home/mnaveau/devel/ros_unstable/stacks/inverse_kinematics/"
-               "pgmax/hrp2014.urdf";
+    filename =
+        "/home/mnaveau/devel/ros_unstable/stacks/inverse_kinematics/"
+        "pgmax/hrp2014.urdf";
   }
 
   std::cout << "Parse filename \"" << filename << "\"" << std::endl;
@@ -78,9 +79,10 @@ int main(int argc, char *argv[]) {
 VectorXd HalfSittingPos(se3::Model model) {
   VectorXd halfsitting = VectorXd::Zero(model.nq);
   ifstream aif;
-  aif.open("/home/mnaveau/devel/ros_unstable/install/share/hrp2-14/"
-           "HRP2JRLInitConfigSmall.dat",
-           ifstream::in);
+  aif.open(
+      "/home/mnaveau/devel/ros_unstable/install/share/hrp2-14/"
+      "HRP2JRLInitConfigSmall.dat",
+      ifstream::in);
   if (aif.is_open()) {
     for (int i = 0; i < model.nq; i++) {
       aif >> halfsitting(i);
@@ -108,8 +110,7 @@ void readData(vector<COMState> &comPos_, vector<FootAbsolutePosition> &rf_,
   // reading all the data file
   while (dataStream.good()) {
     vector<double> oneLine(74);
-    for (unsigned int i = 0; i < oneLine.size(); ++i)
-      dataStream >> oneLine[i];
+    for (unsigned int i = 0; i < oneLine.size(); ++i) dataStream >> oneLine[i];
     data_.push_back(oneLine);
   }
   dataStream.close();

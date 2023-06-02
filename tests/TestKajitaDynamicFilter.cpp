@@ -24,19 +24,19 @@
  */
 /* \file This file tests Kajita's dynamic filter on a simple case
  */
+#include <ZMPRefTrajectoryGeneration/DynamicFilter.hh>
+#include <jrl/walkgen/pgtypes.hh>
+
 #include "CommonTools.hh"
 #include "Debug.hh"
 #include "TestObject.hh"
-#include <ZMPRefTrajectoryGeneration/DynamicFilter.hh>
-#include <jrl/walkgen/pgtypes.hh>
 
 using namespace ::PatternGeneratorJRL;
 using namespace ::PatternGeneratorJRL::TestSuite;
 using namespace std;
 
 class TestInverseKinematics : public TestObject {
-
-private:
+ private:
   DynamicFilter *dynamicfilter_;
   SimplePluginManager *SPM_;
   double dInitX, dInitY;
@@ -54,7 +54,7 @@ private:
 
   deque<ZMPPosition> delta_zmp;
 
-public:
+ public:
   TestInverseKinematics(int argc, char *argv[], string &aString)
       : TestObject(argc, argv, aString) {
     SPM_ = NULL;
@@ -139,13 +139,13 @@ public:
     aof.setf(ios::scientific, ios::floatfield);
     for (unsigned int i = 0; i < delta_com.size(); i++) {
       aof << filterprecision(lStartingCOMState(0) + delta_com[i].x[0])
-          << " "; // 1
+          << " ";  // 1
       aof << filterprecision(lStartingCOMState(1) + delta_com[i].y[0])
-          << " ";                                          // 2
-      aof << filterprecision(lStartingCOMState(0)) << " "; // 3
-      aof << filterprecision(delta_com[i].x[0]) << " ";    // 4
-      aof << filterprecision(lStartingCOMState(1)) << " "; // 5
-      aof << filterprecision(delta_com[i].x[1]) << " ";    // 6
+          << " ";                                           // 2
+      aof << filterprecision(lStartingCOMState(0)) << " ";  // 3
+      aof << filterprecision(delta_com[i].x[0]) << " ";     // 4
+      aof << filterprecision(lStartingCOMState(1)) << " ";  // 5
+      aof << filterprecision(delta_com[i].x[1]) << " ";     // 6
       aof << endl;
     }
 
@@ -197,13 +197,12 @@ public:
         m_CurrentAcceleration, 0.005, 1, 0);
   }
 
-protected:
+ protected:
   void chooseTestProfile() { return; }
   void generateEvent() { return; }
 
   double filterprecision(double adb) {
-    if (fabs(adb) < 1e-7)
-      return 0.0;
+    if (fabs(adb) < 1e-7) return 0.0;
 
     double ladb2 = adb * 1e7;
     double lintadb2 = trunc(ladb2);

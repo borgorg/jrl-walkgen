@@ -34,59 +34,68 @@
 #include <string.h>
 #include <time.h>
 
+#include <ZMPRefTrajectoryGeneration/problem-vel-ref.hh>
 #include <fstream>
 #include <iostream>
-
-#include <ZMPRefTrajectoryGeneration/problem-vel-ref.hh>
 using namespace PatternGeneratorJRL;
 
 ProblemVelRef_s::ProblemVelRef_s()
-    : m(0), me(0), mmax(0), n(0), nmax(0), mnn(0), Q(0), D(0), DU(0), DS(0),
-      XL(0), XU(0), X(0), NewX(0), U(0), war(0), iwar(0), iout(0), ifail(0),
-      iprint(0), lwar(0), liwar(0), Eps(0) {}
+    : m(0),
+      me(0),
+      mmax(0),
+      n(0),
+      nmax(0),
+      mnn(0),
+      Q(0),
+      D(0),
+      DU(0),
+      DS(0),
+      XL(0),
+      XU(0),
+      X(0),
+      NewX(0),
+      U(0),
+      war(0),
+      iwar(0),
+      iout(0),
+      ifail(0),
+      iprint(0),
+      lwar(0),
+      liwar(0),
+      Eps(0) {}
 ProblemVelRef_s::~ProblemVelRef_s() { ReleaseMemory(); }
 
 void ProblemVelRef_s::ReleaseMemory() {
-  if (Q != 0)
-    delete[] Q;
+  if (Q != 0) delete[] Q;
 
-  if (D != 0)
-    delete[] D;
+  if (D != 0) delete[] D;
 
-  if (DS != 0)
-    delete[] DS;
+  if (DS != 0) delete[] DS;
 
-  if (DU != 0)
-    delete[] DU;
+  if (DU != 0) delete[] DU;
 
-  if (XL != 0)
-    delete[] XL;
+  if (XL != 0) delete[] XL;
 
-  if (XU != 0)
-    delete[] XU;
+  if (XU != 0) delete[] XU;
 
-  if (X != 0)
-    delete[] X;
+  if (X != 0) delete[] X;
 
-  if (NewX != 0)
-    delete[] NewX;
+  if (NewX != 0) delete[] NewX;
 
-  if (iwar != 0)
-    delete[] iwar;
+  if (iwar != 0) delete[] iwar;
 
-  if (war != 0)
-    delete[] war;
+  if (war != 0) delete[] war;
 
-  if (U != 0)
-    free(U);
+  if (U != 0) free(U);
 }
 
 void ProblemVelRef_s::AllocateMemory() {
   war = new double[lwar];
-  iwar = new int[liwar]; // The Cholesky decomposition is done internally.
+  iwar = new int[liwar];  // The Cholesky decomposition is done internally.
 
-  U = (double *)malloc(sizeof(double) *
-                       (unsigned int)mnn); // Returns the Lagrange multipliers.;
+  U = (double *)malloc(
+      sizeof(double) *
+      (unsigned int)mnn);  // Returns the Lagrange multipliers.;
 
   DS = new double[(8 * m_QP_N + 1) * 2 * (m_QP_N + m_stepNumber)];
 
@@ -95,11 +104,11 @@ void ProblemVelRef_s::AllocateMemory() {
   Q = new double[4 * (m_QP_N + m_stepNumber) * (m_QP_N + m_stepNumber)];
   // Quadratic part of the objective function
   D = new double[2 * (m_QP_N +
-                      m_stepNumber)]; // Linear part of the objective function
-  XL = new double[2 * (m_QP_N + m_stepNumber)];   // Lower bound of the jerk.
-  XU = new double[2 * (m_QP_N + m_stepNumber)];   // Upper bound of the jerk.
-  X = new double[2 * (m_QP_N + m_stepNumber)];    // Solution of the system.
-  NewX = new double[2 * (m_QP_N + m_stepNumber)]; // Solution of the system.
+                      m_stepNumber)];  // Linear part of the objective function
+  XL = new double[2 * (m_QP_N + m_stepNumber)];    // Lower bound of the jerk.
+  XU = new double[2 * (m_QP_N + m_stepNumber)];    // Upper bound of the jerk.
+  X = new double[2 * (m_QP_N + m_stepNumber)];     // Solution of the system.
+  NewX = new double[2 * (m_QP_N + m_stepNumber)];  // Solution of the system.
 }
 
 void ProblemVelRef_s::setDimensions(int NbOfConstraints, int NbOfEqConstraints,
@@ -133,62 +142,57 @@ void ProblemVelRef_s::setDimensions(int NbOfConstraints, int NbOfEqConstraints,
 }
 
 void ProblemVelRef_s::initializeProblem() {
-
   memset(DU, 0,
          (8 * m_QP_N + 1) * 2 * (m_QP_N + m_stepNumber) * sizeof(double));
 }
 
 void ProblemVelRef_s::dumpMatrix(std::ostream &aos, int type) {
-
   int lnbrows = 0, lnbcols = 0;
   double *aMatrix = 0;
   switch (type) {
-  case MATRIX_Q:
-    lnbrows = lnbcols = (m_QP_N + m_stepNumber) * 2;
-    aMatrix = Q;
-    break;
+    case MATRIX_Q:
+      lnbrows = lnbcols = (m_QP_N + m_stepNumber) * 2;
+      aMatrix = Q;
+      break;
 
-  case MATRIX_DU:
-    lnbrows = m; // NbOfConstraints.
-    lnbcols = (m_QP_N + m_stepNumber) * 2;
-    aMatrix = DU;
-    break;
+    case MATRIX_DU:
+      lnbrows = m;  // NbOfConstraints.
+      lnbcols = (m_QP_N + m_stepNumber) * 2;
+      aMatrix = DU;
+      break;
   }
 
   aos << "[" << lnbcols << "," << lnbrows << "]" << std::endl;
 
   for (int i = 0; i < lnbrows; i++) {
-    for (int j = 0; j < lnbcols; j++)
-      aos << aMatrix[j * lnbrows + i] << " ";
+    for (int j = 0; j < lnbcols; j++) aos << aMatrix[j * lnbrows + i] << " ";
     aos << std::endl;
   }
 }
 
 void ProblemVelRef_s::dumpVector(std::ostream &aos, int type) {
-
   int lsize = 0;
   double *aVector = 0;
   switch (type) {
+    case VECTOR_D:
+      lsize = 2 * (m_QP_N + m_stepNumber);
+      aVector = D;
+      break;
 
-  case VECTOR_D:
-    lsize = 2 * (m_QP_N + m_stepNumber);
-    aVector = D;
-    break;
+    case VECTOR_XL:
+      lsize = 2 * (m_QP_N + m_stepNumber);
+      aVector = XL;
+      break;
 
-  case VECTOR_XL:
-    lsize = 2 * (m_QP_N + m_stepNumber);
-    aVector = XL;
-    break;
+    case VECTOR_XU:
+      lsize = 2 * (m_QP_N + m_stepNumber);
+      aVector = XU;
+      break;
 
-  case VECTOR_XU:
-    lsize = 2 * (m_QP_N + m_stepNumber);
-    aVector = XU;
-    break;
-
-  case VECTOR_DS:
-    lsize = m;
-    aVector = DS;
-    break;
+    case VECTOR_DS:
+      lsize = m;
+      aVector = DS;
+      break;
   }
 
   for (int i = 0; i < lsize; i++) {

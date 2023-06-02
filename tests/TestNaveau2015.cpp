@@ -24,27 +24,28 @@
  */
 /*! \file TestNaveau2015.cpp
   \brief This Example shows you how to use the nmpc_genereator.cpp */
+#include <stdlib.h>
+
 #include <cmath>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <jrl/walkgen/pgtypes.hh>
 #include <map>
-#include <stdlib.h>
 #include <string>
 
 #include "CommonTools.hh"
 #include "Debug.hh"
 #include "MotionGeneration/ComAndFootRealizationByGeometry.hh"
 #include "TestObject.hh"
-#include <jrl/walkgen/pgtypes.hh>
 
 using namespace std;
 using namespace PatternGeneratorJRL;
 using namespace ::PatternGeneratorJRL::TestSuite;
 
 enum Profiles_t {
-  PROFIL_NAVEAU,       // 0
-  PROFIL_SIMPLE_NAVEAU // 1
+  PROFIL_NAVEAU,        // 0
+  PROFIL_SIMPLE_NAVEAU  // 1
 };
 
 typedef void (TestObject::*localeventHandler_t)(PatternGeneratorInterface &);
@@ -80,7 +81,7 @@ struct setOfLocalEvents {
 
 // Class TestNaveau2015
 class TestNaveau2015 : public TestObject {
-private:
+ private:
   int resetfiles;
   bool m_DebugFGPIFull;
   vector<double> m_err_zmp_x, m_err_zmp_y;
@@ -96,7 +97,7 @@ private:
   /// Object to generate events according to profile.
   setOfLocalEvents *m_setOfLocalEvents;
 
-public:
+ public:
   TestNaveau2015(int argc, char *argv[], string &aString, int TestProfile)
       : TestObject(argc, argv, aString) {
     m_TestProfile = TestProfile;
@@ -117,14 +118,12 @@ public:
 
   bool doTest(std::ostream &os) {
     bool ret = TestObject::doTest(os);
-    if (m_DebugFGPIFull)
-      ComputeAndDisplayZMPStatistic();
+    if (m_DebugFGPIFull) ComputeAndDisplayZMPStatistic();
     return ret;
   }
 
   bool init() {
-    if (!TestObject::init())
-      return false;
+    if (!TestObject::init()) return false;
 
     /// Initialize Configuration Velocity and Acceleration
     m_CurrentVelocity.setZero();
@@ -171,15 +170,14 @@ public:
     return true;
   }
 
-protected:
+ protected:
   void ComputeStat(vector<double> vec, double &avg, double &max_abs) {
     double total = 0.0;
     avg = 0.0;
     max_abs = 0.0;
     for (unsigned int i = 0; i < vec.size(); ++i) {
       double abs_value = sqrt(vec[i] * vec[i]);
-      if (abs_value > max_abs)
-        max_abs = abs_value;
+      if (abs_value > max_abs) max_abs = abs_value;
 
       total += abs_value;
     }
@@ -265,8 +263,7 @@ protected:
         ;
     };
 
-    for (unsigned int i = 0; i < 6; i++)
-      conf(i) = m_conf(i);
+    for (unsigned int i = 0; i < 6; i++) conf(i) = m_conf(i);
     std::size_t index = 6;
     // RLEG
     for (unsigned int i = 0; i < m_rightLeg.size(); i++)
@@ -277,12 +274,10 @@ protected:
       conf(index + i) = m_conf(m_leftLeg[i]);
     index += (unsigned)m_leftLeg.size();
     // CHEST
-    for (unsigned int i = 0; i < 2; i++)
-      conf(index + i) = 0.0;
+    for (unsigned int i = 0; i < 2; i++) conf(index + i) = 0.0;
     index += 2;
     // HEAD
-    for (unsigned int i = 0; i < 2; i++)
-      conf(index + i) = 0.0;
+    for (unsigned int i = 0; i < 2; i++) conf(index + i) = 0.0;
     index += 2;
     // RARM
     for (unsigned int i = 0; i < m_rightArm.size(); i++)
@@ -322,31 +317,31 @@ protected:
     aof.open(aPosFileName.c_str(), ofstream::app);
     aof.precision(8);
     aof.setf(ios::scientific, ios::floatfield);
-    aof << filterprecision((double)iteration * 0.005) << " "; // 1
+    aof << filterprecision((double)iteration * 0.005) << " ";  // 1
     for (unsigned i = 6; i < conf.size(); ++i)
-      aof << filterprecision(conf(i)) << " "; // 2-30
+      aof << filterprecision(conf(i)) << " ";  // 2-30
     for (unsigned i = 0; i < 9; ++i)
-      aof << filterprecision(0.0) << " "; // 31-40
-    aof << 0.0 << endl;                   // 41
+      aof << filterprecision(0.0) << " ";  // 31-40
+    aof << 0.0 << endl;                    // 41
     aof.close();
 
     aof.open(aWaistFileName.c_str(), ofstream::app);
     aof.precision(8);
     aof.setf(ios::scientific, ios::floatfield);
-    aof << filterprecision((double)iteration * 0.005) << " ";             // 1
-    aof << filterprecision(m_OneStep.m_finalCOMPosition.roll[0]) << " ";  // 2
-    aof << filterprecision(m_OneStep.m_finalCOMPosition.pitch[0]) << " "; // 3
-    aof << filterprecision(m_OneStep.m_finalCOMPosition.yaw[0]);          // 4
+    aof << filterprecision((double)iteration * 0.005) << " ";              // 1
+    aof << filterprecision(m_OneStep.m_finalCOMPosition.roll[0]) << " ";   // 2
+    aof << filterprecision(m_OneStep.m_finalCOMPosition.pitch[0]) << " ";  // 3
+    aof << filterprecision(m_OneStep.m_finalCOMPosition.yaw[0]);           // 4
     aof << endl;
     aof.close();
 
     aof.open(aHipFileName.c_str(), ofstream::app);
     aof.precision(8);
     aof.setf(ios::scientific, ios::floatfield);
-    aof << filterprecision((double)iteration * 0.005) << " ";             // 1
-    aof << filterprecision(m_OneStep.m_finalCOMPosition.roll[0]) << " ";  // 2
-    aof << filterprecision(m_OneStep.m_finalCOMPosition.pitch[0]) << " "; // 3
-    aof << filterprecision(m_OneStep.m_finalCOMPosition.yaw[0]);          // 4
+    aof << filterprecision((double)iteration * 0.005) << " ";              // 1
+    aof << filterprecision(m_OneStep.m_finalCOMPosition.roll[0]) << " ";   // 2
+    aof << filterprecision(m_OneStep.m_finalCOMPosition.pitch[0]) << " ";  // 3
+    aof << filterprecision(m_OneStep.m_finalCOMPosition.yaw[0]);           // 4
     aof << endl;
     aof.close();
 
@@ -359,10 +354,10 @@ protected:
     aof.open(aZMPFileName.c_str(), ofstream::app);
     aof.precision(8);
     aof.setf(ios::scientific, ios::floatfield);
-    aof << filterprecision((double)iteration * 0.005) << " ";          // 1
-    aof << filterprecision(m_OneStep.m_ZMPTarget(0) - conf(0)) << " "; // 2
-    aof << filterprecision(m_OneStep.m_ZMPTarget(1) - conf(1)) << " "; // 3
-    aof << filterprecision(aSupportState.z - conf(2));                 // 4
+    aof << filterprecision((double)iteration * 0.005) << " ";           // 1
+    aof << filterprecision(m_OneStep.m_ZMPTarget(0) - conf(0)) << " ";  // 2
+    aof << filterprecision(m_OneStep.m_ZMPTarget(1) - conf(1)) << " ";  // 3
+    aof << filterprecision(aSupportState.z - conf(2));                  // 4
     aof << endl;
     aof.close();
   }
@@ -378,56 +373,56 @@ protected:
 
       aof.open(aFileName.c_str(), ofstream::out);
 
-      string Titles[51] = {"Time",               // 1
-                           "Com X",              // 2
-                           "Com Y",              // 3
-                           "Com Z",              // 4
-                           "Com Yaw",            // 5
-                           "Com dX",             // 6
-                           "Com dY",             // 7
-                           "Com dZ",             // 8
-                           "Com dYaw",           // 9
-                           "Com ddX",            // 10
-                           "Com ddY",            // 11
-                           "Com ddZ",            // 12
-                           "Com ddYaw",          // 13
-                           "ZMP X (world ref.)", // 14
-                           "ZMP Y (world ref.)", // 15
-                           "ZMP Z (world ref.)", // 16
-                           "Left Foot X",        // 17
-                           "Left Foot Y",        // 18
-                           "Left Foot Z",        // 19
-                           "Left Foot dX",       // 20
-                           "Left Foot dY",       // 21
-                           "Left Foot dZ",       // 22
-                           "Left Foot ddX",      // 23
-                           "Left Foot ddY",      // 24
-                           "Left Foot ddZ",      // 25
-                           "Left Foot Theta",    // 26
-                           "Left Foot dTheta",   // 27
-                           "Left Foot ddTheta",  // 28
-                           "Left Foot Omega",    // 29
-                           "Left Foot Omega2",   // 30
-                           "Right Foot X",       // 31
-                           "Right Foot Y",       // 32
-                           "Right Foot Z",       // 33
-                           "Right Foot dX",      // 34
-                           "Right Foot dY",      // 35
-                           "Right Foot dZ",      // 36
-                           "Right Foot ddX",     // 37
-                           "Right Foot ddY",     // 38
-                           "Right Foot ddZ",     // 39
-                           "Right Foot Theta",   // 40
-                           "Right Foot dTheta",  // 41
-                           "Right Foot ddTheta", // 42
-                           "Right Foot Omega",   // 43
-                           "Right Foot Omega2",  // 44
-                           "ZMP MB X ",          // 45
-                           "ZMP MB Y ",          // 46
-                           "ZMP MB Z ",          // 47
-                           "q ",                 // 48
-                           "dq",                 // 48 + nq
-                           "ddq "};              // 48 + nq + nv
+      string Titles[51] = {"Time",                // 1
+                           "Com X",               // 2
+                           "Com Y",               // 3
+                           "Com Z",               // 4
+                           "Com Yaw",             // 5
+                           "Com dX",              // 6
+                           "Com dY",              // 7
+                           "Com dZ",              // 8
+                           "Com dYaw",            // 9
+                           "Com ddX",             // 10
+                           "Com ddY",             // 11
+                           "Com ddZ",             // 12
+                           "Com ddYaw",           // 13
+                           "ZMP X (world ref.)",  // 14
+                           "ZMP Y (world ref.)",  // 15
+                           "ZMP Z (world ref.)",  // 16
+                           "Left Foot X",         // 17
+                           "Left Foot Y",         // 18
+                           "Left Foot Z",         // 19
+                           "Left Foot dX",        // 20
+                           "Left Foot dY",        // 21
+                           "Left Foot dZ",        // 22
+                           "Left Foot ddX",       // 23
+                           "Left Foot ddY",       // 24
+                           "Left Foot ddZ",       // 25
+                           "Left Foot Theta",     // 26
+                           "Left Foot dTheta",    // 27
+                           "Left Foot ddTheta",   // 28
+                           "Left Foot Omega",     // 29
+                           "Left Foot Omega2",    // 30
+                           "Right Foot X",        // 31
+                           "Right Foot Y",        // 32
+                           "Right Foot Z",        // 33
+                           "Right Foot dX",       // 34
+                           "Right Foot dY",       // 35
+                           "Right Foot dZ",       // 36
+                           "Right Foot ddX",      // 37
+                           "Right Foot ddY",      // 38
+                           "Right Foot ddZ",      // 39
+                           "Right Foot Theta",    // 40
+                           "Right Foot dTheta",   // 41
+                           "Right Foot ddTheta",  // 42
+                           "Right Foot Omega",    // 43
+                           "Right Foot Omega2",   // 44
+                           "ZMP MB X ",           // 45
+                           "ZMP MB Y ",           // 46
+                           "ZMP MB Z ",           // 47
+                           "q ",                  // 48
+                           "dq",                  // 48 + nq
+                           "ddq "};               // 48 + nq + nv
       for (unsigned int i = 0; i < 51; i++)
         aof << i + 1 << ". " << Titles[i] << std::endl;
 
@@ -488,16 +483,16 @@ protected:
       aof.precision(8);
       aof.setf(ios::scientific, ios::floatfield);
       m_OneStep.fillInDebugFileContent(aof);
-      aof << filterprecision(zmpmb[0]) << " "            // 45
-          << filterprecision(zmpmb[1]) << " "            // 46
-          << filterprecision(zmpmb[2]) << " ";           // 47
-      for (unsigned int k = 0; k < m_conf.size(); k++) { // 48-53 -> 54-83
+      aof << filterprecision(zmpmb[0]) << " "             // 45
+          << filterprecision(zmpmb[1]) << " "             // 46
+          << filterprecision(zmpmb[2]) << " ";            // 47
+      for (unsigned int k = 0; k < m_conf.size(); k++) {  // 48-53 -> 54-83
         aof << filterprecision(m_conf(k)) << " ";
       }
-      for (unsigned int k = 0; k < m_vel.size(); k++) { // 84-89 -> 90-118
+      for (unsigned int k = 0; k < m_vel.size(); k++) {  // 84-89 -> 90-118
         aof << filterprecision(m_vel(k)) << " ";
       }
-      for (unsigned int k = 0; k < m_acc.size(); k++) { // 119-125 -> 125-155
+      for (unsigned int k = 0; k < m_acc.size(); k++) {  // 119-125 -> 125-155
         aof << filterprecision(m_acc(k)) << " ";
       }
       aof << endl;
@@ -642,29 +637,29 @@ protected:
   void chooseTestProfile() {
     ODEBUG("ROBOT:" << m_PR->getName() << " Profile: " << m_TestProfile);
     switch (m_TestProfile) {
-    case PROFIL_NAVEAU:
-      createFullEventsForHRP2();
-      if (m_PR->getName() == "hrp2_14_reduced")
-        startHRP2OnLineWalking(*m_PGI);
-      else if (m_PR->getName() == "talos")
-        startTalosOnLineWalking(*m_PGI);
-      else
-        throw("No valid robot " + m_PR->getName());
-      break;
+      case PROFIL_NAVEAU:
+        createFullEventsForHRP2();
+        if (m_PR->getName() == "hrp2_14_reduced")
+          startHRP2OnLineWalking(*m_PGI);
+        else if (m_PR->getName() == "talos")
+          startTalosOnLineWalking(*m_PGI);
+        else
+          throw("No valid robot " + m_PR->getName());
+        break;
 
-    case PROFIL_SIMPLE_NAVEAU:
-      createSimpleEventsForHRP2();
-      if (m_PR->getName() == "hrp2_14_reduced")
-        startHRP2OnLineWalking(*m_PGI);
-      else if (m_PR->getName() == "talos")
-        startTalosOnLineWalking(*m_PGI);
-      else
-        throw("No valid robot " + m_PR->getName());
-      break;
+      case PROFIL_SIMPLE_NAVEAU:
+        createSimpleEventsForHRP2();
+        if (m_PR->getName() == "hrp2_14_reduced")
+          startHRP2OnLineWalking(*m_PGI);
+        else if (m_PR->getName() == "talos")
+          startTalosOnLineWalking(*m_PGI);
+        else
+          throw("No valid robot " + m_PR->getName());
+        break;
 
-    default:
-      throw("No correct test profile");
-      break;
+      default:
+        throw("No correct test profile");
+        break;
     }
   }
 
@@ -675,13 +670,13 @@ protected:
 
   void generateEvent() {
     switch (m_TestProfile) {
-    case PROFIL_NAVEAU:
-      generateEventOnLineWalking();
-      break;
-    case PROFIL_SIMPLE_NAVEAU:
-      generateEventOnLineWalking();
-    default:
-      break;
+      case PROFIL_NAVEAU:
+        generateEventOnLineWalking();
+        break;
+      case PROFIL_SIMPLE_NAVEAU:
+        generateEventOnLineWalking();
+      default:
+        break;
     }
   }
 };
@@ -696,8 +691,7 @@ int PerformTests(int argc, char *argv[]) {
 
   int indexProfile = -1;
 
-  if (TestName.compare(14, 6, "Online") == 0)
-    indexProfile = PROFIL_NAVEAU;
+  if (TestName.compare(14, 6, "Online") == 0) indexProfile = PROFIL_NAVEAU;
   if (TestName.compare(14, 12, "OnlineSimple") == 0)
     indexProfile = PROFIL_SIMPLE_NAVEAU;
 

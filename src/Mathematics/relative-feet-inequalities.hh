@@ -32,13 +32,12 @@
 #ifndef _RELATIVE_FEET_INEQUALITIES_
 #define _RELATIVE_FEET_INEQUALITIES_
 
-#include <jrl/walkgen/pinocchiorobot.hh>
-
 #include <Mathematics/ConvexHull.hh>
 #include <Mathematics/FootHalfSize.hh>
 #include <PreviewControl/SupportFSM.hh>
 #include <SimplePlugin.hh>
 #include <jrl/walkgen/pgtypes.hh>
+#include <jrl/walkgen/pinocchiorobot.hh>
 #include <privatepgtypes.hh>
 
 namespace PatternGeneratorJRL {
@@ -46,15 +45,14 @@ namespace PatternGeneratorJRL {
 /// \brief Generate a stack of inequalities relative to feet centers for
 /// the whole preview window.
 class RelativeFeetInequalities : public SimplePlugin {
-
   //
   // Public types
   //
-public:
+ public:
   //
   // Public member functions
   //
-public:
+ public:
   /// \name Constructors and destructors.
   /// \{
   RelativeFeetInequalities(SimplePluginManager *aSPM, PinocchioRobot *aPR);
@@ -103,7 +101,7 @@ public:
   //
   // Private member functions
   //
-private:
+ private:
   /// \brief Initialize the convex hulls for the constraints
   ///
   /// \return 0
@@ -123,7 +121,7 @@ private:
   //
   // Private members
   //
-private:
+ private:
   struct edges_s {
     convex_hull_t LeftSS, RightSS, RightDS, LeftDS;
   };
@@ -145,5 +143,5 @@ private:
   /// \brief Distance between the feet in the double support phase
   double DSFeetDistance_;
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _RELATIVE_FEET_INEQUALITIES_ */

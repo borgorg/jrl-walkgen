@@ -40,23 +40,24 @@
 #include <Windows.h>
 #endif /* WIN32 */
 
-#include <fstream>
-#include <iostream>
 #include <time.h>
 
+#include <Debug.hh>
 #include <ZMPRefTrajectoryGeneration/ZMPVelocityReferencedSQP.hh>
+#include <fstream>
+#include <iostream>
 #include <privatepgtypes.hh>
 
-#include <Debug.hh>
-
-//#define DEBUG
+// #define DEBUG
 
 using namespace std;
 using namespace PatternGeneratorJRL;
 
 ZMPVelocityReferencedSQP::ZMPVelocityReferencedSQP(SimplePluginManager *SPM,
                                                    string, PinocchioRobot *aPR)
-    : ZMPRefTrajectoryGeneration(SPM), OFTG_(NULL), dynamicFilter_(NULL),
+    : ZMPRefTrajectoryGeneration(SPM),
+      OFTG_(NULL),
+      dynamicFilter_(NULL),
       CurrentIndexUpperBound_(40) {
   // Save the reference to HDR
   PR_ = aPR;
@@ -174,7 +175,6 @@ void ZMPVelocityReferencedSQP::setCoMPerturbationForce(istringstream &strm) {
 }
 
 void ZMPVelocityReferencedSQP::setCoMPerturbationForce(double x, double y) {
-
   PerturbationAcceleration_.resize(6);
   PerturbationAcceleration_.setZero();
 
@@ -244,9 +244,8 @@ std::size_t ZMPVelocityReferencedSQP::InitOnLine(
     deque<FootAbsolutePosition> &FinalRightFootTraj_deq,
     FootAbsolutePosition &InitLeftFootAbsolutePosition,
     FootAbsolutePosition &InitRightFootAbsolutePosition,
-    deque<RelativeFootPosition> &, // RelativeFootPositions,
+    deque<RelativeFootPosition> &,  // RelativeFootPositions,
     COMState &lStartingCOMState, Eigen::Vector3d &lStartingZMPPosition) {
-
   // Generator Management
   previewSize_ = 8;
   InterpolationPeriod_ = m_SamplingPeriod * 7;
@@ -342,7 +341,7 @@ std::size_t ZMPVelocityReferencedSQP::InitOnLine(
   if (outputPreviewDuration_ == m_SamplingPeriod && m_Tsingle == 0.7 &&
       m_Tdble == 0.1)
     useLineSearch = true;
-  useLineSearch = false; // WARNING remove to use the line search
+  useLineSearch = false;  // WARNING remove to use the line search
   SQP_nf_ = (int)ceil(SQP_N_ * SQP_T_ / StepPeriod_ - 1e-6);
   NMPCgenerator_->initNMPCgenerator(useLineSearch, currentSupport,
                                     lStartingCOMState, VelRef_, SQP_N_, SQP_nf_,
@@ -658,13 +657,13 @@ void ZMPVelocityReferencedSQP::FullTrajectoryInterpolation(double time) {
 }
 
 void ZMPVelocityReferencedSQP::CoMZMPInterpolation(
-    std::vector<double> &JerkX,                           // INPUT
-    std::vector<double> &JerkY,                           // INPUT
-    LinearizedInvertedPendulum2D *LIPM,                   // INPUT/OUTPUT
-    const unsigned,                                       // INPUT
-    const int IterationNumber,                            // INPUT
-    const unsigned int currentIndex,                      // INPUT
-    const std::deque<support_state_t> &SupportStates_deq) // INPUT
+    std::vector<double> &JerkX,                            // INPUT
+    std::vector<double> &JerkY,                            // INPUT
+    LinearizedInvertedPendulum2D *LIPM,                    // INPUT/OUTPUT
+    const unsigned,                                        // INPUT
+    const int IterationNumber,                             // INPUT
+    const unsigned int currentIndex,                       // INPUT
+    const std::deque<support_state_t> &SupportStates_deq)  // INPUT
 {
   if (SupportStates_deq[0].Phase == DS &&
       SupportStates_deq[0].NbStepsLeft == 0) {

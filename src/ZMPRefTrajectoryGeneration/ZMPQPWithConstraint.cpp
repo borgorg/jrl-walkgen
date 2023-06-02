@@ -35,13 +35,11 @@
 
 #include <time.h>
 
-#include <fstream>
-#include <iostream>
-
 #include <Debug.hh>
-
 #include <Mathematics/qld.hh>
 #include <ZMPRefTrajectoryGeneration/ZMPQPWithConstraint.hh>
+#include <fstream>
+#include <iostream>
 
 using namespace std;
 using namespace PatternGeneratorJRL;
@@ -75,8 +73,7 @@ ZMPQPWithConstraint::ZMPQPWithConstraint(SimplePluginManager *lSPM,
 }
 
 ZMPQPWithConstraint::~ZMPQPWithConstraint() {
-  if (m_ZMPD != 0)
-    delete m_ZMPD;
+  if (m_ZMPD != 0) delete m_ZMPD;
 }
 
 // Assuming that the points are going counter-clockwise
@@ -105,7 +102,6 @@ int ZMPQPWithConstraint::ComputeLinearSystem(vector<CH_Point> aVecOfPoints,
   }
 
   for (unsigned int i = 0; i < n - 1; i++) {
-
     ODEBUG("(x[" << i << "],y[" << i << "]): " << aVecOfPoints[i].col << " "
                  << aVecOfPoints[i].row << " " << aVecOfPoints[i + 1].col << " "
                  << aVecOfPoints[i + 1].row);
@@ -228,7 +224,7 @@ int ZMPQPWithConstraint::BuildLinearConstraintInequalities(
   if (LeftFootAbsolutePositions.size() != RightFootAbsolutePositions.size())
     return -1;
 
-  int State = 0; // State for the system 0:start, 1: Right Support Foot,
+  int State = 0;  // State for the system 0:start, 1: Right Support Foot,
   // 2: Left Support Foot,
   // 3: Double Support.
   int ComputeCH = 0;
@@ -250,23 +246,19 @@ int ZMPQPWithConstraint::BuildLinearConstraintInequalities(
     }
     // Double support
     if (LeftFootAbsolutePositions[i].stepType >= 10) {
-      if (State != 3)
-        ComputeCH = 1;
+      if (State != 3) ComputeCH = 1;
       State = 3;
     } else {
       double LiftingThreshold = 0.00001;
       if (LeftFootAbsolutePositions[i].z > LiftingThreshold) {
-        if (State != 2)
-          ComputeCH = 1;
+        if (State != 2) ComputeCH = 1;
         State = 2;
       } else if (RightFootAbsolutePositions[i].z > LiftingThreshold) {
-        if (State != 1)
-          ComputeCH = 1;
+        if (State != 1) ComputeCH = 1;
         State = 1;
       } else if ((RightFootAbsolutePositions[i].z < LiftingThreshold) &&
                  (LeftFootAbsolutePositions[i].z < LiftingThreshold)) {
-        if (State != 3)
-          ComputeCH = 1;
+        if (State != 3) ComputeCH = 1;
         State = 3;
       }
     }
@@ -315,8 +307,8 @@ int ZMPQPWithConstraint::BuildLinearConstraintInequalities(
         lx = RightFootAbsolutePositions[i].x;
         ly = RightFootAbsolutePositions[i].y;
 
-        s_t = sin(RightFootAbsolutePositions[i].theta * M_PI / 180.0); //+
-        c_t = cos(RightFootAbsolutePositions[i].theta * M_PI / 180.0); //+
+        s_t = sin(RightFootAbsolutePositions[i].theta * M_PI / 180.0);  //+
+        c_t = cos(RightFootAbsolutePositions[i].theta * M_PI / 180.0);  //+
 
         ODEBUG("Right Foot: " << lx << " " << ly << " "
                               << RightFootAbsolutePositions[i].theta);
@@ -345,7 +337,6 @@ int ZMPQPWithConstraint::BuildLinearConstraintInequalities(
       // In the second case, it is necessary to compute
       // the support foot.
       else {
-
         TheConvexHull.resize(4);
 
         // Who is support foot ?
@@ -439,11 +430,9 @@ int ZMPQPWithConstraint::BuildMatricesPxPu(
   // The memory will be bounded to 8 constraints per
   // support foot (double support case).
   // Will be probably all the time smaller.
-  if (Px == 0)
-    Px = new double[8 * N + 1];
+  if (Px == 0) Px = new double[8 * N + 1];
 
-  if (Pu == 0)
-    Pu = new double[(8 * N + 1) * 2 * N];
+  if (Pu == 0) Pu = new double[(8 * N + 1) * 2 * N];
 
   memset(Pu, 0, (8 * N + 1) * 2 * N * sizeof(double));
   // memset(Px,0,(8*N+1)*sizeof(double));
@@ -482,10 +471,8 @@ int ZMPQPWithConstraint::BuildMatricesPxPu(
   // Compute first the number of constraint.
   unsigned int IndexConstraint = 0;
   for (unsigned int i = 0; i < N; i++) {
-
     double ltime = StartingTime + i * T;
-    if (ltime > (*LCI_it)->EndingTime)
-      LCI_it++;
+    if (ltime > (*LCI_it)->EndingTime) LCI_it++;
 
     if (LCI_it == QueueOfLConstraintInequalities.end()) {
       break;
@@ -499,7 +486,6 @@ int ZMPQPWithConstraint::BuildMatricesPxPu(
   ODEBUG("Starting Matrix to build the constraints. ");
   ODEBUG((*LCI_it)->A);
   for (unsigned int i = 0; i < N; i++) {
-
     double ltime = StartingTime + i * T;
     if (ltime > (*LCI_it)->EndingTime) {
       LCI_it++;
@@ -652,7 +638,6 @@ int ZMPQPWithConstraint::BuildZMPTrajectoryFromFootTrajectory(
       PPu(i, j) = 0;
 
       if (j <= i) {
-
         VPu(i, j) = (2 * (i - j) + 1) * T * T * 0.5;
         VPu(i + N, j + N) = (2 * (i - j) + 1) * T * T * 0.5;
         VPu(i, j + N) = 0.0;
@@ -665,7 +650,6 @@ int ZMPQPWithConstraint::BuildZMPTrajectoryFromFootTrajectory(
         PPu(i + N, j) = 0.0;
 
       } else {
-
         VPu(i, j) = 0.0;
         VPu(i + N, j + N) = 0.0;
         VPu(i, j + N) = 0.0;
@@ -717,8 +701,7 @@ int ZMPQPWithConstraint::BuildZMPTrajectoryFromFootTrajectory(
   vnlX.resize(2 * N, 1);
 
   xk.resize(6);
-  for (unsigned int i = 0; i < 6; i++)
-    xk[i] = 0.0;
+  for (unsigned int i = 0; i < 6; i++) xk[i] = 0.0;
   Buk.resize(6);
   zk.resize(2);
 
@@ -726,22 +709,21 @@ int ZMPQPWithConstraint::BuildZMPTrajectoryFromFootTrajectory(
   int me = 0;
   int mmax = NbOfConstraints + 1;
   int n = 2 * N;
-  int nmax = 2 * N; // Size of the matrix to compute the cost function.
+  int nmax = 2 * N;  // Size of the matrix to compute the cost function.
   int mnn = m + n + n;
 
-  double *C = new double[4 * N * N]; // Objective function matrix
-  double *D = new double[2 * N];     // Constant part of the objective function
-  double *XL = new double[2 * N];    // Lower bound of the jerk.
-  double *XU = new double[2 * N];    // Upper bound of the jerk.
-  double *X = new double[2 * N];     // Solution of the system.
+  double *C = new double[4 * N * N];  // Objective function matrix
+  double *D = new double[2 * N];      // Constant part of the objective function
+  double *XL = new double[2 * N];     // Lower bound of the jerk.
+  double *XU = new double[2 * N];     // Upper bound of the jerk.
+  double *X = new double[2 * N];      // Solution of the system.
   double Eps = 1e-8;
   double *U = (double *)malloc(sizeof(double) *
-                               mnn); // Returns the Lagrange multipliers.;
+                               mnn);  // Returns the Lagrange multipliers.;
 
   // Initialization of the matrices
   memset(C, 0, 4 * N * N * sizeof(double));
-  for (unsigned int i = 0; i < 2 * N; i++)
-    C[i * 2 * N + i] = 1.0;
+  for (unsigned int i = 0; i < 2 * N; i++) C[i * 2 * N + i] = 1.0;
 
   int iout = 0;
   int ifail;
@@ -749,15 +731,14 @@ int ZMPQPWithConstraint::BuildZMPTrajectoryFromFootTrajectory(
   int lwar = 3 * nmax * nmax / 2 + 10 * nmax + 2 * mmax + 20000;
   ;
   double *war = (double *)malloc(sizeof(double) * lwar);
-  int liwar = n;              //
-  int *iwar = new int[liwar]; // The Cholesky decomposition is done internally.
+  int liwar = n;               //
+  int *iwar = new int[liwar];  // The Cholesky decomposition is done internally.
 
   for (int i = 0; i < 6; i++) {
     m_B(i, 0) = 0.0;
     m_C(0, i) = 0.0;
     m_C(1, i) = 0.0;
-    for (int j = 0; j < 6; j++)
-      m_A(i, j) = 0.0;
+    for (int j = 0; j < 6; j++) m_A(i, j) = 0.0;
   }
 
   m_A(0, 0) = 1.0;
@@ -829,8 +810,7 @@ int ZMPQPWithConstraint::BuildZMPTrajectoryFromFootTrajectory(
   }
   vnlStoreX.resize(2 * N, 1 + (unsigned int)lSizeMat);
 
-  for (unsigned int i = 0; i < 2 * N; i++)
-    vnlStoreX(i, 0) = 0.0;
+  for (unsigned int i = 0; i < 2 * N; i++) vnlStoreX(i, 0) = 0.0;
 
   ConstraintNb.resize(1 + (unsigned int)lSizeMat, 1);
 
@@ -855,8 +835,7 @@ int ZMPQPWithConstraint::BuildZMPTrajectoryFromFootTrajectory(
 
   if (CriteriaToMaximize == 1) {
     for (unsigned int i = 0; i < 2 * N; i++)
-      for (unsigned int j = 0; j < 2 * N; j++)
-        C[j * 2 * N + i] = OptA(i, j);
+      for (unsigned int j = 0; j < 2 * N; j++) C[j * 2 * N + i] = OptA(i, j);
 
     if (0) {
       ofstream aof;
@@ -864,8 +843,7 @@ int ZMPQPWithConstraint::BuildZMPTrajectoryFromFootTrajectory(
       sprintf(Buffer, "C.dat");
       aof.open(Buffer, ofstream::out);
       for (unsigned int i = 0; i < 2 * N; i++) {
-        for (unsigned int j = 0; j < 2 * N - 1; j++)
-          aof << OptA(i, j) << " ";
+        for (unsigned int j = 0; j < 2 * N - 1; j++) aof << OptA(i, j) << " ";
         aof << OptA(i, 2 * N - 1);
         aof << endl;
       }
@@ -960,8 +938,7 @@ int ZMPQPWithConstraint::BuildZMPTrajectoryFromFootTrajectory(
       lterm1v = OptC + ZMPRef;
       OptD = OptB + xk;
       OptD -= lterm1v;
-      for (unsigned int i = 0; i < 2 * N; i++)
-        D[i] = OptD[i];
+      for (unsigned int i = 0; i < 2 * N; i++) D[i] = OptD[i];
 
       if (0) {
         ofstream aof;
@@ -976,8 +953,7 @@ int ZMPQPWithConstraint::BuildZMPTrajectoryFromFootTrajectory(
 
     } else {
       // Default : set D to zero.
-      for (unsigned int i = 0; i < 2 * N; i++)
-        D[i] = 0.0;
+      for (unsigned int i = 0; i < 2 * N; i++) D[i] = 0.0;
     }
 
     for (unsigned int i = 0; i < 2 * N; i++) {
@@ -1064,35 +1040,34 @@ int ZMPQPWithConstraint::BuildZMPTrajectoryFromFootTrajectory(
 
     // Fill the queues with the interpolated CoM values.
     for (int lk = 0; lk < interval; lk++) {
-
       COMState &aCOMPos = COMStates[li * interval + lk];
       ;
       double lkSP;
       lkSP = (lk + 1) * m_SamplingPeriod;
 
-      aCOMPos.x[0] = xk[0] +                          // Position
-                     lkSP * xk[1] +                   // Speed
-                     0.5 * lkSP * lkSP * xk[2] +      // Acceleration
-                     lkSP * lkSP * lkSP * X[0] / 6.0; // Jerk
+      aCOMPos.x[0] = xk[0] +                           // Position
+                     lkSP * xk[1] +                    // Speed
+                     0.5 * lkSP * lkSP * xk[2] +       // Acceleration
+                     lkSP * lkSP * lkSP * X[0] / 6.0;  // Jerk
 
-      aCOMPos.x[1] = xk[1] +                   // Speed
-                     lkSP * xk[2] +            // Acceleration
-                     0.5 * lkSP * lkSP * X[0]; // Jerk
+      aCOMPos.x[1] = xk[1] +                    // Speed
+                     lkSP * xk[2] +             // Acceleration
+                     0.5 * lkSP * lkSP * X[0];  // Jerk
 
-      aCOMPos.x[2] = xk[2] +      // Acceleration
-                     lkSP * X[0]; // Jerk
+      aCOMPos.x[2] = xk[2] +       // Acceleration
+                     lkSP * X[0];  // Jerk
 
-      aCOMPos.y[0] = xk[3] +                          // Position
-                     lkSP * xk[4] +                   // Speed
-                     0.5 * lkSP * lkSP * xk[5] +      // Acceleration
-                     lkSP * lkSP * lkSP * X[N] / 6.0; // Jerk
+      aCOMPos.y[0] = xk[3] +                           // Position
+                     lkSP * xk[4] +                    // Speed
+                     0.5 * lkSP * lkSP * xk[5] +       // Acceleration
+                     lkSP * lkSP * lkSP * X[N] / 6.0;  // Jerk
 
-      aCOMPos.y[1] = xk[4] +                   // Speed
-                     lkSP * xk[5] +            // Acceleration
-                     0.5 * lkSP * lkSP * X[N]; // Jerk
+      aCOMPos.y[1] = xk[4] +                    // Speed
+                     lkSP * xk[5] +             // Acceleration
+                     0.5 * lkSP * lkSP * X[N];  // Jerk
 
-      aCOMPos.y[2] = xk[5] +      // Acceleration
-                     lkSP * X[N]; // Jerk
+      aCOMPos.y[2] = xk[5] +       // Acceleration
+                     lkSP * X[N];  // Jerk
 
       aCOMPos.yaw[0] = ZMPRefPositions[li * interval + lk].theta;
 
@@ -1207,8 +1182,7 @@ void ZMPQPWithConstraint::GetZMPDiscretization(
     COMState &lStartingCOMState, Eigen::Vector3d &lStartingZMPPosition,
     FootAbsolutePosition &InitLeftFootAbsolutePosition,
     FootAbsolutePosition &InitRightFootAbsolutePosition) {
-  if (m_ZMPD == 0)
-    return;
+  if (m_ZMPD == 0) return;
 
   m_ZMPD->GetZMPDiscretization(
       ZMPPositions, COMStates, RelativeFootPositions, LeftFootAbsolutePositions,
@@ -1252,59 +1226,59 @@ void ZMPQPWithConstraint::CallMethod(std::string &Method,
 }
 
 std::size_t ZMPQPWithConstraint::InitOnLine(
-    deque<ZMPPosition> &,          // FinalZMPPositions,
-    deque<COMState> &,             // FinalCOMStates,
-    deque<FootAbsolutePosition> &, // FinalLeftFootAbsolutePositions,
-    deque<FootAbsolutePosition> &, // FinalRightFootAbsolutePositions,
-    FootAbsolutePosition &,        // InitLeftFootAbsolutePosition,
-    FootAbsolutePosition &,        // InitRightFootAbsolutePosition,
-    deque<RelativeFootPosition> &, // RelativeFootPositions,
-    COMState &,                    // lStartingCOMState,
-    Eigen::Vector3d &)             // lStartingZMPPosition)
+    deque<ZMPPosition> &,           // FinalZMPPositions,
+    deque<COMState> &,              // FinalCOMStates,
+    deque<FootAbsolutePosition> &,  // FinalLeftFootAbsolutePositions,
+    deque<FootAbsolutePosition> &,  // FinalRightFootAbsolutePositions,
+    FootAbsolutePosition &,         // InitLeftFootAbsolutePosition,
+    FootAbsolutePosition &,         // InitRightFootAbsolutePosition,
+    deque<RelativeFootPosition> &,  // RelativeFootPositions,
+    COMState &,                     // lStartingCOMState,
+    Eigen::Vector3d &)              // lStartingZMPPosition)
 {
   cout << "To be implemented" << endl;
   return 0;
 }
 
 void ZMPQPWithConstraint::OnLineAddFoot(
-    RelativeFootPosition &,        // NewRelativeFootPosition,
-    deque<ZMPPosition> &,          // FinalZMPPositions,
-    deque<COMState> &,             // FinalCOMStates,
-    deque<FootAbsolutePosition> &, // FinalLeftFootAbsolutePositions,
-    deque<FootAbsolutePosition> &, // FinalRightFootAbsolutePositions,
-    bool)                          // EndSequence)
+    RelativeFootPosition &,         // NewRelativeFootPosition,
+    deque<ZMPPosition> &,           // FinalZMPPositions,
+    deque<COMState> &,              // FinalCOMStates,
+    deque<FootAbsolutePosition> &,  // FinalLeftFootAbsolutePositions,
+    deque<FootAbsolutePosition> &,  // FinalRightFootAbsolutePositions,
+    bool)                           // EndSequence)
 {
   cout << "To be implemented" << endl;
 }
 
 void ZMPQPWithConstraint::OnLine(
-    double,                        // time,
-    deque<ZMPPosition> &,          // FinalZMPPositions,
-    deque<COMState> &,             // FinalCOMStates,
-    deque<FootAbsolutePosition> &, // FinalLeftFootAbsolutePositions,
-    deque<FootAbsolutePosition> &) // FinalRightFootAbsolutePositions)
+    double,                         // time,
+    deque<ZMPPosition> &,           // FinalZMPPositions,
+    deque<COMState> &,              // FinalCOMStates,
+    deque<FootAbsolutePosition> &,  // FinalLeftFootAbsolutePositions,
+    deque<FootAbsolutePosition> &)  // FinalRightFootAbsolutePositions)
 {
   cout << "To be implemented" << endl;
 }
 
 int ZMPQPWithConstraint::OnLineFootChange(
-    double,                        // time,
-    FootAbsolutePosition &,        // aFootAbsolutePosition,
-    deque<ZMPPosition> &,          // FinalZMPPositions,
-    deque<COMState> &,             // CoMStates,
-    deque<FootAbsolutePosition> &, // FinalLeftFootAbsolutePositions,
-    deque<FootAbsolutePosition> &, // FinalRightFootAbsolutePositions,
-    StepStackHandler *)            // aStepStackHandler)
+    double,                         // time,
+    FootAbsolutePosition &,         // aFootAbsolutePosition,
+    deque<ZMPPosition> &,           // FinalZMPPositions,
+    deque<COMState> &,              // CoMStates,
+    deque<FootAbsolutePosition> &,  // FinalLeftFootAbsolutePositions,
+    deque<FootAbsolutePosition> &,  // FinalRightFootAbsolutePositions,
+    StepStackHandler *)             // aStepStackHandler)
 {
   cout << "To be implemented" << endl;
   return -1;
 }
 
 void ZMPQPWithConstraint::EndPhaseOfTheWalking(
-    deque<ZMPPosition> &,          // ZMPPositions,
-    deque<COMState> &,             // FinalCOMStates,
-    deque<FootAbsolutePosition> &, // LeftFootAbsolutePositions,
-    deque<FootAbsolutePosition> &) // RightFootAbsolutePositions)
+    deque<ZMPPosition> &,           // ZMPPositions,
+    deque<COMState> &,              // FinalCOMStates,
+    deque<FootAbsolutePosition> &,  // LeftFootAbsolutePositions,
+    deque<FootAbsolutePosition> &)  // RightFootAbsolutePositions)
 {}
 
 int ZMPQPWithConstraint::ReturnOptimalTimeToRegenerateAStep() {

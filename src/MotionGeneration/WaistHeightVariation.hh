@@ -44,20 +44,19 @@
 #ifndef _WAISTHEIGHT_VARIATION_H_
 #define _WAISTHEIGHT_VARIATION_H_
 
+#include <Mathematics/Polynome.hh>
+#include <PreviewControl/PreviewControl.hh>
+#include <ZMPRefTrajectoryGeneration/ZMPDiscretization.hh>
 #include <deque>
 #include <string>
 #include <vector>
 
-#include <Mathematics/Polynome.hh>
-#include <PreviewControl/PreviewControl.hh>
-#include <ZMPRefTrajectoryGeneration/ZMPDiscretization.hh>
-
-//#include <PolynomeFoot.h>
+// #include <PolynomeFoot.h>
 
 namespace PatternGeneratorJRL {
 
 class WaistPolynome : public Polynome {
-public:
+ public:
   /// Constructor:
   /// boundCond: the different boundary conditions begin,
   /// intermediate and end of polynomial
@@ -76,7 +75,7 @@ public:
 /// Object to compute new foot trajectories for the height of the waist
 /// with waist differnces as input for each step
 class WaistHeightVariation {
-public:
+ public:
   /// Constructor
   WaistHeightVariation();
 
@@ -88,7 +87,7 @@ public:
                    deque<RelativeFootPosition> &aFootHolds,
                    deque<ZMPPosition> aZMPPosition);
 
-protected:
+ protected:
   deque<RelativeFootPosition> m_FootHolds;
 
   Eigen::MatrixXd mBoundCond;
@@ -112,6 +111,6 @@ protected:
   bool m_StartingNewSequence;
 };
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 
 #endif /*_WAISTHEIGHT_VARIATION_H_ */

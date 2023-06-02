@@ -48,7 +48,7 @@ FUNCTION {output.nonnull}
     { output.state after.block =
 % next line commented out by rhr and changed to write comma
 %	{ add.period$ write$
-	{ ", " * write$ 
+	{ ", " * write$
 	  newline$
 	  "\newblock " write$
 	}
@@ -96,7 +96,7 @@ FUNCTION {fin.entry}
 }
 
 % 5/24/89 rhr
-%  modified fin.entry function - prints note field after body of entry  
+%  modified fin.entry function - prints note field after body of entry
 %FUNCTION {fin.entry}
 %{ add.period$
 %  note empty$
@@ -117,7 +117,7 @@ FUNCTION {new.block}
 % new block without terminating last block with a comma
 FUNCTION {new.ncblock}
 {
-  write$ 
+  write$
   newline$
   "\newblock "
   before.all 'output.state :=
@@ -125,7 +125,7 @@ FUNCTION {new.ncblock}
 
 FUNCTION {new.nccont}
 {
-  write$ 
+  write$
   " "
   before.all 'output.state :=
 }
@@ -321,7 +321,7 @@ FUNCTION {format.date}
 
 % FUNCTION {format.date}
 % { year empty$
-% 	'year 
+% 	'year
 % 	{ " "  year * }
 %   if$
 % }
@@ -423,7 +423,7 @@ FUNCTION {format.pages}
 }
 
 FUNCTION {format.vol.num.pages}
-{ 
+{
 volume empty$
    {"" }
    {"vol. " volume *}

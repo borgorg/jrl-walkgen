@@ -32,26 +32,27 @@
 #endif /*UNIX*/
 
 #ifdef WIN32
-#include "portability/gettimeofday.hh"
 #include <Windows.h>
+
+#include "portability/gettimeofday.hh"
 #endif /*WIN32*/
 
-#include "ClockCPUTime.hh"
-#include "CommonTools.hh"
+#include <jrl/walkgen/patterngeneratorinterface.hh>
+#include <jrl/walkgen/pinocchiorobot.hh>
 #include <ostream>
 #include <string>
 
+#include "ClockCPUTime.hh"
+#include "CommonTools.hh"
 #include "DumpReferencesObjects.hh"
 #include "MotionGeneration/ComAndFootRealizationByGeometry.hh"
-#include <jrl/walkgen/patterngeneratorinterface.hh>
-#include <jrl/walkgen/pinocchiorobot.hh>
 
 namespace PatternGeneratorJRL {
 namespace TestSuite {
 
 /*! \brief Class running one test per algorithm */
 class TestObject {
-public:
+ public:
   // overload the new[] eigen operator
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
@@ -73,7 +74,7 @@ public:
   /*! \brief Set directory for OpenHRP seqplay */
   void setDirectorySeqplay(std::string &aDirectory);
 
-protected:
+ protected:
   /*! \brief Choose which test to perform. */
   virtual void chooseTestProfile() = 0;
 
@@ -258,11 +259,11 @@ protected:
   /*! @} */
   // utilities for Herdt and Naveau
 
-private:
+ private:
   /// \brief Size of the free flyer.
   pinocchio::JointIndex m_PinoFreeFlyerSize;
 
-public:
+ public:
   void startTurningLeft(PatternGeneratorInterface &aPGI) {
     std::istringstream strm2(":setVelReference  0.2 0.0 6.0832");
     aPGI.ParseCmd(strm2);
@@ -361,6 +362,6 @@ public:
     aPGI.ParseCmd(strm2);
   }
 }; /* end of TestObject class */
-} // namespace TestSuite
-} // namespace PatternGeneratorJRL
+}  // namespace TestSuite
+}  // namespace PatternGeneratorJRL
 #endif /* _TEST_OBJECT_PATTERN_GENERATOR_UTESTING_H_*/

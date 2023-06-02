@@ -283,9 +283,9 @@ bool CollisionDetector::CollisionTwoLines(vector<double> p1, vector<double> p2,
              p2[0] * (v1[1] - v2[1]));
 
   if ((Ap1p2v1 * Ap1p2v2) > 0 || (Av1v2p1 * Av1v2p2) > 0)
-    return 0; // collision free
+    return 0;  // collision free
   else
-    return 1; // collision occurs
+    return 1;  // collision occurs
 }
 
 bool CollisionDetector::CollisionLineObstaclePlane(Eigen::Vector3d &LegPoint1,
@@ -316,7 +316,6 @@ bool CollisionDetector::CollisionLineObstaclePlane(Eigen::Vector3d &LegPoint1,
   CollisionStatusYZ = 1;
 
   if (PlaneNumber == 3) {
-
     // collisioncheck two lines in the YZplane
     p1[0] = LegPoint1(1);
     p1[1] = LegPoint1(2);
@@ -343,7 +342,6 @@ bool CollisionDetector::CollisionLineObstaclePlane(Eigen::Vector3d &LegPoint1,
 
     CollisionStatusXY = CollisionTwoLines(p1, p2, v1, v2);
   } else if (PlaneNumber == 4) {
-
     // collisioncheck two lines in the YZplane
     p1[0] = LegPoint1(1);
     p1[1] = LegPoint1(2);
@@ -370,7 +368,6 @@ bool CollisionDetector::CollisionLineObstaclePlane(Eigen::Vector3d &LegPoint1,
 
     CollisionStatusXY = CollisionTwoLines(p1, p2, v1, v2);
   } else {
-
     // collisioncheck two lines in the XZplane
     p1[0] = LegPoint1(0);
     p1[1] = LegPoint1(2);
@@ -399,14 +396,13 @@ bool CollisionDetector::CollisionLineObstaclePlane(Eigen::Vector3d &LegPoint1,
   }
 
   if ((CollisionStatusXZ) & (CollisionStatusXY) & (CollisionStatusYZ))
-    return 1; // collision occurs
+    return 1;  // collision occurs
   else
-    return 0; // collision free
+    return 0;  // collision free
 }
 
 bool CollisionDetector::CollisionLineObstacleComplete(Eigen::Vector3d &Point1,
                                                       Eigen::Vector3d &Point2) {
-
   if ((((Point1(0) > 0.0) & (Point1(0) < m_ObstaclePoints(0, 3))) &
        ((Point1(1) > -m_ObstaclePoints(1, 3)) &
         (Point1(1) < m_ObstaclePoints(1, 3))) &

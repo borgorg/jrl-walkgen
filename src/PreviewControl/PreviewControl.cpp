@@ -28,12 +28,10 @@
  */
 
 #include <fstream>
-//#define _DEBUG_MODE_ON_
+// #define _DEBUG_MODE_ON_
 #include <Debug.hh>
-
-#include <iomanip> // !!!!!! manip pour debug a jareter !!!!!!!!!
-
 #include <PreviewControl/PreviewControl.hh>
+#include <iomanip>  // !!!!!! manip pour debug a jareter !!!!!!!!!
 
 using namespace ::PatternGeneratorJRL;
 
@@ -41,7 +39,6 @@ PreviewControl::PreviewControl(SimplePluginManager *lSPM,
                                unsigned int defaultMode,
                                bool lAutoComputeWeights)
     : SimplePlugin(lSPM) {
-
   m_AutoComputeWeights = lAutoComputeWeights;
   m_DefaultWeightComputationMode = defaultMode;
 
@@ -81,8 +78,7 @@ double PreviewControl::PreviewControlTime() const {
 double PreviewControl::GetHeightOfCoM() const { return m_Zc; }
 
 void PreviewControl::SetSamplingPeriod(double lSamplingPeriod) {
-  if (m_SamplingPeriod != lSamplingPeriod)
-    m_Coherent = false;
+  if (m_SamplingPeriod != lSamplingPeriod) m_Coherent = false;
 
   m_SamplingPeriod = lSamplingPeriod;
 
@@ -91,8 +87,7 @@ void PreviewControl::SetSamplingPeriod(double lSamplingPeriod) {
 }
 
 void PreviewControl::SetPreviewControlTime(double lPreviewControlTime) {
-  if (m_PreviewControlTime != lPreviewControlTime)
-    m_Coherent = false;
+  if (m_PreviewControlTime != lPreviewControlTime) m_Coherent = false;
 
   m_PreviewControlTime = lPreviewControlTime;
 
@@ -195,11 +190,9 @@ void PreviewControl::ComputeOptimalWeights(unsigned int mode) {
 
   double Q = 0.0, R = 0.0;
   int Nl;
-  if (T == 0.0)
-    return;
+  if (T == 0.0) return;
 
-  if (m_PreviewControlTime == 0.0)
-    return;
+  if (m_PreviewControlTime == 0.0) return;
 
   Nl = (int)(m_PreviewControlTime / T);
 
@@ -222,8 +215,7 @@ void PreviewControl::ComputeOptimalWeights(unsigned int mode) {
     for (int i = 0; i < 3; i++) {
       cx(0, i + 1) = 0.0;
       Ax(0, i + 1) = tmpA(0, i);
-      for (int j = 0; j < 3; j++)
-        Ax(i + 1, j + 1) = m_A(i, j);
+      for (int j = 0; j < 3; j++) Ax(i + 1, j + 1) = m_A(i, j);
     }
 
     tmpb = m_C * m_B;
@@ -249,8 +241,7 @@ void PreviewControl::ComputeOptimalWeights(unsigned int mode) {
     anOCS->GetK(lK);
 
     m_Ks = lK(0, 0);
-    for (int i = 0; i < 3; i++)
-      m_Kx(0, i) = lK(0, i + 1);
+    for (int i = 0; i < 3; i++) m_Kx(0, i) = lK(0, i + 1);
 
     delete anOCS;
   } else if (mode == OptimalControllerSolver::MODE_WITH_INITIALPOS) {
@@ -269,8 +260,7 @@ void PreviewControl::ComputeOptimalWeights(unsigned int mode) {
 
     m_Ks = lK(0, 0);
 
-    for (int i = 0; i < 3; i++)
-      m_Kx(0, i) = lK(0, i);
+    for (int i = 0; i < 3; i++) m_Kx(0, i) = lK(0, i);
 
     delete anOCS;
   }
@@ -298,7 +288,6 @@ int PreviewControl::OneIterationOfPreview(
     Eigen::MatrixXd &x, Eigen::MatrixXd &y, double &sxzmp, double &syzmp,
     deque<PatternGeneratorJRL::ZMPPosition> &ZMPPositions,
     unsigned long int lindex, double &zmpx2, double &zmpy2, bool Simulation) {
-
   double ux = 0.0, uy = 0.0;
 
   Eigen::Matrix<double, 1, 1> r;
@@ -324,11 +313,9 @@ int PreviewControl::OneIterationOfPreview(
   y = m_A * y + uy * m_B;
 
   zmpx2 = 0.0;
-  for (unsigned int i = 0; i < x.rows(); i++)
-    zmpx2 += m_C(0, i) * x(i, 0);
+  for (unsigned int i = 0; i < x.rows(); i++) zmpx2 += m_C(0, i) * x(i, 0);
   zmpy2 = 0.0;
-  for (unsigned int i = 0; i < y.rows(); i++)
-    zmpy2 += m_C(0, i) * y(i, 0);
+  for (unsigned int i = 0; i < y.rows(); i++) zmpy2 += m_C(0, i) * y(i, 0);
 
   if (Simulation) {
     sxzmp += (ZMPPositions[lindex].px - zmpx2);
@@ -342,7 +329,6 @@ int PreviewControl::OneIterationOfPreview1D(Eigen::MatrixXd &x, double &sxzmp,
                                             deque<double> &ZMPPositions,
                                             unsigned long int lindex,
                                             double &zmpx2, bool Simulation) {
-
   double ux = 0.0;
 
   Eigen::Matrix<double, 1, 1> r;
@@ -365,8 +351,7 @@ int PreviewControl::OneIterationOfPreview1D(Eigen::MatrixXd &x, double &sxzmp,
   x = m_A * x + ux * m_B;
 
   zmpx2 = 0.0;
-  for (unsigned int i = 0; i < x.rows(); i++)
-    zmpx2 += m_C(0, i) * x(i, 0);
+  for (unsigned int i = 0; i < x.rows(); i++) zmpx2 += m_C(0, i) * x(i, 0);
 
   if (Simulation) {
     sxzmp += (ZMPPositions[lindex] - zmpx2);
@@ -383,7 +368,6 @@ int PreviewControl::OneIterationOfPreview1D(Eigen::MatrixXd &x, double &sxzmp,
                                             vector<double> &ZMPPositions,
                                             unsigned long int lindex,
                                             double &zmpx2, bool Simulation) {
-
   double ux = 0.0;
 
   Eigen::Matrix<double, 1, 1> r;
@@ -421,8 +405,7 @@ int PreviewControl::OneIterationOfPreview1D(Eigen::MatrixXd &x, double &sxzmp,
   x = m_A * x + ux * m_B;
 
   zmpx2 = 0.0;
-  for (unsigned int i = 0; i < x.rows(); i++)
-    zmpx2 += m_C(0, i) * x(i, 0);
+  for (unsigned int i = 0; i < x.rows(); i++) zmpx2 += m_C(0, i) * x(i, 0);
 
   if (Simulation) {
     sxzmp += (ZMPPositions[lindex] - zmpx2);
@@ -440,8 +423,7 @@ void PreviewControl::print() {
   cout << "Sampling Period: " << m_SamplingPeriod << endl;
   cout << "Preview control time window: " << m_PreviewControlTime << endl;
 
-  for (int i = 0; i < 3; i++)
-    cout << m_Kx(0, i) << " ";
+  for (int i = 0; i < 3; i++) cout << m_Kx(0, i) << " ";
   cout << endl;
 
   cout << "Ks " << m_Ks << endl;

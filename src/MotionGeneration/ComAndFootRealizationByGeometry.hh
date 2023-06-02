@@ -52,8 +52,7 @@ namespace PatternGeneratorJRL {
 
 */
 class ComAndFootRealizationByGeometry : public ComAndFootRealization {
-
-public:
+ public:
   /*! \name Constructor and destructor */
 
   /*! Constructor */
@@ -144,10 +143,9 @@ public:
   /*! This initialization phase, make sure that the needed buffers
     for the upper body motion are correctly setup.
   */
-  bool
-  InitializationUpperBody(deque<ZMPPosition> &inZMPPositions,
-                          deque<COMPosition> &inCOMBuffer,
-                          deque<RelativeFootPosition> lRelativeFootPositions);
+  bool InitializationUpperBody(
+      deque<ZMPPosition> &inZMPPositions, deque<COMPosition> &inCOMBuffer,
+      deque<RelativeFootPosition> lRelativeFootPositions);
 
   /* @} */
 
@@ -188,8 +186,8 @@ public:
   Eigen::MatrixXd GetFinalDesiredCOMPose();
 
   /*! Returns the position of the Waist in the the COM Frame . */
-  void
-  GetCurrentPositionofWaistInCOMFrame(Eigen::VectorXd &CurPosWICF_homogeneous);
+  void GetCurrentPositionofWaistInCOMFrame(
+      Eigen::VectorXd &CurPosWICF_homogeneous);
 
   /*! Reimplementation of the setter of the HumanoidDynamicRobot. */
   bool setPinocchioRobot(PinocchioRobot *aHumanoidDynamicRobot);
@@ -243,24 +241,24 @@ public:
 
   /*! \brief Getter and setter for the previous
     configurations and velocities */
-  inline void
-  SetPreviousConfigurationStage0(Eigen::VectorXd &prev_Configuration) {
+  inline void SetPreviousConfigurationStage0(
+      Eigen::VectorXd &prev_Configuration) {
     m_prev_Configuration = prev_Configuration;
   }
   inline void SetPreviousVelocityStage0(Eigen::VectorXd &prev_Velocity) {
     m_prev_Velocity = prev_Velocity;
   }
 
-  inline void
-  SetPreviousConfigurationStage1(Eigen::VectorXd &prev_Configuration) {
+  inline void SetPreviousConfigurationStage1(
+      Eigen::VectorXd &prev_Configuration) {
     m_prev_Configuration1 = prev_Configuration;
   }
   inline void SetPreviousVelocityStage1(Eigen::VectorXd &prev_Velocity) {
     m_prev_Velocity1 = prev_Velocity;
   }
 
-  inline void
-  SetPreviousConfigurationStage2(Eigen::VectorXd &prev_Configuration) {
+  inline void SetPreviousConfigurationStage2(
+      Eigen::VectorXd &prev_Configuration) {
     m_prev_Configuration2 = prev_Configuration;
   }
   inline void SetPreviousVelocityStage2(Eigen::VectorXd &prev_Velocity) {
@@ -269,24 +267,24 @@ public:
 
   /*! \brief Getter and setter for the
     previous configurations and velocities */
-  inline void
-  SetPreviousConfigurationStage0(const Eigen::VectorXd &prev_Configuration) {
+  inline void SetPreviousConfigurationStage0(
+      const Eigen::VectorXd &prev_Configuration) {
     m_prev_Configuration = prev_Configuration;
   }
   inline void SetPreviousVelocityStage0(const Eigen::VectorXd &prev_Velocity) {
     m_prev_Velocity = prev_Velocity;
   }
 
-  inline void
-  SetPreviousConfigurationStage1(const Eigen::VectorXd &prev_Configuration) {
+  inline void SetPreviousConfigurationStage1(
+      const Eigen::VectorXd &prev_Configuration) {
     m_prev_Configuration1 = prev_Configuration;
   }
   inline void SetPreviousVelocityStage1(const Eigen::VectorXd &prev_Velocity) {
     m_prev_Velocity1 = prev_Velocity;
   }
 
-  inline void
-  SetPreviousConfigurationStage2(const Eigen::VectorXd &prev_Configuration) {
+  inline void SetPreviousConfigurationStage2(
+      const Eigen::VectorXd &prev_Configuration) {
     m_prev_Configuration2 = prev_Configuration;
   }
   inline void SetPreviousVelocityStage2(const Eigen::VectorXd &prev_Velocity) {
@@ -314,15 +312,15 @@ public:
   inline void leftLegIndexinConfiguration(std::vector<int> &leftLegMaps) const {
     leftLegMaps = m_LeftLegIndexinConfiguration;
   }
-  inline void
-  rightLegIndexinConfiguration(std::vector<int> &rightLegMaps) const {
+  inline void rightLegIndexinConfiguration(
+      std::vector<int> &rightLegMaps) const {
     rightLegMaps = m_RightLegIndexinConfiguration;
   }
   inline void leftArmIndexinConfiguration(std::vector<int> &leftArmMaps) const {
     leftArmMaps = m_LeftArmIndexinConfiguration;
   }
-  inline void
-  rightArmIndexinConfiguration(std::vector<int> &rightArmMaps) const {
+  inline void rightArmIndexinConfiguration(
+      std::vector<int> &rightArmMaps) const {
     rightArmMaps = m_RightArmIndexinConfiguration;
   }
   inline void chestIndexinConfiguration(std::vector<int> &chestMaps) const {
@@ -353,7 +351,7 @@ public:
 
   friend ostream &operator<<(ostream &os, const ComAndFootRealization &obj);
 
-protected:
+ protected:
   /*! \brief Initialization of internal maps of indexes */
   void InitializationMaps(std::vector<pinocchio::JointIndex> &FromRootToFoot,
                           pinocchio::JointModelVector &ActuatedJoints,
@@ -382,7 +380,7 @@ protected:
   /* Register methods. */
   void RegisterMethods();
 
-private:
+ private:
   /*! \name Objects for stepping over.
     @{
   */
@@ -518,5 +516,5 @@ private:
 
 ostream &operator<<(ostream &os, const ComAndFootRealization &obj);
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif

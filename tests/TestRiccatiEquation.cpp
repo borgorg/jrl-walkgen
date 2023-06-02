@@ -27,10 +27,11 @@
 
 #define NB_OF_FIELDS 1
 
-#include "PreviewControl/OptimalControllerSolver.hh"
 #include <Debug.hh>
 #include <fstream>
 #include <iostream>
+
+#include "PreviewControl/OptimalControllerSolver.hh"
 
 using namespace std;
 
@@ -84,8 +85,7 @@ bool compareDebugFiles(string fileName) {
         break;
       }
     }
-    if (endofinspection)
-      break;
+    if (endofinspection) break;
 
     for (unsigned int i = 0; i < NB_OF_FIELDS; i++) {
       arif >> ReferenceInput[i];
@@ -94,8 +94,7 @@ bool compareDebugFiles(string fileName) {
         break;
       }
     }
-    if (endofinspection)
-      break;
+    if (endofinspection) break;
 
     for (unsigned int i = 0; i < NB_OF_FIELDS; i++) {
       if (fabs(LocalInput[i] - ReferenceInput[i]) >= 1e-6) {
@@ -180,8 +179,7 @@ int main() {
   for (int i = 0; i < 3; i++) {
     Ax(0, i + 1) = tmpA(0, i);
     Ax(i + 1, 0) = 0.;
-    for (int j = 0; j < 3; j++)
-      Ax(i + 1, j + 1) = A(i, j);
+    for (int j = 0; j < 3; j++) Ax(i + 1, j + 1) = A(i, j);
   }
   cout << "Ax: " << endl << Ax << endl;
 

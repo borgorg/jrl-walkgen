@@ -34,14 +34,13 @@ using namespace ::PatternGeneratorJRL::TestSuite;
 using namespace std;
 
 enum Profiles_t {
-  PROFIL_HERDT_ONLINE_WALKING, // 1
-  PROFIL_HERDT_EMERGENCY_STOP  // 2
+  PROFIL_HERDT_ONLINE_WALKING,  // 1
+  PROFIL_HERDT_EMERGENCY_STOP   // 2
 };
 
 class TestHerdt2010 : public TestObject {
-
-private:
-public:
+ private:
+ public:
   TestHerdt2010(int argc, char *argv[], string &aString, int TestProfile)
       : TestObject(argc, argv, aString) {
     m_TestProfile = TestProfile;
@@ -55,7 +54,7 @@ public:
     localeventHandler_t Handler;
   };
 
-protected:
+ protected:
   void startOnLineWalking(PatternGeneratorInterface &aPGI) {
     CommonInitialization(aPGI);
 
@@ -188,23 +187,20 @@ protected:
   }
 
   void chooseTestProfile() {
-
     switch (m_TestProfile) {
-
-    case PROFIL_HERDT_ONLINE_WALKING:
-      startOnLineWalking(*m_PGI);
-      break;
-    case PROFIL_HERDT_EMERGENCY_STOP:
-      startEmergencyStop(*m_PGI);
-      break;
-    default:
-      throw("No correct test profile");
-      break;
+      case PROFIL_HERDT_ONLINE_WALKING:
+        startOnLineWalking(*m_PGI);
+        break;
+      case PROFIL_HERDT_EMERGENCY_STOP:
+        startEmergencyStop(*m_PGI);
+        break;
+      default:
+        throw("No correct test profile");
+        break;
     }
   }
 
   void generateEventOnLineWalking() {
-
     struct localEvent {
       unsigned time;
       localeventHandler_t Handler;
@@ -235,7 +231,6 @@ protected:
   }
 
   void generateEventEmergencyStop() {
-
 #define localNbOfEventsEMS 4
     struct localEvent events[localNbOfEventsEMS] = {
         {5 * 200, &TestHerdt2010::startTurningLeft2},
@@ -254,14 +249,14 @@ protected:
 
   void generateEvent() {
     switch (m_TestProfile) {
-    case PROFIL_HERDT_ONLINE_WALKING:
-      generateEventOnLineWalking();
-      break;
-    case PROFIL_HERDT_EMERGENCY_STOP:
-      generateEventEmergencyStop();
-      break;
-    default:
-      break;
+      case PROFIL_HERDT_ONLINE_WALKING:
+        generateEventOnLineWalking();
+        break;
+      case PROFIL_HERDT_EMERGENCY_STOP:
+        generateEventEmergencyStop();
+        break;
+      default:
+        break;
     }
   }
 };
@@ -275,10 +270,8 @@ int PerformTests(int argc, char *argv[]) {
                                    PROFIL_HERDT_EMERGENCY_STOP};
   int indexProfile = -1;
 
-  if (TestName.compare(13, 6, "OnLine") == 0)
-    indexProfile = 0;
-  if (TestName.compare(13, 13, "EmergencyStop") == 0)
-    indexProfile = 1;
+  if (TestName.compare(13, 6, "OnLine") == 0) indexProfile = 0;
+  if (TestName.compare(13, 13, "EmergencyStop") == 0) indexProfile = 1;
 
   if (indexProfile == -1) {
     std::cerr << "CompleteName: " << CompleteName << std::endl;

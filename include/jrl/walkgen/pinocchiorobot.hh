@@ -37,14 +37,17 @@ frame work */
 namespace PatternGeneratorJRL {
 struct PinocchioRobotFoot_t {
   pinocchio::JointIndex associatedAnkle;
-  double soleDepth;  // z axis
-  double soleWidth;  // y axis
-  double soleHeight; // x axis
+  double soleDepth;   // z axis
+  double soleWidth;   // y axis
+  double soleHeight;  // x axis
   Eigen::Vector3d anklePosition;
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
   inline PinocchioRobotFoot_t()
-      : associatedAnkle(0), soleDepth(0.0), soleWidth(0.0), soleHeight(0.0),
+      : associatedAnkle(0),
+        soleDepth(0.0),
+        soleWidth(0.0),
+        soleHeight(0.0),
         anklePosition(0.0, 0.0, 0.0) {}
 };
 typedef PinocchioRobotFoot_t PRFoot;
@@ -52,10 +55,10 @@ typedef PinocchioRobotFoot_t PRFoot;
 namespace pinocchio_robot {
 const int RPY_SIZE = 6;
 const int QUATERNION_SIZE = 7;
-} // namespace pinocchio_robot
+}  // namespace pinocchio_robot
 
 class PinocchioRobot {
-public:
+ public:
   // overload the new[] eigen operator
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
@@ -98,12 +101,11 @@ public:
   /// param root joint homogenous matrix index,
   /// param 6D vector output, filled with zeros if the robot is not compatible
   ///
-  virtual bool
-  ComputeSpecializedInverseKinematics(const pinocchio::JointIndex &jointRoot,
-                                      const pinocchio::JointIndex &jointEnd,
-                                      const Eigen::Matrix4d &jointRootPosition,
-                                      const Eigen::Matrix4d &jointEndPosition,
-                                      Eigen::VectorXd &q);
+  virtual bool ComputeSpecializedInverseKinematics(
+      const pinocchio::JointIndex &jointRoot,
+      const pinocchio::JointIndex &jointEnd,
+      const Eigen::Matrix4d &jointRootPosition,
+      const Eigen::Matrix4d &jointEndPosition, Eigen::VectorXd &q);
 
   ///
   /// \brief testArmsInverseKinematics :
@@ -144,13 +146,13 @@ public:
   ///
   virtual void initializeLegsInverseKinematics();
 
-public:
+ public:
   /// tools :
-  std::vector<pinocchio::JointIndex>
-  jointsBetween(pinocchio::JointIndex first, pinocchio::JointIndex second);
+  std::vector<pinocchio::JointIndex> jointsBetween(
+      pinocchio::JointIndex first, pinocchio::JointIndex second);
   std::vector<pinocchio::JointIndex> fromRootToIt(pinocchio::JointIndex it);
 
-private:
+ private:
   // needed for the inverse geometry (ComputeSpecializedInverseKinematics)
   void getWaistFootKinematics(const Eigen::Matrix4d &jointRootPosition,
                               const Eigen::Matrix4d &jointEndPosition,
@@ -169,7 +171,7 @@ private:
   */
   void ComputeRootSize();
 
-public:
+ public:
   /// Getters
   /// ///////
   inline pinocchio::Data *Data() { return m_robotData; }
@@ -211,7 +213,7 @@ public:
     m_n = m_externalForces.angular();
     zmp(0) = -m_n(1) / m_f(2);
     zmp(1) = m_n(0) / m_f(2);
-    zmp(2) = 0.0; // by default
+    zmp(2) = 0.0;  // by default
   }
 
   inline void positionCenterOfMass(Eigen::Vector3d &com) {
@@ -269,9 +271,9 @@ public:
   const std::string &getName() const;
   /// Attributes
   /// //////////
-private:
+ private:
   pinocchio::Model *m_robotModel;
-  pinocchio::Data *m_robotDataInInitialePose; // internal variable
+  pinocchio::Data *m_robotDataInInitialePose;  // internal variable
   pinocchio::Data *m_robotData;
   PRFoot m_leftFoot, m_rightFoot;
   double m_mass;
@@ -296,10 +298,10 @@ private:
   // tmp variables
   Eigen::Quaterniond m_quat;
   Eigen::Matrix3d m_rot;
-  pinocchio::Force m_externalForces; // external forces and torques
-  Eigen::VectorXd m_tau;             // external forces and torques
-  Eigen::Vector3d m_f, m_n;          // external forces and torques
-  Eigen::Vector3d m_com;             // multibody CoM
+  pinocchio::Force m_externalForces;  // external forces and torques
+  Eigen::VectorXd m_tau;              // external forces and torques
+  Eigen::Vector3d m_f, m_n;           // external forces and torques
+  Eigen::Vector3d m_com;              // multibody CoM
   Eigen::Matrix3d m_S;
   Eigen::Vector3d m_rpy, m_drpy, m_ddrpy, m_omega, m_domega;
 
@@ -326,6 +328,6 @@ private:
   /// \brief Size of the free flyer velocity space.
   pinocchio::JointIndex m_PinoFreeFlyerVelSize;
 
-}; // PinocchioRobot
-} // namespace PatternGeneratorJRL
-#endif // PinocchioRobot_HH
+};  // PinocchioRobot
+}  // namespace PatternGeneratorJRL
+#endif  // PinocchioRobot_HH

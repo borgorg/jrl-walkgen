@@ -23,20 +23,22 @@
  *  Joint Japanese-French Robotics Laboratory (JRL)
  */
 
+#include <PreviewControl/SupportFSM.hh>
 #include <fstream>
 #include <iostream>
-
-#include <PreviewControl/SupportFSM.hh>
 
 using namespace PatternGeneratorJRL;
 using namespace std;
 
 SupportFSM::SupportFSM()
-    : EPS_(1e-6), InTranslation_(false), InRotation_(false),
-      NbStepsAfterRotation_(0), CurrentSupportFoot_(LEFT),
+    : EPS_(1e-6),
+      InTranslation_(false),
+      InRotation_(false),
+      NbStepsAfterRotation_(0),
+      CurrentSupportFoot_(LEFT),
       PostRotationPhase_(false) {
-  StepPeriod_ = 0.8; // Duration of one step
-  DSPeriod_ = 1e9;   // Duration of the DS phase
+  StepPeriod_ = 0.8;  // Duration of one step
+  DSPeriod_ = 1e9;    // Duration of the DS phase
   DSSSPeriod_ = 0.8;
   // TODO: setNumberOfStepsSSDS
   NbStepsSSDS_ = 200;
@@ -84,7 +86,6 @@ void SupportFSM::update_vel_reference(reference_t &Ref,
 void SupportFSM::set_support_state(double time, unsigned int pi,
                                    support_state_t &Support,
                                    const reference_t &Ref) const {
-
   Support.StateChanged = false;
   Support.NbInstants++;
 
@@ -128,12 +129,10 @@ void SupportFSM::set_support_state(double time, unsigned int pi,
       Support.StateChanged = true;
       Support.NbInstants = 0;
       Support.TimeLimit = time + pi * T_ + StepPeriod_;
-      if (pi != 1) // Flying foot is not down
+      if (pi != 1)  // Flying foot is not down
         ++Support.StepNumber;
-      if (!ReferenceGiven)
-        Support.NbStepsLeft = Support.NbStepsLeft - 1;
-      if (ReferenceGiven)
-        Support.NbStepsLeft = NbStepsSSDS_;
+      if (!ReferenceGiven) Support.NbStepsLeft = Support.NbStepsLeft - 1;
+      if (ReferenceGiven) Support.NbStepsLeft = NbStepsSSDS_;
     }
   }
 }

@@ -41,26 +41,22 @@
 
 #include <time.h>
 
-#include <fstream>
-#include <iostream>
-
+#include <Debug.hh>
 #include <Mathematics/qld.hh>
 #include <ZMPRefTrajectoryGeneration/ZMPVelocityReferencedQP.hh>
+#include <fstream>
+#include <iostream>
 #include <privatepgtypes.hh>
-
-#include <Debug.hh>
 using namespace std;
 using namespace PatternGeneratorJRL;
 // using namespace metapod;
 
-//#define DEBUG
+// #define DEBUG
 
 double filterprecision(double adb) {
-  if (fabs(adb) < 1e-7)
-    return 0.0;
+  if (fabs(adb) < 1e-7) return 0.0;
 
-  if (fabs(adb) > 1e7)
-    return 1e7;
+  if (fabs(adb) > 1e7) return 1e7;
 
   double ladb2 = adb * 1e7;
   double lintadb2 = trunc(ladb2);
@@ -69,9 +65,18 @@ double filterprecision(double adb) {
 
 ZMPVelocityReferencedQP::ZMPVelocityReferencedQP(SimplePluginManager *SPM,
                                                  string, PinocchioRobot *aPR)
-    : ZMPRefTrajectoryGeneration(SPM), Robot_(0), SupportFSM_(0), OrientPrw_(0),
-      OrientPrw_DF_(0), VRQPGenerator_(0), IntermedData_(0), RFI_(0),
-      Problem_(), Solution_(), OFTG_DF_(0), OFTG_control_(0),
+    : ZMPRefTrajectoryGeneration(SPM),
+      Robot_(0),
+      SupportFSM_(0),
+      OrientPrw_(0),
+      OrientPrw_DF_(0),
+      VRQPGenerator_(0),
+      IntermedData_(0),
+      RFI_(0),
+      Problem_(),
+      Solution_(),
+      OFTG_DF_(0),
+      OFTG_control_(0),
       dynamicFilter_(0) {
   // Save the reference to HDR
   PR_ = aPR;
@@ -105,9 +110,9 @@ ZMPVelocityReferencedQP::ZMPVelocityReferencedQP(SimplePluginManager *SPM,
   // Create and initialize the finite state machine for support sequences
   SupportFSM_ = new SupportFSM();
   SupportFSM_->StepPeriod(StepPeriod_);
-  SupportFSM_->DSPeriod(1e9); // period during the robot move at 0.0 com speed
+  SupportFSM_->DSPeriod(1e9);  // period during the robot move at 0.0 com speed
   SupportFSM_->DSSSPeriod(StepPeriod_);
-  SupportFSM_->NbStepsSSDS(2); // number of previw step
+  SupportFSM_->NbStepsSSDS(2);  // number of previw step
   SupportFSM_->SamplingPeriod(QP_T_);
 
   // Create and initialize preview of orientations
@@ -199,10 +204,10 @@ ZMPVelocityReferencedQP::ZMPVelocityReferencedQP(SimplePluginManager *SPM,
   ODEBUG4("Before registering methods for ZMPVelocityReferencedQP",
           "PgDebug2.txt");
   for (unsigned int i = 0; i < NbMethods; i++) {
-    //#ifdef DEBUG
-    //    std::cout << "lMethodNames["<< i << "]="
-    // << lMethodNames[i] <<std::endl;
-    //#endif
+    // #ifdef DEBUG
+    //     std::cout << "lMethodNames["<< i << "]="
+    //  << lMethodNames[i] <<std::endl;
+    // #endif
     std::string aMethodName(lMethodNames[i]);
     ODEBUG4("Register method " << aMethodName << "for ZMPVelocityReferencedQP",
             "PgDebug2.txt");
@@ -225,7 +230,6 @@ ZMPVelocityReferencedQP::ZMPVelocityReferencedQP(SimplePluginManager *SPM,
 }
 
 ZMPVelocityReferencedQP::~ZMPVelocityReferencedQP() {
-
   if (VRQPGenerator_ != 0) {
     delete VRQPGenerator_;
     VRQPGenerator_ = 0;
@@ -268,7 +272,6 @@ ZMPVelocityReferencedQP::~ZMPVelocityReferencedQP() {
 }
 
 void ZMPVelocityReferencedQP::setCoMPerturbationForce(istringstream &strm) {
-
   PerturbationAcceleration_.resize(6);
 
   strm >> PerturbationAcceleration_(2);
@@ -279,7 +282,6 @@ void ZMPVelocityReferencedQP::setCoMPerturbationForce(istringstream &strm) {
 }
 
 void ZMPVelocityReferencedQP::setCoMPerturbationForce(double x, double y) {
-
   PerturbationAcceleration_.resize(6);
 
   PerturbationAcceleration_(2) = x / RobotMass_;
@@ -293,9 +295,9 @@ void ZMPVelocityReferencedQP::setCoMPerturbationForce(double x, double y) {
 //-----------new functions--------------
 void ZMPVelocityReferencedQP::CallMethod(std::string &Method,
                                          std::istringstream &strm) {
-  //#ifdef DEBUG
-  //  std::cout << __PRETTY_FUNCTION__ << " Method:" << Method << std::endl;
-  //#endif
+  // #ifdef DEBUG
+  //   std::cout << __PRETTY_FUNCTION__ << " Method:" << Method << std::endl;
+  // #endif
   if (Method == ":previewcontroltime") {
     strm >> m_PreviewControlTime;
   }
@@ -305,9 +307,9 @@ void ZMPVelocityReferencedQP::CallMethod(std::string &Method,
     SupportFSM_->NbStepsSSDS(CurrentSupport.NbStepsLeft);
   }
   if (Method == ":stoppg") {
-    //#ifdef DEBUG
-    //    std::cout << __PRETTY_FUNCTION__ << " EndingPhase" << std::endl;
-    //#endif
+    // #ifdef DEBUG
+    //     std::cout << __PRETTY_FUNCTION__ << " EndingPhase" << std::endl;
+    // #endif
     EndingPhase_ = true;
   }
   if (Method == ":setfeetconstraint") {
@@ -323,7 +325,7 @@ std::size_t ZMPVelocityReferencedQP::InitOnLine(
     deque<FootAbsolutePosition> &FinalRightFootTraj_deq,
     FootAbsolutePosition &InitLeftFootAbsolutePosition,
     FootAbsolutePosition &InitRightFootAbsolutePosition,
-    deque<RelativeFootPosition> &, // RelativeFootPositions,
+    deque<RelativeFootPosition> &,  // RelativeFootPositions,
     COMState &lStartingCOMState, Eigen::Vector3d &lStartingZMPPosition) {
   UpperTimeLimitToUpdate_ = 0.0;
 
@@ -385,9 +387,9 @@ std::size_t ZMPVelocityReferencedQP::InitOnLine(
   CurrentSupport.TimeLimit = 1e9;
   CurrentSupport.NbStepsLeft = 1;
   CurrentSupport.StateChanged = false;
-  CurrentSupport.X = CurrentLeftFootAbsPos.x;                    // 0.0 ;
-  CurrentSupport.Y = CurrentLeftFootAbsPos.y;                    // 0.1 ;
-  CurrentSupport.Yaw = CurrentLeftFootAbsPos.theta * M_PI / 180; // 0.0 ;
+  CurrentSupport.X = CurrentLeftFootAbsPos.x;                     // 0.0 ;
+  CurrentSupport.Y = CurrentLeftFootAbsPos.y;                     // 0.1 ;
+  CurrentSupport.Yaw = CurrentLeftFootAbsPos.theta * M_PI / 180;  // 0.0 ;
   CurrentSupport.StartTime = 0.0;
   IntermedData_->SupportState(CurrentSupport);
 
@@ -459,7 +461,6 @@ void ZMPVelocityReferencedQP::OnLine(
   // UPDATE WALKING TRAJECTORIES:
   // ----------------------------
   if (time + 0.00001 > UpperTimeLimitToUpdate_) {
-
     // UPDATE INTERNAL DATA:
     // ---------------------
     Problem_.reset_variant();
@@ -550,7 +551,7 @@ void ZMPVelocityReferencedQP::OnLine(
     dynamicFilter_->OnLinefilter(COMTraj_deq_, ZMPTraj_deq_ctrl_,
                                  LeftFootTraj_deq_, RightFootTraj_deq_,
                                  deltaCOMTraj_deq_);
-    //#define DEBUG
+    // #define DEBUG
 #ifdef DEBUG
     dynamicFilter_->Debug(COMTraj_deq_ctrl_, LeftFootTraj_deq_ctrl_,
                           RightFootTraj_deq_ctrl_, COMTraj_deq_,
@@ -588,11 +589,11 @@ void ZMPVelocityReferencedQP::OnLine(
 }
 
 void ZMPVelocityReferencedQP::ControlInterpolation(
-    std::deque<COMState> &FinalCOMTraj_deq,                   // OUTPUT
-    std::deque<ZMPPosition> &FinalZMPTraj_deq,                // OUTPUT
-    std::deque<FootAbsolutePosition> &FinalLeftFootTraj_deq,  // OUTPUT
-    std::deque<FootAbsolutePosition> &FinalRightFootTraj_deq, // OUTPUT
-    double time)                                              // INPUT
+    std::deque<COMState> &FinalCOMTraj_deq,                    // OUTPUT
+    std::deque<ZMPPosition> &FinalZMPTraj_deq,                 // OUTPUT
+    std::deque<FootAbsolutePosition> &FinalLeftFootTraj_deq,   // OUTPUT
+    std::deque<FootAbsolutePosition> &FinalRightFootTraj_deq,  // OUTPUT
+    double time)                                               // INPUT
 {
   InitStateLIPM_ = LIPM_.GetState();
 
@@ -659,15 +660,15 @@ void ZMPVelocityReferencedQP::DynamicFilterInterpolation(double time) {
 }
 
 void ZMPVelocityReferencedQP::CoMZMPInterpolation(
-    std::deque<ZMPPosition> &ZMPPositions,                     // OUTPUT
-    std::deque<COMState> &COMTraj_deq,                         // OUTPUT
-    const std::deque<FootAbsolutePosition> &LeftFootTraj_deq,  // INPUT
-    const std::deque<FootAbsolutePosition> &RightFootTraj_deq, // INPUT
-    const solution_t *aSolutionReference,                      // INPUT
-    LinearizedInvertedPendulum2D *LIPM,                        // INPUT/OUTPUT
-    const unsigned numberOfSample,                             // INPUT
-    const int IterationNumber,                                 // INPUT
-    const unsigned int currentIndex)                           // INPUT
+    std::deque<ZMPPosition> &ZMPPositions,                      // OUTPUT
+    std::deque<COMState> &COMTraj_deq,                          // OUTPUT
+    const std::deque<FootAbsolutePosition> &LeftFootTraj_deq,   // INPUT
+    const std::deque<FootAbsolutePosition> &RightFootTraj_deq,  // INPUT
+    const solution_t *aSolutionReference,                       // INPUT
+    LinearizedInvertedPendulum2D *LIPM,                         // INPUT/OUTPUT
+    const unsigned numberOfSample,                              // INPUT
+    const int IterationNumber,                                  // INPUT
+    const unsigned int currentIndex)                            // INPUT
 {
   if (aSolutionReference->SupportStates_deq.size() &&
       aSolutionReference->SupportStates_deq[IterationNumber].NbStepsLeft == 0) {
@@ -707,10 +708,8 @@ void ZMPVelocityReferencedQP::CoMZMPInterpolation(
 void ZMPVelocityReferencedQP::InterpretSolutionVector() {
   double Vx = VelRef_.Local.X;
   double Vy = VelRef_.Local.Y;
-  if (Vx > 0.2 /*ms*/)
-    Vx = 0.2;
-  if (Vy > 0.2 /*ms*/)
-    Vy = 0.2;
+  if (Vx > 0.2 /*ms*/) Vx = 0.2;
+  if (Vy > 0.2 /*ms*/) Vy = 0.2;
   std::deque<support_state_t> &SupportStates = solution_.SupportStates_deq;
   support_state_t &LastSupport = solution_.SupportStates_deq.back();
   support_state_t &FirstSupport = solution_.SupportStates_deq[1];

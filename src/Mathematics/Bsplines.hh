@@ -5,9 +5,10 @@
 #ifndef _BSPLINES_H_
 #define _BSPLINES_H_
 
+#include <math.h>
+
 #include <deque>
 #include <iostream>
-#include <math.h>
 #include <vector>
 
 struct Point {
@@ -19,8 +20,7 @@ namespace PatternGeneratorJRL {
 
 /** Bspline class */
 class Bsplines {
-
-public:
+ public:
   /*! Constructor */
   Bsplines(long int degree);
 
@@ -72,7 +72,7 @@ public:
 
   void PrintDegree() const;
 
-protected:
+ protected:
   long int m_degree;
 
   std::vector<double> m_control_points;
@@ -88,7 +88,7 @@ protected:
 
 /// Bsplines used for Z trajectory of stair steps
 class BSplinesFoot : public Bsplines {
-public:
+ public:
   /** Constructor:
       FT: Final time
       FP: Final position
@@ -146,18 +146,18 @@ public:
                                       std::vector<double> &ToMP,
                                       std::vector<double> &MP);
 
-private:
-  double m_FT; // final time
-  double m_IP; // Initial Position
-  double m_IS; // Initial Speed
-  double m_IA; // Initial Acceleration
-  double m_FP; // Final Position
-  double m_FS; // Final Speed
-  double m_FA; // Final Acceleration
+ private:
+  double m_FT;  // final time
+  double m_IP;  // Initial Position
+  double m_IS;  // Initial Speed
+  double m_IA;  // Initial Acceleration
+  double m_FP;  // Final Position
+  double m_FS;  // Final Speed
+  double m_FA;  // Final Acceleration
   std::vector<double>
-      m_ToMP; // times to reach the middle (intermediate) positions
-  std::vector<double> m_MP; // middle (intermediate) positions
+      m_ToMP;  // times to reach the middle (intermediate) positions
+  std::vector<double> m_MP;  // middle (intermediate) positions
 };
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _BSPLINES_H_*/

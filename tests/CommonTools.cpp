@@ -29,18 +29,17 @@
 #endif /*UNIX*/
 
 #ifdef WIN32
-#include "portability/gettimeofday.hh"
 #include <Windows.h>
+
+#include "portability/gettimeofday.hh"
 #endif /*WIN32*/
 
 #include <fstream>
+#include <jrl/walkgen/patterngeneratorinterface.hh>
 #include <sstream>
 
 #include "CommonTools.hh"
 #include "Debug.hh"
-
-#include <jrl/walkgen/patterngeneratorinterface.hh>
-
 #include "TestFootPrintPGInterfaceData.h"
 
 using namespace std;
@@ -49,8 +48,7 @@ namespace PatternGeneratorJRL {
 namespace TestSuite {
 
 double filterprecision(double adb) {
-  if (fabs(adb) < 1e-7)
-    return 0.0;
+  if (fabs(adb) < 1e-7) return 0.0;
 
   double ladb2 = adb * 1e7;
   double lintadb2 = trunc(ladb2);
@@ -114,7 +112,7 @@ void CommonInitialization(PatternGeneratorInterface &aPGI) {
 
 void getOptions(int argc, char *argv[], string &urdfFullPath,
                 string &srdfFullPath,
-                unsigned int &) // TestProfil)
+                unsigned int &)  // TestProfil)
 {
   std::cout << "Nb of entries: " << argc << std::endl;
   if (argc != 3) {
@@ -155,8 +153,7 @@ void OneStep::fillInDebugVectorDoc() {
                              "ZMP X in Waist Ref",
                              "ZMP Y in Waist Ref"};
 
-  for (std::size_t i = 0; i < 15; i++)
-    m_DebugStrings.push_back(docInit[i]);
+  for (std::size_t i = 0; i < 15; i++) m_DebugStrings.push_back(docInit[i]);
 
   const char *footNames[2] = {"Left Foot", "Right Foot"};
   const char *docFootInit[14] = {
@@ -175,8 +172,7 @@ void OneStep::fillInDebugVectorDoc() {
   const char *docInit2[2] = {"ZMP Target X - world ref",
                              " ZMP Target Y - world ref"};
 
-  for (std::size_t i = 0; i < 2; i++)
-    m_DebugStrings.push_back(docInit2[i]);
+  for (std::size_t i = 0; i < 2; i++) m_DebugStrings.push_back(docInit2[i]);
 
   if (m_PR != 0) {
     Eigen::VectorXd &currentConfiguration = m_PR->currentRPYConfiguration();
@@ -212,8 +208,7 @@ void OneStep::fillInDebugVector() {
   Eigen::VectorXd &currentConfiguration = m_PR->currentRPYConfiguration();
 
   Eigen::Index nq = currentConfiguration.size();
-  if (m_DebugVector.size() == 0)
-    m_DebugVector.resize(17 + 14 * 2 + nq);
+  if (m_DebugVector.size() == 0) m_DebugVector.resize(17 + 14 * 2 + nq);
 
   /// Time
   m_DebugVector[lindex++] = ((double)m_NbOfIt) * 0.005;
@@ -302,5 +297,5 @@ void OneStep::writeDescriptionFile() {
     aof << i << " - " << m_DebugStrings[i] << std::endl;
   aof.close();
 }
-} // namespace TestSuite
-} // namespace PatternGeneratorJRL
+}  // namespace TestSuite
+}  // namespace PatternGeneratorJRL

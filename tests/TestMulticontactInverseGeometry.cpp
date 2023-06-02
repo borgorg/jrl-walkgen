@@ -25,20 +25,21 @@
 /* \file This file tests A. Herdt's walking algorithm for
  * automatic foot placement giving an instantaneous CoM velocity reference.
  */
+#include <hrp2-dynamics/hrp2OptHumanoidDynamicRobot.h>
+
+#include <MotionGeneration/ComAndFootRealizationByGeometry.hh>
+#include <jrl/walkgen/pgtypes.hh>
+
 #include "CommonTools.hh"
 #include "Debug.hh"
 #include "TestObject.hh"
-#include <MotionGeneration/ComAndFootRealizationByGeometry.hh>
-#include <hrp2-dynamics/hrp2OptHumanoidDynamicRobot.h>
-#include <jrl/walkgen/pgtypes.hh>
 
 using namespace ::PatternGeneratorJRL;
 using namespace ::PatternGeneratorJRL::TestSuite;
 using namespace std;
 
 class TestMulticontactInverseGeometry : public TestObject {
-
-private:
+ private:
   ComAndFootRealizationByGeometry *CFRG_;
   SimplePluginManager *SPM_;
   bool once_;
@@ -54,10 +55,10 @@ private:
   deque<MAL_VECTOR_TYPE(double)> dq_;
   deque<MAL_VECTOR_TYPE(double)> ddq_;
 
-  vector<MAL_VECTOR_TYPE(double)> lfs_; // support foort deque
-  vector<MAL_VECTOR_TYPE(double)> rfs_; // support foort deque
-  vector<MAL_VECTOR_TYPE(double)> rhs_; // support foort deque
-  vector<double> timing_;               // support foort deque
+  vector<MAL_VECTOR_TYPE(double)> lfs_;  // support foort deque
+  vector<MAL_VECTOR_TYPE(double)> rfs_;  // support foort deque
+  vector<MAL_VECTOR_TYPE(double)> rhs_;  // support foort deque
+  vector<double> timing_;                // support foort deque
   deque<double> data_time_;
 
   BSplinesFoot *LFX_;
@@ -84,7 +85,7 @@ private:
   double finalTime_;
   double samplingPeriod_;
 
-public:
+ public:
   TestMulticontactInverseGeometry(int argc, char *argv[], string &aString)
       : TestObject(argc, argv, aString) {
     SPM_ = NULL;
@@ -143,35 +144,35 @@ public:
     aof.setf(ios::scientific, ios::floatfield);
 
     for (unsigned int i = 0; i < lfoot_.size(); i++) {
-      aof << filterprecision(data_time_[i]) << " "; // 1
-      aof << filterprecision(rfoot_[i](0)) << " ";  // 2   x
-      aof << filterprecision(rfoot_[i](1)) << " ";  // 3   y
-      aof << filterprecision(rfoot_[i](2)) << " ";  // 4   z
+      aof << filterprecision(data_time_[i]) << " ";  // 1
+      aof << filterprecision(rfoot_[i](0)) << " ";   // 2   x
+      aof << filterprecision(rfoot_[i](1)) << " ";   // 3   y
+      aof << filterprecision(rfoot_[i](2)) << " ";   // 4   z
 
-      aof << filterprecision(lfoot_[i](0)) << " "; // 5   x
-      aof << filterprecision(lfoot_[i](1)) << " "; // 6   y
-      aof << filterprecision(lfoot_[i](2)) << " "; // 7   z
+      aof << filterprecision(lfoot_[i](0)) << " ";  // 5   x
+      aof << filterprecision(lfoot_[i](1)) << " ";  // 6   y
+      aof << filterprecision(lfoot_[i](2)) << " ";  // 7   z
 
-      aof << filterprecision(rhand_[i](0)) << " "; // 8  x
-      aof << filterprecision(rhand_[i](1)) << " "; // 9  y
-      aof << filterprecision(rhand_[i](2)) << " "; // 10  z
-      aof << filterprecision(rhand_[i](3)) << " "; // 11  roll angle
-      aof << filterprecision(rhand_[i](4)) << " "; // 12  pitch angle
-      aof << filterprecision(rhand_[i](5)) << " "; // 13  yaw angle
+      aof << filterprecision(rhand_[i](0)) << " ";  // 8  x
+      aof << filterprecision(rhand_[i](1)) << " ";  // 9  y
+      aof << filterprecision(rhand_[i](2)) << " ";  // 10  z
+      aof << filterprecision(rhand_[i](3)) << " ";  // 11  roll angle
+      aof << filterprecision(rhand_[i](4)) << " ";  // 12  pitch angle
+      aof << filterprecision(rhand_[i](5)) << " ";  // 13  yaw angle
 
-      aof << filterprecision(comPos_[i](0)) << " "; // 14  x
-      aof << filterprecision(comPos_[i](1)) << " "; // 15  y
-      aof << filterprecision(comPos_[i](2)) << " "; // 16  z
-      aof << filterprecision(comPos_[i](3)) << " "; // 17  roll
-      aof << filterprecision(comPos_[i](4)) << " "; // 18  pitch
-      aof << filterprecision(comPos_[i](5)) << " "; // 19  yaw
+      aof << filterprecision(comPos_[i](0)) << " ";  // 14  x
+      aof << filterprecision(comPos_[i](1)) << " ";  // 15  y
+      aof << filterprecision(comPos_[i](2)) << " ";  // 16  z
+      aof << filterprecision(comPos_[i](3)) << " ";  // 17  roll
+      aof << filterprecision(comPos_[i](4)) << " ";  // 18  pitch
+      aof << filterprecision(comPos_[i](5)) << " ";  // 19  yaw
 
-      aof << filterprecision(comSpeed_[i](0)) << " "; // 14  x
-      aof << filterprecision(comSpeed_[i](1)) << " "; // 15  y
-      aof << filterprecision(comSpeed_[i](2)) << " "; // 16  z
-      aof << filterprecision(comSpeed_[i](3)) << " "; // 17  roll
-      aof << filterprecision(comSpeed_[i](4)) << " "; // 18  pitch
-      aof << filterprecision(comSpeed_[i](5)) << " "; // 19  yaw
+      aof << filterprecision(comSpeed_[i](0)) << " ";  // 14  x
+      aof << filterprecision(comSpeed_[i](1)) << " ";  // 15  y
+      aof << filterprecision(comSpeed_[i](2)) << " ";  // 16  z
+      aof << filterprecision(comSpeed_[i](3)) << " ";  // 17  roll
+      aof << filterprecision(comSpeed_[i](4)) << " ";  // 18  pitch
+      aof << filterprecision(comSpeed_[i](5)) << " ";  // 19  yaw
 
       aof << endl;
     }
@@ -193,14 +194,12 @@ public:
       std::ifstream file(RobotFileName.c_str());
       fileExist = !file.fail();
     }
-    if (!fileExist)
-      throw std::string("failed to open robot model");
+    if (!fileExist) throw std::string("failed to open robot model");
 
     // Creating the humanoid robot.
     SpecializedRobotConstructor(m_HDR);
     if (m_HDR == 0) {
-      if (m_HDR != 0)
-        delete m_HDR;
+      if (m_HDR != 0) delete m_HDR;
       dynamicsJRLJapan::ObjectFactory aRobotDynamicsObjectConstructor;
       m_HDR = aRobotDynamicsObjectConstructor.createHumanoidDynamicRobot();
     }
@@ -217,8 +216,7 @@ public:
     ifstream aif;
     aif.open(m_InitConfig.c_str(), ifstream::in);
     if (aif.is_open()) {
-      for (unsigned int i = 0; i < lNbActuatedJoints; i++)
-        aif >> dInitPos[i];
+      for (unsigned int i = 0; i < lNbActuatedJoints; i++) aif >> dInitPos[i];
     }
     aif.close();
 
@@ -281,7 +279,7 @@ public:
     init_interpolation();
   }
 
-protected:
+ protected:
   int interpolate_support(int it) {
     if (it == 0) {
       for (int i = 0; i < (int)round(timing_[0] / samplingPeriod_); ++i) {
@@ -615,10 +613,10 @@ protected:
     //    double hz_2 = 0.892 ;
 
     // 15cm handrill ///////////////////////////
-    double sth = 0.15;                 // stair height
-    double sta = -0.47123889803846897; // stair angle
+    double sth = 0.15;                  // stair height
+    double sta = -0.47123889803846897;  // stair angle
     double init_hx = 0.0418343;
-    double init_hy = -0.331008; // right hand
+    double init_hy = -0.331008;  // right hand
     double init_hz = 0.704285;
     double init_hroll = -0.17418019;
     double init_hpitch = -0.25421091;
@@ -707,7 +705,7 @@ protected:
 
     // 3     0.7 s
     init_lfx =
-        0.0; ///////////////////////////////////////////////////////////////
+        0.0;  ///////////////////////////////////////////////////////////////
     aSLF(0) = init_lfx + 0.3;
     aSRF(0) = init_rfx;
     aSRH(0) = hx_1;
@@ -757,7 +755,7 @@ protected:
 
     // 5    0.7 s
     init_rfx =
-        0.0; //////////////////////////////////////////////////////////////
+        0.0;  //////////////////////////////////////////////////////////////
     aSLF(0) = init_lfx + 0.3;
     aSRF(0) = init_rfx + 0.3;
     aSRH(0) = hx_1;
@@ -961,8 +959,7 @@ protected:
 
     std::ifstream dataStream;
     dataStream.open(dataFile.c_str(), std::ifstream::in);
-    if (!dataStream.good())
-      cout << "cannot open the file" << endl;
+    if (!dataStream.good()) cout << "cannot open the file" << endl;
     MAL_VECTOR_DIM(acomPos, double, 6);
     MAL_VECTOR_DIM(acomVel, double, 6);
     MAL_VECTOR_DIM(acomAcc, double, 6);
@@ -1072,9 +1069,9 @@ protected:
     aof.open(aFileName.c_str(), ofstream::app);
     aof.precision(8);
     aof.setf(ios::scientific, ios::floatfield);
-    aof << filterprecision(iteration * 0.005) << " "; // 1
+    aof << filterprecision(iteration * 0.005) << " ";  // 1
     for (unsigned int i = 6; i < m_CurrentConfiguration.size(); i++) {
-      aof << filterprecision(m_CurrentConfiguration(i)) << " "; // 2
+      aof << filterprecision(m_CurrentConfiguration(i)) << " ";  // 2
     }
     for (unsigned int i = 0; i < 9; i++) {
       aof << 0.0 << " ";
@@ -1095,12 +1092,13 @@ protected:
     aof.open(aFileName.c_str(), ofstream::app);
     aof.precision(8);
     aof.setf(ios::scientific, ios::floatfield);
-    aof << filterprecision(iteration * 0.005) << " "; // 1
+    aof << filterprecision(iteration * 0.005) << " ";  // 1
     aof << filterprecision(m_OneStep.finalCOMPosition.roll[0] * M_PI / 180)
-        << " "; // 2
+        << " ";  // 2
     aof << filterprecision(m_OneStep.finalCOMPosition.pitch[0] * M_PI / 180)
-        << " ";                                                             // 3
-    aof << filterprecision(m_OneStep.finalCOMPosition.yaw[0] * M_PI / 180); // 4
+        << " ";  // 3
+    aof << filterprecision(m_OneStep.finalCOMPosition.yaw[0] * M_PI /
+                           180);  // 4
     aof << endl;
     aof.close();
 
@@ -1124,12 +1122,12 @@ protected:
     aof.open(aFileName.c_str(), ofstream::app);
     aof.precision(8);
     aof.setf(ios::scientific, ios::floatfield);
-    aof << filterprecision(iteration * 0.005) << " "; // 1
+    aof << filterprecision(iteration * 0.005) << " ";  // 1
     aof << filterprecision(m_OneStep.ZMPTarget(0) - m_CurrentConfiguration(0))
-        << " "; // 2
+        << " ";  // 2
     aof << filterprecision(m_OneStep.ZMPTarget(1) - m_CurrentConfiguration(1))
-        << " ";                                                          // 3
-    aof << filterprecision(aSupportState.z - m_CurrentConfiguration(2)); // 4
+        << " ";                                                           // 3
+    aof << filterprecision(aSupportState.z - m_CurrentConfiguration(2));  // 4
     aof << endl;
     aof.close();
 
@@ -1147,8 +1145,7 @@ protected:
   }
 
   double filterprecision(double adb) {
-    if (fabs(adb) < 1e-7)
-      return 0.0;
+    if (fabs(adb) < 1e-7) return 0.0;
 
     double ladb2 = adb * 1e7;
     double lintadb2 = trunc(ladb2);

@@ -38,11 +38,10 @@ namespace PatternGeneratorJRL {
 /// Generate online trajectories for the swinging and the stance foot some
 /// amount in the future.
 class OnLineFootTrajectoryGeneration : public FootTrajectoryGenerationStandard {
-
   //
   // Public methods:
   //
-public:
+ public:
   OnLineFootTrajectoryGeneration(SimplePluginManager *lSPM, PRFoot *aFoot);
 
   virtual ~OnLineFootTrajectoryGeneration();
@@ -86,7 +85,7 @@ public:
   //
   // Protected methods:
   //
-protected:
+ protected:
   /// \brief Check if the solution should be used as is and
   /// propose alternative if not.
   ///
@@ -113,11 +112,11 @@ protected:
   /// time where the swinging foot can move horizontally. \param StepType: Type
   /// of steps (for book-keeping). \param LeftOrRight: Specify if it is left (1)
   /// or right (-1).
-  virtual void
-  UpdateFootPosition(deque<FootAbsolutePosition> &SupportFootTraj_deq,
-                     deque<FootAbsolutePosition> &StanceFootTraj_deq,
-                     int StartIndex, int k, double LocalInterpolationStartTime,
-                     double UnlockedSwingPeriod, int StepType, int LeftOrRight);
+  virtual void UpdateFootPosition(
+      deque<FootAbsolutePosition> &SupportFootTraj_deq,
+      deque<FootAbsolutePosition> &StanceFootTraj_deq, int StartIndex, int k,
+      double LocalInterpolationStartTime, double UnlockedSwingPeriod,
+      int StepType, int LeftOrRight);
 
   /// \brief Compute the results of the polynome at time "t".
   /// And fill the current none support foot absolute positions obect.
@@ -130,7 +129,7 @@ protected:
   //
   // Protected members
   //
-protected:
+ protected:
   /// \brief Sampling period of the QP
   double QP_T_;
 
@@ -151,5 +150,5 @@ protected:
   double FPx_, FPy_;
 };
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _ONLINE_FOOT_TRAJECTORY_GENERATION_H_ */

@@ -24,14 +24,14 @@
  *  Joint Japanese-French Robotics Laboratory (JRL)
  */
 /* This object generate all the values for the foot trajectories, */
+#include "OnLineFootTrajectoryGeneration.h"
+
 #include <fstream>
 #include <iomanip>
 #include <iostream>
-
-#include "Debug.hh"
 #include <privatepgtypes.hh>
 
-#include "OnLineFootTrajectoryGeneration.h"
+#include "Debug.hh"
 
 using namespace PatternGeneratorJRL;
 
@@ -57,16 +57,14 @@ void OnLineFootTrajectoryGeneration::ComputeXYThetaFootPosition(
   curr_NSFAP.dx = m_PolynomeX->ComputeDerivative(t);
   if (m_PolynomeX->Degree() > 4)
     curr_NSFAP.ddx = m_PolynomeX->ComputeSecDerivative(t);
-  if (m_PolynomeX->Degree() > 6)
-    curr_NSFAP.dddx = m_PolynomeX->ComputeJerk(t);
+  if (m_PolynomeX->Degree() > 6) curr_NSFAP.dddx = m_PolynomeX->ComputeJerk(t);
 
   // y, dy, ddy, dddy
   curr_NSFAP.y = m_PolynomeY->Compute(t);
   curr_NSFAP.dy = m_PolynomeY->ComputeDerivative(t);
   if (m_PolynomeY->Degree() > 4)
     curr_NSFAP.ddy = m_PolynomeY->ComputeSecDerivative(t);
-  if (m_PolynomeY->Degree() > 6)
-    curr_NSFAP.dddy = m_PolynomeY->ComputeJerk(t);
+  if (m_PolynomeY->Degree() > 6) curr_NSFAP.dddy = m_PolynomeY->ComputeJerk(t);
 
   // theta, dtheta, ddtheta, dddtheta
   curr_NSFAP.theta = m_PolynomeTheta->Compute(t);
@@ -210,7 +208,6 @@ void OnLineFootTrajectoryGeneration::interpret_solution(
     double CurrentTime, const solution_t &Solution,
     const support_state_t &CurrentSupport, unsigned int NbSteps, double &X,
     double &Y) {
-
   double Sign;
   if (CurrentSupport.Foot == LEFT)
     Sign = 1.0;
@@ -253,7 +250,7 @@ void OnLineFootTrajectoryGeneration::interpolate_feet_positions(
   int StepType = 1;
   unsigned int CurrentIndex = (unsigned int)(FinalLeftFootTraj_deq.size() - 1);
 
-  FootAbsolutePosition *LastSFP; // LastSwingFootPosition
+  FootAbsolutePosition *LastSFP;  // LastSwingFootPosition
   if (CurrentSupport.Foot == LEFT) {
     LastSFP = &(FinalRightFootTraj_deq[CurrentIndex]);
   } else {
@@ -366,7 +363,7 @@ void OnLineFootTrajectoryGeneration::interpolate_feet_positions(
     deque<FootAbsolutePosition> &FinalRightFootTraj_deq) {
   --CurrentIndex;
   int StepType = 1;
-  FootAbsolutePosition *LastSFP; // LastSwingFootPosition
+  FootAbsolutePosition *LastSFP;  // LastSwingFootPosition
   if (CurrentSupport.Foot == LEFT) {
     LastSFP = &(FinalRightFootTraj_deq[CurrentIndex]);
   } else {

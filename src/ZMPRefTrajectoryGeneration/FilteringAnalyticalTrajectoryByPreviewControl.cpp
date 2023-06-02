@@ -24,9 +24,11 @@
 /*! \file This object filters an analytical ZMP trajectory through
   preview control. */
 #include "FilteringAnalyticalTrajectoryByPreviewControl.hh"
-#include "Debug.hh"
+
 #include <fstream>
 #include <iostream>
+
+#include "Debug.hh"
 
 using namespace PatternGeneratorJRL;
 
@@ -73,7 +75,6 @@ void FilteringAnalyticalTrajectoryByPreviewControl::SetAnalyticalTrajectory(
 
 void FilteringAnalyticalTrajectoryByPreviewControl::SetPreviewControl(
     PreviewControl *lPreviewControl) {
-
   m_PreviewControl = lPreviewControl;
   m_LocalBufferIndex = 0;
   if (m_PreviewControl != 0) {
@@ -125,8 +126,7 @@ bool FilteringAnalyticalTrajectoryByPreviewControl::FillInWholeBuffer(
   unsigned int SizeOfBuffer =
       (unsigned int)((DeltaTj0 + PreviewWindowTime) / DeltaT);
   ODEBUG("SizeOfBuffer: " << SizeOfBuffer << " Duration : " << m_Duration);
-  if (m_DataBuffer.size() != SizeOfBuffer)
-    m_DataBuffer.resize(SizeOfBuffer);
+  if (m_DataBuffer.size() != SizeOfBuffer) m_DataBuffer.resize(SizeOfBuffer);
 
   double lZMP;
   double t = 0;
@@ -185,8 +185,7 @@ bool FilteringAnalyticalTrajectoryByPreviewControl::UpdateOneStep(
   CoMSpeedValue = m_ComState(1, 0);
 
   m_LocalBufferIndex++;
-  if (m_LocalBufferIndex >= (int)m_DataBuffer.size())
-    m_LocalBufferIndex = 0;
+  if (m_LocalBufferIndex >= (int)m_DataBuffer.size()) m_LocalBufferIndex = 0;
   return true;
 }
 

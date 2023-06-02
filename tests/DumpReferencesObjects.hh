@@ -10,7 +10,7 @@
 namespace PatternGeneratorJRL {
 namespace TestSuite {
 class FillingFileArgs_t {
-public:
+ public:
   std::ofstream &aof;
   double dt;
   double nb_subsampling;
@@ -18,12 +18,14 @@ public:
 
   FillingFileArgs_t(std::ofstream &laof, double ldt, double lnb_subsampling,
                     OneStep &lOneStep)
-      : aof(laof), dt(ldt), nb_subsampling(lnb_subsampling),
+      : aof(laof),
+        dt(ldt),
+        nb_subsampling(lnb_subsampling),
         anOneStep(lOneStep){};
 };
 
 class DumpReferencesObjects {
-public:
+ public:
   DumpReferencesObjects();
   virtual ~DumpReferencesObjects(){};
 
@@ -47,10 +49,9 @@ public:
   virtual void fillInTestsFormat2(std::string &aTestName, OneStep &anOneStep,
                                   Eigen::VectorXd &aCurrentConfiguration);
 
-  virtual void
-  fillFileWithSubsamplingAndClose(FillingFileArgs_t &aSetOfFillingFileArgs,
-                                  std::vector<double> &next,
-                                  std::vector<double> &prev);
+  virtual void fillFileWithSubsamplingAndClose(
+      FillingFileArgs_t &aSetOfFillingFileArgs, std::vector<double> &next,
+      std::vector<double> &prev);
 
   std::vector<double> m_prevCoMp, m_prevCoMpF2;
   std::vector<double> m_prevdCoMp;
@@ -72,11 +73,11 @@ public:
   /// Add time or not in the dump file
   bool m_TimeOption;
 
-private:
+ private:
   unsigned int m_InternalFormat;
 };
 
-} // namespace TestSuite
-} // namespace PatternGeneratorJRL
+}  // namespace TestSuite
+}  // namespace PatternGeneratorJRL
 
 #endif /*  _TESTS_DUMP_REFERENCES_OBJECT_ */

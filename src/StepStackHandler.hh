@@ -31,9 +31,8 @@
 #ifndef _STEP_STACK_HANDLER_H_
 #define _STEP_STACK_HANDLER_H_
 
-#include <deque>
-
 #include <SimplePlugin.hh>
+#include <deque>
 #include <jrl/walkgen/pgtypes.hh>
 
 namespace PatternGeneratorJRL {
@@ -48,7 +47,7 @@ class StepOverPlanner;
   the ZMP reference trajectory generator object.
 */
 class StepStackHandler : public SimplePlugin {
-public:
+ public:
   /*! \brief Constructor */
   StepStackHandler(SimplePluginManager *lSPM);
 
@@ -181,7 +180,7 @@ public:
   */
   virtual void CallMethod(std::string &Method, std::istringstream &strm);
 
-protected:
+ protected:
   /*! Vector of relative foot position. */
   std::deque<RelativeFootPosition> m_RelativeFootPositions;
 
@@ -207,6 +206,6 @@ protected:
   bool m_TransitionFinishOnLine;
 };
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #include <MotionGeneration/StepOverPlanner.hh>
 #endif /* _FOOT_PRINT_H_*/

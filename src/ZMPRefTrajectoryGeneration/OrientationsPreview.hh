@@ -31,9 +31,8 @@
 #ifndef ORIENTATIONSPREVIEW_H_
 #define ORIENTATIONSPREVIEW_H_
 
-#include <deque>
-
 #include <Mathematics/PolynomeFoot.hh>
+#include <deque>
 #include <jrl/walkgen/pgtypes.hh>
 #include <jrl/walkgen/pinocchiorobot.hh>
 #include <privatepgtypes.hh>
@@ -41,11 +40,10 @@
 namespace PatternGeneratorJRL {
 /// \brief The acceleration phase is fixed
 class OrientationsPreview {
-
   //
   // Public methods:
   //
-public:
+ public:
   /// \name Accessors
   /// \{
   OrientationsPreview(PinocchioRobot *aPR);
@@ -121,7 +119,7 @@ public:
   //
   // Private methods:
   //
-private:
+ private:
   /// \brief Verify and eventually reduce the maximal acceleration of
   /// the hip joint necessary to attain the velocity reference in one
   /// sampling T_.
@@ -189,7 +187,7 @@ private:
   //
   // Private members:
   //
-private:
+ private:
   /// \brief Angular limitations of the hip joints
   double lLimitLeftHipYaw_, uLimitLeftHipYaw_, lLimitRightHipYaw_,
       uLimitRightHipYaw_;
@@ -231,5 +229,5 @@ private:
 
   Polynome4 *TrunkStateYaw_;
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* ORIENTATIONSPREVIEW_H_ */

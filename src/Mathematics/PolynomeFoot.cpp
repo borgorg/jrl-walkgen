@@ -22,11 +22,10 @@
  *  Joint Japanese-French Robotics Laboratory (JRL)
  */
 /* Polynomes object for generating foot trajectories. */
-#include <iostream>
-#include <vector>
-
 #include <Debug.hh>
 #include <Mathematics/PolynomeFoot.hh>
+#include <iostream>
+#include <vector>
 
 using namespace ::std;
 using namespace ::PatternGeneratorJRL;
@@ -144,7 +143,7 @@ void Polynome4::SetParameters(double FT, double MP, double FP) {
 void Polynome4::SetParameters(double FT, double InitPos, double InitSpeed,
                               double InitAcc, double FinalSpeed,
                               double FinalAcc) {
-  MP_ = 0.0; // default value
+  MP_ = 0.0;  // default value
   FP_ = 0.0;
 
   FT_ = FT;
@@ -205,8 +204,13 @@ void Polynome4::GetParametersWithInitPosInitSpeed(double &FT, double &MP,
 Polynome4::~Polynome4() {}
 
 Polynome5::Polynome5(double FT, double FP)
-    : PolynomeFoot(5, FT), InitPos_(0.0), InitSpeed_(0.0), InitAcc_(0.0),
-      FinalPos_(0.0), FinalSpeed_(0.0), FinalAcc_(0.0)
+    : PolynomeFoot(5, FT),
+      InitPos_(0.0),
+      InitSpeed_(0.0),
+      InitAcc_(0.0),
+      FinalPos_(0.0),
+      FinalSpeed_(0.0),
+      FinalAcc_(0.0)
 
 {
   SetParameters(FT, FP);
@@ -357,7 +361,10 @@ void Polynome6::GetParametersWithInitPosInitSpeed(double &TimeInterval,
 Polynome6::~Polynome6() {}
 
 Polynome7::Polynome7(double FT, double FP)
-    : PolynomeFoot(7, FT), FP_(FP), InitPos_(0.0), InitSpeed_(0.0),
+    : PolynomeFoot(7, FT),
+      FP_(FP),
+      InitPos_(0.0),
+      InitSpeed_(0.0),
       InitAcc_(0.0)
 
 {

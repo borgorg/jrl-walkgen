@@ -24,11 +24,12 @@
  */
 
 /* This object handles several intervals for the foot trajectory generation. */
+#include "FootTrajectoryGeneration/FootTrajectoryGenerationMultiple.hh"
+
 #include <iomanip>
 #include <iostream>
 
 #include "Debug.hh"
-#include "FootTrajectoryGeneration/FootTrajectoryGenerationMultiple.hh"
 
 using namespace PatternGeneratorJRL;
 
@@ -213,8 +214,7 @@ bool FootTrajectoryGenerationMultiple::Compute(
  */
 int FootTrajectoryGenerationMultiple::SetNatureInterval(
     unsigned int IntervalIndex, int Nature) {
-  if (IntervalIndex >= m_NatureOfIntervals.size())
-    return -1;
+  if (IntervalIndex >= m_NatureOfIntervals.size()) return -1;
   m_NatureOfIntervals[IntervalIndex] = Nature;
   return 0;
 }
@@ -223,8 +223,7 @@ int FootTrajectoryGenerationMultiple::SetNatureInterval(
  */
 int FootTrajectoryGenerationMultiple::GetNatureInterval(
     unsigned int IntervalIndex) const {
-  if (IntervalIndex >= m_NatureOfIntervals.size())
-    return -100;
+  if (IntervalIndex >= m_NatureOfIntervals.size()) return -100;
 
   return m_NatureOfIntervals[IntervalIndex];
 }
@@ -243,8 +242,7 @@ int FootTrajectoryGenerationMultiple::SetParametersWithInitPosInitSpeed(
     unsigned int IntervalIndex, int AxisReference, double TimeInterval,
     double FinalPosition, double InitPosition, double InitSpeed,
     vector<double> middlePos) {
-  if (IntervalIndex >= m_SetOfFootTrajectoryGenerationObjects.size())
-    return -1;
+  if (IntervalIndex >= m_SetOfFootTrajectoryGenerationObjects.size()) return -1;
 
   m_SetOfFootTrajectoryGenerationObjects[IntervalIndex]
       ->SetParametersWithInitPosInitSpeed(AxisReference, TimeInterval,
@@ -264,8 +262,7 @@ int FootTrajectoryGenerationMultiple::SetParameters(unsigned int IntervalIndex,
                                                     int AxisReference,
                                                     double TimeInterval,
                                                     double FinalPosition) {
-  if (IntervalIndex >= m_SetOfFootTrajectoryGenerationObjects.size())
-    return -1;
+  if (IntervalIndex >= m_SetOfFootTrajectoryGenerationObjects.size()) return -1;
 
   return SetParametersWithInitPosInitSpeedInitAcc(
       IntervalIndex, AxisReference, TimeInterval, FinalPosition, 0.0, 0.0, 0.0);
@@ -288,8 +285,7 @@ int FootTrajectoryGenerationMultiple::SetParametersWithInitPosInitSpeedInitAcc(
     unsigned int IntervalIndex, int AxisReference, double TimeInterval,
     double FinalPosition, double InitPosition, double InitSpeed, double InitAcc,
     vector<double> middlePos) {
-  if (IntervalIndex >= m_SetOfFootTrajectoryGenerationObjects.size())
-    return -1;
+  if (IntervalIndex >= m_SetOfFootTrajectoryGenerationObjects.size()) return -1;
 
   m_SetOfFootTrajectoryGenerationObjects[IntervalIndex]->SetParameters(
       AxisReference, TimeInterval, FinalPosition, InitPosition, InitSpeed,
@@ -309,8 +305,7 @@ int FootTrajectoryGenerationMultiple::SetParametersWithInitPosInitSpeedInitAcc(
 int FootTrajectoryGenerationMultiple::GetParametersWithInitPosInitSpeed(
     unsigned int IntervalIndex, int AxisReference, double &TimeInterval,
     double &FinalPosition, double &InitPosition, double &InitSpeed) {
-  if (IntervalIndex >= m_SetOfFootTrajectoryGenerationObjects.size())
-    return -1;
+  if (IntervalIndex >= m_SetOfFootTrajectoryGenerationObjects.size()) return -1;
 
   m_SetOfFootTrajectoryGenerationObjects[IntervalIndex]
       ->GetParametersWithInitPosInitSpeed(
@@ -328,8 +323,9 @@ void FootTrajectoryGenerationMultiple::SetAbsoluteTimeReference(
   m_AbsoluteTimeReference = lAbsoluteTimeReference;
 }
 
-void FootTrajectoryGenerationMultiple::CallMethod(std::string &, // Method,
-                                                  std::istringstream &) // strm)
+void FootTrajectoryGenerationMultiple::CallMethod(
+    std::string &,         // Method,
+    std::istringstream &)  // strm)
 {}
 int FootTrajectoryGenerationMultiple::DisplayIntervals() const {
   for (unsigned int i = 0; i < m_DeltaTj.size(); i++) {
@@ -338,9 +334,8 @@ int FootTrajectoryGenerationMultiple::DisplayIntervals() const {
   return 0;
 }
 
-FootTrajectoryGenerationMultiple &FootTrajectoryGenerationMultiple::
-operator=(const FootTrajectoryGenerationMultiple &aFTGM) {
-
+FootTrajectoryGenerationMultiple &FootTrajectoryGenerationMultiple::operator=(
+    const FootTrajectoryGenerationMultiple &aFTGM) {
   /* Specify the number of intervals. */
   SetNumberOfIntervals(aFTGM.GetNumberOfIntervals());
 

@@ -31,16 +31,14 @@
 #ifndef _FOOT_CONSTRAINTS_AS_LINEAR_SYSTEM_H_
 #define _FOOT_CONSTRAINTS_AS_LINEAR_SYSTEM_H_
 
+#include <Mathematics/ConvexHull.hh>
+#include <SimplePlugin.hh>
 #include <deque>
+#include <jrl/walkgen/pgtypes.hh>
+#include <jrl/walkgen/pinocchiorobot.hh>
 #include <sstream>
 #include <string>
 #include <vector>
-
-#include <jrl/walkgen/pinocchiorobot.hh>
-
-#include <Mathematics/ConvexHull.hh>
-#include <SimplePlugin.hh>
-#include <jrl/walkgen/pgtypes.hh>
 
 namespace PatternGeneratorJRL {
 /*! This class generates matrix representation of linear
@@ -49,7 +47,7 @@ namespace PatternGeneratorJRL {
   for QP solving.
 */
 class FootConstraintsAsLinearSystem : public SimplePlugin {
-public:
+ public:
   /*! Constructor */
   FootConstraintsAsLinearSystem(SimplePluginManager *aSPM, PinocchioRobot *aPR);
 
@@ -95,9 +93,9 @@ public:
   */
   virtual void CallMethod(std::string &Method, std::istringstream &Args);
 
-private:
+ private:
   /* ! Reference on the Humanoid Specificities. */
   PinocchioRobot *m_PR;
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _FOOT_CONSTRAINTS_AS_LINEAR_SYSTEM_H_ */

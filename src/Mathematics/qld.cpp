@@ -381,8 +381,8 @@ int ql0001_(int *m, int *me, int *mmax, int *n, int *nmax, int *mnn, double *c,
 #else
 /* Subroutine */
 int ql0001_(m, me, mmax, n, nmax, mnn, c, d, a, b, xl, xu, x, u, iout, ifail,
-            iprint, war, lwar, iwar, liwar, eps1) integer *m,
-    *me, *mmax, *n, *nmax, *mnn;
+            iprint, war, lwar, iwar, liwar, eps1)
+integer *m, *me, *mmax, *n, *nmax, *mnn;
 doublereal *c, *d, *a, *b, *xl, *xu, *x, *u;
 integer *iout, *ifail, *iprint;
 doublereal *war;
@@ -604,8 +604,8 @@ int ql0002_(integer *n, integer *m, integer *meq, integer *mmax, integer *mn,
 #else
 /* Subroutine */
 int ql0002_(n, m, meq, mmax, mn, mnn, nmax, lql, a, b, grad, g, xl, xu, x, nact,
-            iact, maxit, vsmall, info, diag, w, lw) integer *n,
-    *m, *meq, *mmax, *mn, *mnn, *nmax;
+            iact, maxit, vsmall, info, diag, w, lw)
+integer *n, *m, *meq, *mmax, *mn, *mnn, *nmax;
 logical *lql;
 doublereal *a, *b, *grad, *g, *xl, *xu, *x;
 integer *nact, *iact, *maxit;
@@ -1837,10 +1837,10 @@ L775:
   }
 L791:
   switch ((int)lflag) {
-  case 1:
-    goto L580;
-  case 2:
-    goto L650;
+    case 1:
+      goto L580;
+    case 2:
+      goto L650;
   }
 
   /* ******************************************************************** */
@@ -1924,10 +1924,10 @@ L810:
 L850:
   --(*nact);
   switch ((int)mflag) {
-  case 1:
-    goto L250;
-  case 2:
-    goto L610;
+    case 1:
+      goto L250;
+    case 2:
+      goto L610;
   }
 
   /* ******************************************************************** */
@@ -1971,10 +1971,10 @@ L880:
   goto L880;
 L900:
   switch ((int)nflag) {
-  case 1:
-    goto L560;
-  case 2:
-    goto L630;
+    case 1:
+      goto L560;
+    case 2:
+      goto L630;
   }
 
   /* ******************************************************************** */
@@ -2002,10 +2002,10 @@ L910:
   /* L925: */
   xmag = max(xmag, sum);
   switch ((int)jflag) {
-  case 1:
-    goto L420;
-  case 2:
-    goto L690;
+    case 1:
+      goto L420;
+    case 2:
+      goto L690;
   }
 
   /* ******************************************************************** */
@@ -2028,10 +2028,10 @@ L930:
     }
   }
   switch ((int)kflag) {
-  case 1:
-    goto L350;
-  case 2:
-    goto L550;
+    case 1:
+      goto L350;
+    case 2:
+      goto L550;
   }
   return 0;
 } /* ql0002_ */

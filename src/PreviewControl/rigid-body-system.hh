@@ -26,6 +26,7 @@
 #define _RIGID_BODY_SYSTEM_
 
 #include <FootTrajectoryGeneration/OnLineFootTrajectoryGeneration.h>
+
 #include <PreviewControl/SupportFSM.hh>
 #include <PreviewControl/rigid-body.hh>
 #include <jrl/walkgen/pinocchiorobot.hh>
@@ -33,11 +34,10 @@
 
 namespace PatternGeneratorJRL {
 class RigidBodySystem {
-
   //
   // Public methods
   //
-public:
+ public:
   RigidBodySystem(SimplePluginManager *SPM, PinocchioRobot *aPR,
                   SupportFSM *FSM);
 
@@ -137,7 +137,7 @@ public:
   //
   // Private methods
   //
-private:
+ private:
   /// \brief Initialize dynamics of the CoP
   ///
   /// \param[out] Dynamics Matrices to be filled
@@ -217,7 +217,7 @@ private:
   //
   // Private members
   //
-private:
+ private:
   /// \brief Bodies
   RigidBody CoM_, LeftFoot_, RightFoot_, LeftWrist_, RightWrist_;
 
@@ -268,5 +268,5 @@ private:
 
   PinocchioRobot *PR_;
 };
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL
 #endif /* _RIGID_BODY_SYSTEM_ */

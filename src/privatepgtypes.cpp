@@ -22,15 +22,13 @@
  *  Research carried out within the scope of the
  *  Joint Japanese-French Robotics Laboratory (JRL)
  */
-#include <privatepgtypes.hh>
-
 #include <fstream>
 #include <iostream>
+#include <privatepgtypes.hh>
 
 namespace PatternGeneratorJRL {
 
 struct support_state_t &support_state_t::operator=(const support_state_t &aSS) {
-
   Phase = aSS.Phase;
   Foot = aSS.Foot;
   NbStepsLeft = aSS.NbStepsLeft;
@@ -46,7 +44,6 @@ struct support_state_t &support_state_t::operator=(const support_state_t &aSS) {
 }
 
 void support_state_t::reset() {
-
   Phase = DS;
   Foot = LEFT;
   NbStepsLeft = 0;
@@ -63,7 +60,6 @@ void support_state_t::reset() {
 support_state_t::support_state_t() { reset(); }
 
 struct com_t &com_t::operator=(const com_t &aCS) {
-
   for (unsigned int i = 0; i < 3; i++) {
     x[i] = aCS.x[i];
     y[i] = aCS.y[i];
@@ -73,7 +69,6 @@ struct com_t &com_t::operator=(const com_t &aCS) {
 }
 
 void com_t::reset() {
-
   x.resize(3);
   y.resize(3);
   z.resize(3);
@@ -85,7 +80,6 @@ void com_t::reset() {
 com_t::com_t() { reset(); }
 
 struct trunk_t &trunk_t::operator=(const trunk_t &aTS) {
-
   for (unsigned int i = 0; i < 3; i++) {
     x[i] = aTS.x[i];
     y[i] = aTS.y[i];
@@ -99,7 +93,6 @@ struct trunk_t &trunk_t::operator=(const trunk_t &aTS) {
 }
 
 void trunk_t::reset() {
-
   x.resize(3);
   y.resize(3);
   z.resize(3);
@@ -117,27 +110,26 @@ void trunk_t::reset() {
 trunk_t::trunk_t() { reset(); }
 
 void convex_hull_t::rotate(axis_e axis, double angle) {
-
   switch (axis) {
-  case YAW:
-    double xOld, yOld;
-    for (unsigned int j = 0; j < X_vec.size(); j++) {
-      xOld = X_vec[j];
-      yOld = Y_vec[j];
-      X_vec[j] = (xOld * cos(angle) - yOld * sin(angle));
-      Y_vec[j] = (xOld * sin(angle) + yOld * cos(angle));
-    }
-    break;
-  case PITCH:
-    break;
-  case ROLL:
-    break;
-  case X_AXIS:
-    break;
-  case Y_AXIS:
-    break;
-  case Z_AXIS:
-    break;
+    case YAW:
+      double xOld, yOld;
+      for (unsigned int j = 0; j < X_vec.size(); j++) {
+        xOld = X_vec[j];
+        yOld = Y_vec[j];
+        X_vec[j] = (xOld * cos(angle) - yOld * sin(angle));
+        Y_vec[j] = (xOld * sin(angle) + yOld * cos(angle));
+      }
+      break;
+    case PITCH:
+      break;
+    case ROLL:
+      break;
+    case X_AXIS:
+      break;
+    case Y_AXIS:
+      break;
+    case Z_AXIS:
+      break;
   }
 }
 
@@ -148,7 +140,6 @@ convex_hull_t::convex_hull_t(unsigned nbVert, unsigned nbIneq)
 }
 
 void convex_hull_t::clear() {
-
   X_vec.clear();
   Y_vec.clear();
   Z_vec.clear();
@@ -159,7 +150,6 @@ void convex_hull_t::clear() {
 }
 
 void convex_hull_t::resize(unsigned nbVert, unsigned nbIneq) {
-
   X_vec.resize(nbVert);
   Y_vec.resize(nbVert);
   Z_vec.resize(nbVert);
@@ -174,7 +164,6 @@ void convex_hull_t::resize(unsigned nbVert, unsigned nbIneq) {
 
 void convex_hull_t::set_vertices(const double *X_a, const double *Y_a,
                                  const double *Z_a) {
-
   for (unsigned i = 0; i < nbVert_; i++) {
     X_vec[i] = X_a[i];
     Y_vec[i] = Y_a[i];
@@ -182,7 +171,6 @@ void convex_hull_t::set_vertices(const double *X_a, const double *Y_a,
   }
 }
 void convex_hull_t::set_vertices(const double *X_a, const double *Y_a) {
-
   for (unsigned i = 0; i < nbVert_; i++) {
     X_vec[i] = X_a[i];
     Y_vec[i] = Y_a[i];
@@ -190,7 +178,6 @@ void convex_hull_t::set_vertices(const double *X_a, const double *Y_a) {
 }
 void convex_hull_t::set_inequalities(const double *A_a, const double *B_a,
                                      const double *C_a, const double *D_a) {
-
   for (unsigned i = 0; i < nbIneq_; i++) {
     A_vec[i] = A_a[i];
     B_vec[i] = B_a[i];
@@ -200,7 +187,6 @@ void convex_hull_t::set_inequalities(const double *A_a, const double *B_a,
 }
 
 void convex_hull_t::cout() {
-
   std::cout << "Vertices: " << nbVert_ << std::endl;
   for (unsigned i = 0; i < nbVert_; ++i)
     std::cout << X_vec[i] << " " << Y_vec[i] << std::endl;
@@ -214,7 +200,6 @@ void convex_hull_t::cout() {
 }
 
 void linear_inequality_t::clear() {
-
   D.X_mat.setZero();
   D.Y_mat.setZero();
   D.Z_mat.setZero();
@@ -222,7 +207,6 @@ void linear_inequality_t::clear() {
 }
 
 void linear_inequality_t::resize(int NbRows, int NbCols, bool) {
-
   D.X_mat.resize(NbRows, NbCols);
   D.Y_mat.resize(NbRows, NbCols);
   D.Z_mat.resize(NbRows, NbCols);
@@ -230,12 +214,18 @@ void linear_inequality_t::resize(int NbRows, int NbCols, bool) {
 }
 
 solution_t::solution_t()
-    : NbVariables(0), NbConstraints(0), Fail(0), Print(0), Solution_vec(0),
-      SupportOrientations_deq(0), SupportStates_deq(0), ConstrLagr_vec(0),
-      LBoundsLagr_vec(0), UBoundsLagr_vec(0) {}
+    : NbVariables(0),
+      NbConstraints(0),
+      Fail(0),
+      Print(0),
+      Solution_vec(0),
+      SupportOrientations_deq(0),
+      SupportStates_deq(0),
+      ConstrLagr_vec(0),
+      LBoundsLagr_vec(0),
+      UBoundsLagr_vec(0) {}
 
 void solution_t::reset() {
-
   NbVariables = 0;
   NbConstraints = 0;
   Fail = 0;
@@ -285,7 +275,11 @@ reference_t::frame_t::frame_t()
     : X(0), Y(0), Yaw(0), X_vec(), Y_vec(), Yaw_vec() {}
 
 reference_t::frame_t::frame_t(const frame_t &F)
-    : X(F.X), Y(F.Y), Yaw(F.Yaw), X_vec(F.X_vec), Y_vec(F.Y_vec),
+    : X(F.X),
+      Y(F.Y),
+      Yaw(F.Yaw),
+      X_vec(F.X_vec),
+      Y_vec(F.Y_vec),
       Yaw_vec(F.Yaw_vec) {}
 
-} // namespace PatternGeneratorJRL
+}  // namespace PatternGeneratorJRL

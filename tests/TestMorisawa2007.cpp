@@ -33,15 +33,15 @@ using namespace ::PatternGeneratorJRL::TestSuite;
 using namespace std;
 
 enum Profiles_t {
-  PROFIL_ANALYTICAL_ONLINE_WALKING,         // 1
-  PROFIL_ANALYTICAL_SHORT_STRAIGHT_WALKING, // 2
-  PROFIL_ANALYTICAL_CLIMBING_STAIRS_10,     // 3
-  PROFIL_ANALYTICAL_CLIMBING_STAIRS_15,     // 4
-  PROFIL_ANALYTICAL_GOING_DOWN_STAIRS_10,   // 5
-  PROFIL_ANALYTICAL_GOING_DOWN_STAIRS_15,   // 6
-  PROFIL_ANALYTICAL_STEPPING_STONES,        // 7
-  PROFIL_ANALYTICAL_WALKING_ON_BEAM,        // 8
-  PROFIL_ANALYTICAL_GO_THROUGH_WALL         // 9
+  PROFIL_ANALYTICAL_ONLINE_WALKING,          // 1
+  PROFIL_ANALYTICAL_SHORT_STRAIGHT_WALKING,  // 2
+  PROFIL_ANALYTICAL_CLIMBING_STAIRS_10,      // 3
+  PROFIL_ANALYTICAL_CLIMBING_STAIRS_15,      // 4
+  PROFIL_ANALYTICAL_GOING_DOWN_STAIRS_10,    // 5
+  PROFIL_ANALYTICAL_GOING_DOWN_STAIRS_15,    // 6
+  PROFIL_ANALYTICAL_STEPPING_STONES,         // 7
+  PROFIL_ANALYTICAL_WALKING_ON_BEAM,         // 8
+  PROFIL_ANALYTICAL_GO_THROUGH_WALL          // 9
 };
 #define NB_PROFILE 9
 
@@ -54,8 +54,7 @@ double OnLineFootSteps[NBOFPREDEFONLINEFOOTSTEPS][4] = {
     {0.05, 0.0, 0.0, 0.0}, {0.05, 0.0, 0.0, 0.0}};
 
 class TestMorisawa2007 : public TestObject {
-
-private:
+ private:
   bool m_TestChangeFoot;
   unsigned long int m_NbStepsModified;
   // New time between two steps.
@@ -64,7 +63,7 @@ private:
   // iteration for the files
   int iteration;
 
-public:
+ public:
   TestMorisawa2007(int argc, char *argv[], string &aString, int TestProfile)
       : TestObject(argc, argv, aString) {
     m_DebugFGPIFull = true;
@@ -78,10 +77,9 @@ public:
 
   ~TestMorisawa2007() {}
 
-protected:
+ protected:
   double filterprecision(double adb) {
-    if (fabs(adb) < 1e-7)
-      return 0.0;
+    if (fabs(adb) < 1e-7) return 0.0;
 
     double ladb2 = adb * 1e7;
     double lintadb2 = trunc(ladb2);
@@ -107,7 +105,8 @@ protected:
     }
 
     {
-      istringstream strm2(":StartOnLineStepSequencing \
+      istringstream strm2(
+          ":StartOnLineStepSequencing \
                           0.0 -0.105 0.0 0.0 \
                           0.2 0.19 0.0 0.0   \
                           0.2 -0.19 0.0 0.0  \
@@ -137,7 +136,8 @@ protected:
       aPGI.ParseCmd(strm2);
     }
     {
-      istringstream strm2(":stepstairseq \
+      istringstream strm2(
+          ":stepstairseq \
                           0.0 -0.105 0.0 0.0 \
                           0.2 0.19 0.0 0.0 \
                           0.2 -0.19 0.0 0.0 \
@@ -173,7 +173,8 @@ protected:
     }
 
     {
-      istringstream strm2(":stepstairseq 0.0 -0.105 0.0 0.0\
+      istringstream strm2(
+          ":stepstairseq 0.0 -0.105 0.0 0.0\
                           0.30 0.19 0.10 0.0\
                           0.0 -0.19 0.0 0.0\
                           0.31 0.19 0.10 0.0\
@@ -214,7 +215,8 @@ protected:
     }
 
     {
-      istringstream strm2(":stepstairseq 0.0 -0.105 0.0 0.0\
+      istringstream strm2(
+          ":stepstairseq 0.0 -0.105 0.0 0.0\
                           0.30 0.19 0.15 0.0\
                           0.0 -0.19 0.0 0.0\
                           0.30 0.19 0.15 0.0\
@@ -250,7 +252,8 @@ protected:
     }
 
     {
-      istringstream strm2(":stepstairseq 0.0 -0.105 0.0 0.0\
+      istringstream strm2(
+          ":stepstairseq 0.0 -0.105 0.0 0.0\
                           0.30 0.19 -0.15 0.0\
                           0.0 -0.19 0.0 0.0\
                           0.30 0.19 -0.15 0.0\
@@ -286,7 +289,8 @@ protected:
     }
 
     {
-      istringstream strm2(":stepstairseq 0.0 -0.105 0.0 0.0\
+      istringstream strm2(
+          ":stepstairseq 0.0 -0.105 0.0 0.0\
                           0.31 0.19 -0.10 0.0\
                           0.0 -0.19 0.0 0.0\
                           0.30 0.19 -0.10 0.0\
@@ -326,7 +330,8 @@ protected:
     }
 
     {
-      istringstream strm2(":stepstairseq 0.0 -0.105 0.0 0.0\
+      istringstream strm2(
+          ":stepstairseq 0.0 -0.105 0.0 0.0\
                           0.25 0.19 0.05 0.0\
                           0.2 -0.19 0.05 0.0\
                           0.25 0.19 0.05 0.0\
@@ -365,7 +370,8 @@ protected:
     }
 
     {
-      istringstream strm2(":stepstairseq\
+      istringstream strm2(
+          ":stepstairseq\
                           0.0   0.105 0.0 0.0\
                           0.28 -0.145 0.0 0.0\
                           0.28  0.100 0.0 0.0\
@@ -414,7 +420,8 @@ protected:
 
     {
       // wait for andreas the step sequence
-      istringstream strm2(":stepstairseq\
+      istringstream strm2(
+          ":stepstairseq\
                           0.06 2.0 0.0 0.0   \
                           0.0 -0.3 0.0 0.0   \
                           0.0 0.2 0.0 0.0    \
@@ -506,67 +513,58 @@ protected:
   }
 
   void chooseTestProfile() {
-
     switch (m_TestProfile) {
-    case PROFIL_ANALYTICAL_SHORT_STRAIGHT_WALKING:
-      AnalyticalShortStraightWalking(*m_PGI);
-      break;
+      case PROFIL_ANALYTICAL_SHORT_STRAIGHT_WALKING:
+        AnalyticalShortStraightWalking(*m_PGI);
+        break;
 
-    case PROFIL_ANALYTICAL_CLIMBING_STAIRS_10:
-      AnalyticalClimbingStairs10(*m_PGI);
-      break;
+      case PROFIL_ANALYTICAL_CLIMBING_STAIRS_10:
+        AnalyticalClimbingStairs10(*m_PGI);
+        break;
 
-    case PROFIL_ANALYTICAL_CLIMBING_STAIRS_15:
-      AnalyticalClimbingStairs15(*m_PGI);
-      break;
+      case PROFIL_ANALYTICAL_CLIMBING_STAIRS_15:
+        AnalyticalClimbingStairs15(*m_PGI);
+        break;
 
-    case PROFIL_ANALYTICAL_GOING_DOWN_STAIRS_10:
-      AnalyticalGoingDownStairs10(*m_PGI);
-      break;
+      case PROFIL_ANALYTICAL_GOING_DOWN_STAIRS_10:
+        AnalyticalGoingDownStairs10(*m_PGI);
+        break;
 
-    case PROFIL_ANALYTICAL_GOING_DOWN_STAIRS_15:
-      AnalyticalGoingDownStairs15(*m_PGI);
-      break;
+      case PROFIL_ANALYTICAL_GOING_DOWN_STAIRS_15:
+        AnalyticalGoingDownStairs15(*m_PGI);
+        break;
 
-    case PROFIL_ANALYTICAL_STEPPING_STONES:
-      AnalyticalSteppingStones(*m_PGI);
-      break;
+      case PROFIL_ANALYTICAL_STEPPING_STONES:
+        AnalyticalSteppingStones(*m_PGI);
+        break;
 
-    case PROFIL_ANALYTICAL_ONLINE_WALKING:
-      StartAnalyticalOnLineWalking(*m_PGI);
-      break;
+      case PROFIL_ANALYTICAL_ONLINE_WALKING:
+        StartAnalyticalOnLineWalking(*m_PGI);
+        break;
 
-    case PROFIL_ANALYTICAL_WALKING_ON_BEAM:
-      AnalyticalWalkingOnBeam(*m_PGI);
-      break;
+      case PROFIL_ANALYTICAL_WALKING_ON_BEAM:
+        AnalyticalWalkingOnBeam(*m_PGI);
+        break;
 
-    case PROFIL_ANALYTICAL_GO_THROUGH_WALL:
-      AnalyticalGoThroughWall(*m_PGI);
-      break;
+      case PROFIL_ANALYTICAL_GO_THROUGH_WALL:
+        AnalyticalGoThroughWall(*m_PGI);
+        break;
 
-    default:
-      throw("No correct test profile");
-      break;
+      default:
+        throw("No correct test profile");
+        break;
     }
   }
 
   void generateEvent() {
-    if (m_TestProfile == PROFIL_ANALYTICAL_SHORT_STRAIGHT_WALKING)
-      return;
-    if (m_TestProfile == PROFIL_ANALYTICAL_CLIMBING_STAIRS_10)
-      return;
-    if (m_TestProfile == PROFIL_ANALYTICAL_CLIMBING_STAIRS_15)
-      return;
-    if (m_TestProfile == PROFIL_ANALYTICAL_GOING_DOWN_STAIRS_10)
-      return;
-    if (m_TestProfile == PROFIL_ANALYTICAL_GOING_DOWN_STAIRS_15)
-      return;
-    if (m_TestProfile == PROFIL_ANALYTICAL_STEPPING_STONES)
-      return;
-    if (m_TestProfile == PROFIL_ANALYTICAL_WALKING_ON_BEAM)
-      return;
-    if (m_TestProfile == PROFIL_ANALYTICAL_GO_THROUGH_WALL)
-      return;
+    if (m_TestProfile == PROFIL_ANALYTICAL_SHORT_STRAIGHT_WALKING) return;
+    if (m_TestProfile == PROFIL_ANALYTICAL_CLIMBING_STAIRS_10) return;
+    if (m_TestProfile == PROFIL_ANALYTICAL_CLIMBING_STAIRS_15) return;
+    if (m_TestProfile == PROFIL_ANALYTICAL_GOING_DOWN_STAIRS_10) return;
+    if (m_TestProfile == PROFIL_ANALYTICAL_GOING_DOWN_STAIRS_15) return;
+    if (m_TestProfile == PROFIL_ANALYTICAL_STEPPING_STONES) return;
+    if (m_TestProfile == PROFIL_ANALYTICAL_WALKING_ON_BEAM) return;
+    if (m_TestProfile == PROFIL_ANALYTICAL_GO_THROUGH_WALL) return;
 
     unsigned int StoppingTime = 20 * 200;
 
@@ -610,8 +608,7 @@ protected:
             m_deltatime += newtime + 0.025;
             m_TestChangeFoot = true;
             m_NbStepsModified++;
-            if (m_NbStepsModified == 360)
-              m_TestChangeFoot = false;
+            if (m_NbStepsModified == 360) m_TestChangeFoot = false;
           } else {
             m_deltatime += 0.005;
           }

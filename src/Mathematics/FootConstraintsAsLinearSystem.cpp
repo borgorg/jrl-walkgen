@@ -28,11 +28,10 @@
 /** \file FootConstraintAsLinearSystem.cpp
     \brief This object build linear constraints based on feet positions. */
 
-#include <fstream>
-#include <iostream>
-
 #include <Debug.hh>
 #include <Mathematics/FootConstraintsAsLinearSystem.hh>
+#include <fstream>
+#include <iostream>
 
 using namespace std;
 using namespace PatternGeneratorJRL;
@@ -48,7 +47,6 @@ FootConstraintsAsLinearSystem::~FootConstraintsAsLinearSystem() {}
 
 int FootConstraintsAsLinearSystem::FindSimilarConstraints(
     Eigen::MatrixXd &A, vector<int> &SimilarConstraints) {
-
   SimilarConstraints.resize(A.rows());
   SimilarConstraints[0] = 0;
   SimilarConstraints[1] = 0;
@@ -271,7 +269,6 @@ int FootConstraintsAsLinearSystem::BuildLinearConstraintInequalities(
   // Going through the set of generated data for each 5 ms.
   // from this extract a set of linear constraints.
   for (unsigned int i = 0; i < LeftFootAbsolutePositions.size(); i++) {
-
     ComputeCH = 0;
     // First check if we have to compute a convex hull
     if (i == 0) {
@@ -280,23 +277,19 @@ int FootConstraintsAsLinearSystem::BuildLinearConstraintInequalities(
     }
     // Double support
     if (LeftFootAbsolutePositions[i].stepType >= 10) {
-      if (State != 3)
-        ComputeCH = 1;
+      if (State != 3) ComputeCH = 1;
       State = 3;
     } else {
       double LiftingThreshold = 0.00001;
       if (LeftFootAbsolutePositions[i].z > LiftingThreshold) {
-        if (State != 2)
-          ComputeCH = 1;
+        if (State != 2) ComputeCH = 1;
         State = 2;
       } else if (RightFootAbsolutePositions[i].z > LiftingThreshold) {
-        if (State != 1)
-          ComputeCH = 1;
+        if (State != 1) ComputeCH = 1;
         State = 1;
       } else if ((RightFootAbsolutePositions[i].z < LiftingThreshold) &&
                  (LeftFootAbsolutePositions[i].z < LiftingThreshold)) {
-        if (State != 3)
-          ComputeCH = 1;
+        if (State != 3) ComputeCH = 1;
         State = 3;
       }
     }
@@ -343,8 +336,8 @@ int FootConstraintsAsLinearSystem::BuildLinearConstraintInequalities(
         lx = RightFootAbsolutePositions[i].x;
         ly = RightFootAbsolutePositions[i].y;
 
-        s_t = sin(RightFootAbsolutePositions[i].theta * M_PI / 180.0); //+
-        c_t = cos(RightFootAbsolutePositions[i].theta * M_PI / 180.0); //+
+        s_t = sin(RightFootAbsolutePositions[i].theta * M_PI / 180.0);  //+
+        c_t = cos(RightFootAbsolutePositions[i].theta * M_PI / 180.0);  //+
 
         ODEBUG("Right Foot: " << lx << " " << ly << " "
                               << RightFootAbsolutePositions[i].theta);
@@ -373,7 +366,6 @@ int FootConstraintsAsLinearSystem::BuildLinearConstraintInequalities(
       // In the second case, it is necessary to compute
       // the support foot.
       else {
-
         TheConvexHull.resize(4);
 
         // Who is support foot ?
@@ -466,8 +458,8 @@ int FootConstraintsAsLinearSystem::BuildLinearConstraintInequalities(
   return 0;
 }
 
-void FootConstraintsAsLinearSystem::CallMethod(std::string &,        // Method,
-                                               std::istringstream &) // Args)
+void FootConstraintsAsLinearSystem::CallMethod(std::string &,         // Method,
+                                               std::istringstream &)  // Args)
 {
   // TO BE EXTENDED.
 }
