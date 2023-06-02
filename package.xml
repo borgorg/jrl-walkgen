@@ -1,9 +1,7 @@
 <package format="2">
   <name>jrl-walkgen</name>
   <version>4.2.7</version>
-  <description>
-    jrl-walkgen library
-  </description>
+  <description>jrl-walkgen library</description>
   <maintainer email="guilhem.saurel@laas.fr">Guilhem Saurel</maintainer>
   <license>BSD</license>
 
